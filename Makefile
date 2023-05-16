@@ -12,6 +12,7 @@ platformpth = $(subst /,$(PATHSEP),$1)
 buildDir := bin
 executable := app
 target := $(buildDir)/$(executable)
+libName := libimnotgui
 sources := $(call rwildcard,src/,*.cpp)
 objects := $(patsubst src/%, $(buildDir)/%, $(patsubst %.cpp, %.o, $(sources)))
 depends := $(patsubst %.o, %.d, $(objects))
@@ -22,6 +23,7 @@ linkFlags = -L lib/$(platform) -l raylib
 ifeq ($(OS), Windows_NT)
 	# Set Windows macros
 	platform := Windows
+	AR ?= ar
 	CXX ?= g++
 	linkFlags += -Wl,--allow-multiple-definition -pthread -lopengl32 -lgdi32 -lwinmm -mwindows -static -static-libgcc -static-libstdc++
 	libGenDir := src
@@ -36,12 +38,14 @@ else
 	ifeq ($(UNAMEOS), Linux)
 		# Set Linux macros
 		platform := Linux
+		AR ?= ar
 		CXX ?= g++
 		linkFlags += -l GL -l m -l pthread -l dl -l rt -l X11
 	endif
 	ifeq ($(UNAMEOS), Darwin)
 		# Set macOS macros
 		platform := macOS
+		AR ?= ar
 		CXX ?= clang++
 		linkFlags += -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL
 		libGenDir := src
@@ -56,7 +60,7 @@ else
 endif
 
 # Lists phony targets for Makefile
-.PHONY: all setup submodules execute clean
+.PHONY: all setup submodules execute library clean
 
 # Default target, compiles, executes and cleans
 all: $(target) execute clean
@@ -71,9 +75,10 @@ submodules:
 # Copy the relevant header files into includes
 include: submodules
 	$(MKDIR) $(call platformpth, ./include)
-	$(call COPY,vendor/raylib/src,./include,raylib.h)
-	$(call COPY,vendor/raylib/src,./include,raymath.h)
-	$(call COPY,vendor/raylib-cpp/include,./include,*.hpp)
+	$(MKDIR) $(call platformpth, ./include/raylib)
+	$(call COPY,vendor/raylib/src,./include/raylib,raylib.h)
+	$(call COPY,vendor/raylib/src,./include/raylib,raymath.h)
+	$(call COPY,vendor/raylib-cpp/include,./include/raylib,*.hpp)
 
 # Build the raylib static library file and copy it into lib
 lib: submodules
@@ -96,6 +101,9 @@ $(buildDir)/%.o: src/%.cpp Makefile
 # Run the executable
 execute:
 	$(target) $(ARGS)
+
+library: $(objects)
+	$(AR) rcs $(buildDir)/$(libName).a $(objects)
 
 # Clean up all relevant files
 clean:

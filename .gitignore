@@ -1,4 +1,6 @@
-include
+!include/
+include/*
+!include/imnotgui.hpp
 lib
 bin
 .idea
