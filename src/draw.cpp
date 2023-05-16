@@ -14,16 +14,16 @@ void iui_rect_pos(int x1, int y1, int x2, int y2, raylib::Color color) {
     DrawRectangle(x1, y1, x2 - x1, y2 - y1, color);
 }
 void iui_rect_rot(int x, int y, int w, int h, raylib::Color color, float angle) {
-    DrawRectanglePro(Rectangle{x, y, w, h}, Vector2{w / 2, h / 2}, angle, color);
+    DrawRectanglePro(Rectangle{(float)x, (float)y, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
 }
 void iui_rect_rot_center(int x, int y, int w, int h, raylib::Color color, float angle) {
-    DrawRectanglePro(Rectangle{x - w / 2, y - h / 2, w, h}, Vector2{w / 2, h / 2}, angle, color);
+    DrawRectanglePro(Rectangle{x - w / 2.0f, y - h / 2.0f, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
 }
 void iui_rect_rot_origin(int x, int y, int w, int h, raylib::Color color, float angle, int ox, int oy) {
-    DrawRectanglePro(Rectangle{x - ox, y - oy, w, h}, Vector2{ox, oy}, angle, color);
+    DrawRectanglePro(Rectangle{(float)(x - ox), (float)(y - oy), (float)w, (float)h}, Vector2{(float)ox, (float)oy}, angle, color);
 }
 void iui_line(int x, int y, int length, float angle, float thick, raylib::Color color) {
-    DrawLineEx(Vector2{x, y}, Vector2{x + length * std::cos(angle*DEG2RAD), y + length * std::sin(angle*DEG2RAD)}, thick, color);
+    DrawLineEx(Vector2{(float)x, (float)y}, Vector2{x + length * std::cos(angle*DEG2RAD), y + length * std::sin(angle*DEG2RAD)}, thick, color);
 }
 void iui_label(int x, int y, std::string text, raylib::Color color) {
     raylib::Vector2 tSize = MeasureTextEx(GetFontDefault(), text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/10, 1));

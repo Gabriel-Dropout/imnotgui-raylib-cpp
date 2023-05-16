@@ -10,9 +10,8 @@ platformpth = $(subst /,$(PATHSEP),$1)
 
 # Set global macros
 buildDir := bin
-executable := app
-target := $(buildDir)/$(executable)
 libName := libimnotgui
+target := $(buildDir)/$(libName).a
 sources := $(call rwildcard,src/,*.cpp)
 objects := $(patsubst src/%, $(buildDir)/%, $(patsubst %.cpp, %.o, $(sources)))
 depends := $(patsubst %.o, %.d, $(objects))
@@ -24,6 +23,7 @@ ifeq ($(OS), Windows_NT)
 	# Set Windows macros
 	platform := Windows
 	AR ?= ar
+	MAKE ?= mingw32-make
 	CXX ?= g++
 	linkFlags += -Wl,--allow-multiple-definition -pthread -lopengl32 -lgdi32 -lwinmm -mwindows -static -static-libgcc -static-libstdc++
 	libGenDir := src
@@ -38,7 +38,6 @@ else
 	ifeq ($(UNAMEOS), Linux)
 		# Set Linux macros
 		platform := Linux
-		AR ?= ar
 		CXX ?= g++
 		linkFlags += -l GL -l m -l pthread -l dl -l rt -l X11
 		libGenDir := src
@@ -46,13 +45,14 @@ else
 	ifeq ($(UNAMEOS), Darwin)
 		# Set macOS macros
 		platform := macOS
-		AR ?= ar
 		CXX ?= clang++
 		linkFlags += -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL
 		libGenDir := src
 	endif
 
 	# Set UNIX macros
+	AR ?= ar
+	MAKE ?= make
 	THEN := ;
 	PATHSEP := /
 	MKDIR := mkdir -p
@@ -61,10 +61,37 @@ else
 endif
 
 # Lists phony targets for Makefile
-.PHONY: all setup submodules execute library clean
+.PHONY: all example clean setup submodules
 
 # Default target, compiles, executes and cleans
-all: $(target) execute clean
+all: $(buildDir) $(target) example
+
+# Make build folder
+$(buildDir):
+	$(MKDIR) $(call platformpth, $(buildDir))
+
+# Build the imnotgui static library file and copy it into bin
+$(target): $(objects)
+	$(AR) rcs $(target) $(objects)
+
+# Build examples and run
+example: $(target)
+	$(MAKE) test -C example
+
+# Compile objects to the build directory
+$(buildDir)/%.o: src/%.cpp Makefile
+	$(CXX) -MMD -MP -c $(compileFlags) $< -o $@ $(CXXFLAGS)
+
+# Clean up all relevant files
+clean:
+	$(RM) $(call platformpth, $(buildDir)/*)
+
+# Add all rules from dependency files
+-include $(depends)
+
+
+############ Resolving Dependencies ############
+
 
 # Sets up the project for compiling, generates includes and libs
 setup: include lib
@@ -86,26 +113,3 @@ lib: submodules
 	cd vendor/raylib/src $(THEN) "$(MAKE)" PLATFORM=PLATFORM_DESKTOP
 	$(MKDIR) $(call platformpth, lib/$(platform))
 	$(call COPY,vendor/raylib/$(libGenDir),lib/$(platform),libraylib.a)
-
-# Link the program and create the executable
-$(target): $(objects)
-	$(CXX) $(objects) -o $(target) $(linkFlags)
-
-# Add all rules from dependency files
--include $(depends)
-
-# Compile objects to the build directory
-$(buildDir)/%.o: src/%.cpp Makefile
-	$(MKDIR) $(call platformpth, $(@D))
-	$(CXX) -MMD -MP -c $(compileFlags) $< -o $@ $(CXXFLAGS)
-
-# Run the executable
-execute:
-	$(target) $(ARGS)
-
-library: $(objects)
-	$(AR) rcs $(buildDir)/$(libName).a $(objects)
-
-# Clean up all relevant files
-clean:
-	$(RM) $(call platformpth, $(buildDir)/*)

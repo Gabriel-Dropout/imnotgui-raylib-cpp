@@ -17,7 +17,7 @@ bool iui_button(int x, int y, int w, int h, std::string text) {
     bool isClicky = false;
 
     // is hover
-    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{x, y, w, h})) {
+    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h})) {
         iui_hotItem = ID;
         if(iui_activeItem == -1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             iui_activeItem = ID;
@@ -70,7 +70,7 @@ bool iui_button_nodraw(int x, int y, int w, int h, std::string text) {
     bool isClicky = false;
 
     // is hover
-    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{x, y, w, h})) {
+    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h})) {
         iui_hotItem = ID;
         if(iui_activeItem == -1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             iui_activeItem = ID;
