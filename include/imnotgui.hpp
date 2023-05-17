@@ -6,6 +6,17 @@
 #include <vector>
 #include "raylib/raylib-cpp.hpp"
 
+// Atlas sprite properties
+typedef struct rtpAtlasSprite {
+    const char *nameId;
+    int originX, originY;
+    int positionX, positionY;
+    int sourceWidth, sourceHeight;
+    int padding;
+    bool trimmed;
+    int trimRecX, trimRecY, trimRecWidth, trimRecHeight;
+} rtpAtlasSprite;
+
 namespace imnotgui {
 extern int iui_hotItem;
 extern int iui_activeItem;
@@ -36,6 +47,8 @@ namespace draw {
     void iui_lavel_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY);
     void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep, int width);
     void iui_sprite(raylib::Texture2D texture, int x, int y, raylib::Color color);
+    void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, raylib::Color color);
+    void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float angle, raylib::Color color);
 }
 
 namespace element {

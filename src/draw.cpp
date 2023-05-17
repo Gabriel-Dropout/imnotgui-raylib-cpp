@@ -14,10 +14,10 @@ void iui_rect_pos(int x1, int y1, int x2, int y2, raylib::Color color) {
     DrawRectangle(x1, y1, x2 - x1, y2 - y1, color);
 }
 void iui_rect_rot(int x, int y, int w, int h, raylib::Color color, float angle) {
-    DrawRectanglePro(Rectangle{(float)x, (float)y, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
+    DrawRectanglePro(Rectangle{(float)x + w/2.0f, (float)y + h/2.0f, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
 }
 void iui_rect_rot_center(int x, int y, int w, int h, raylib::Color color, float angle) {
-    DrawRectanglePro(Rectangle{x - w / 2.0f, y - h / 2.0f, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
+    DrawRectanglePro(Rectangle{(float)x, (float)y, (float)w, (float)h}, Vector2{w / 2.0f, h / 2.0f}, angle, color);
 }
 void iui_rect_rot_origin(int x, int y, int w, int h, raylib::Color color, float angle, int ox, int oy) {
     DrawRectanglePro(Rectangle{(float)(x - ox), (float)(y - oy), (float)w, (float)h}, Vector2{(float)ox, (float)oy}, angle, color);
@@ -44,6 +44,23 @@ void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep,
 
 void iui_sprite(raylib::Texture2D texture, int x, int y, raylib::Color color) {
     DrawTexture(texture, x, y, color);
+}
+void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, raylib::Color color) {
+    DrawTexturePro(atlas,
+        Rectangle{(float)sprite.positionX, (float)sprite.positionY, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
+        Rectangle{(float)x, (float)y, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
+        Vector2{(float)sprite.originX, (float)sprite.originY},
+        0.f,
+        color);
+}
+void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float angle, raylib::Color color) {
+    // sprite.positionX, sprite.positionY, sprite.sourceWidth, sprite.sourceHeight, sprite.originX, sprite.originY
+    DrawTexturePro(atlas,
+        Rectangle{(float)sprite.positionX, (float)sprite.positionY, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
+        Rectangle{(float)x, (float)y, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
+        Vector2{(float)sprite.originX, (float)sprite.originY},
+        angle,
+        color);
 }
 
 } // namespace draw
