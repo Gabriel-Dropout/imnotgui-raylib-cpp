@@ -54,7 +54,7 @@ int main() {
     
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(1280, 720, "NagaGUI Test");
+    InitWindow(1280, 720, "ImNotGUI Demo");
     SetTargetFPS(60);
 
     raylib::Texture2D atlas("resources/atlas.png");

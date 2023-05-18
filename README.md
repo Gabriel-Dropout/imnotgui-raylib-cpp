@@ -100,7 +100,15 @@ int main() {
 }
 ```
 
-![ex1](example1.png)
+<img src="example1.png" alt="ex1" style="zoom: 80%;" />
+
+<img src="example2.png" alt="ex2" style="zoom: 80%;" />
+
+<img src="example3.png" alt="ex3" style="zoom: 80%;" />
+
+<img src="example4.png" alt="ex4" style="zoom: 80%;" />
+
+<img src="example5.png" alt="ex5" style="zoom: 80%;" />
 
 ---
 
