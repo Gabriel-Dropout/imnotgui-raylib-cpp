@@ -21,4 +21,4 @@ execute:
 	-$(TARGET)
 
 clean:
-	del /q $(OBJS) $(TARGET)
+	-del /q $(OBJS) $(TARGET)
