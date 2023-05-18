@@ -32,7 +32,7 @@ namespace draw {
     void iui_label_transform(int x, int y, std::string text, float fontsize, float angle, raylib::Color color);
     void iui_label_shadow(int x, int y, std::string text, raylib::Color color, int sx, int sy, raylib::Color scolor);
     void iui_label_underline_expensive(int x, int y, std::string text, raylib::Color color, float thick, int offsetY, raylib::Color bgColor);
-    void iui_lavel_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY);
+    void iui_label_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY);
     void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep, int width);
 }
 
@@ -68,6 +68,7 @@ std::string iui_strTrim(std::string text, int width);
 std::string iui_strTrimNodots(std::string text, int width);
 
 raylib::Color iui_colLighter(raylib::Color color, int amount);
+raylib::Color iui_colLighter_adv(raylib::Color color, int amount, float rmod, float gmod, float bmod);
 
 int iui_measureText(std::string text);
 raylib::Vector2 iui_measureTextEx(std::string text);

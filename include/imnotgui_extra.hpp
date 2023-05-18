@@ -18,12 +18,14 @@ typedef struct rtpAtlasSprite {
 
 namespace imnotgui {
 namespace draw {
-    void iui_sprite(raylib::Texture2D texture, int x, int y, raylib::Color color);
+    void iui_sprite(raylib::Texture2D &texture, int x, int y, raylib::Color color);
     void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, raylib::Color color);
     void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float angle, raylib::Color color);
+    void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float xscale, float yscale, float angle, raylib::Color color);
 
     void draw_textbubble_top(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
     void draw_textbubble_bottom(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
+    void draw_textbubble_topbottom(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
     void draw_textbubblel_left(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
     void draw_textbubble_right(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
 }  // namespace draw

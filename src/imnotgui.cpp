@@ -110,6 +110,9 @@ std::string iui_strTrimNodots(std::string text, int width) {
 raylib::Color iui_colLighter(raylib::Color color, int amount) {
     return raylib::Color(std::clamp(color.r + (int)amount, 0, 255), std::clamp(color.g + (int)(amount*1.3), 0, 255), std::clamp(color.b + (int)(amount*1.5), 0, 255), 255);
 }
+raylib::Color iui_colLighter_adv(raylib::Color color, int amount, float rmod, float gmod, float bmod) {
+    return raylib::Color(std::clamp(color.r + (int)(amount*rmod), 0, 255), std::clamp(color.g + (int)(amount*gmod), 0, 255), std::clamp(color.b + (int)(amount*bmod), 0, 255), 255);
+}
 
 int iui_measureText(std::string text) {
     return MeasureText(text.c_str(), iuiLabelFontsize);
