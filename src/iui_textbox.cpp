@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include <raylib/raylib-cpp.hpp>
+#include "raylib/raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {

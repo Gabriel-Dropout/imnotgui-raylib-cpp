@@ -33,12 +33,13 @@ imnotgui-raylib-cpp provides the following elements:
 * Tabs
 * Slider
 * TextBox
+* (extra) Sprite
 
 Refer to the original imnotgui documentation for usage details of these elements.
 
 ---
 
-### How to Use:
+### How to Build:
 
 1. Include the necessary dependencies (raylib and raylib-cpp) in your project. You can simply running these commands in its root directory:
 
@@ -63,9 +64,9 @@ Refer to the original imnotgui documentation for usage details of these elements
 Example:
 
 ```cpp
-#include "raylib.h"
-#include "raylib-cpp.hpp"
-#include "imnotgui_raylib.hpp"
+#include "raylib/raylib-cpp.hpp"
+#include "imnotgui.hpp"
+#include "imnotgui_extra.hpp"  // for sprite drawing
 
 int main()
 {

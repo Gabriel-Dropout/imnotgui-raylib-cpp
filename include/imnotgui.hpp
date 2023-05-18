@@ -1,21 +1,10 @@
-#ifndef NAGAGUI_HPP
-#define NAGAGUI_HPP
+#ifndef IMNOTGUI_HPP
+#define IMNOTGUI_HPP
 
 #include <map>
 #include <string>
 #include <vector>
 #include "raylib/raylib-cpp.hpp"
-
-// Atlas sprite properties
-typedef struct rtpAtlasSprite {
-    const char *nameId;
-    int originX, originY;
-    int positionX, positionY;
-    int sourceWidth, sourceHeight;
-    int padding;
-    bool trimmed;
-    int trimRecX, trimRecY, trimRecWidth, trimRecHeight;
-} rtpAtlasSprite;
 
 namespace imnotgui {
 extern int iui_hotItem;
@@ -23,7 +12,6 @@ extern int iui_activeItem;
 extern int iui_kbFocusItem;
 extern int iui_idx;
 extern std::map<std::string, int> iui_idMap;
-// extern std::map<std::string, int> iui_varMap;  // removed
 extern int iui_textboxShowPos;
 extern int iui_textboxCursorPos;
 #define TEXTBOX_COOLDOWN 40
@@ -46,9 +34,6 @@ namespace draw {
     void iui_label_underline_expensive(int x, int y, std::string text, raylib::Color color, float thick, int offsetY, raylib::Color bgColor);
     void iui_lavel_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY);
     void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep, int width);
-    void iui_sprite(raylib::Texture2D texture, int x, int y, raylib::Color color);
-    void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, raylib::Color color);
-    void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float angle, raylib::Color color);
 }
 
 namespace element {
@@ -60,8 +45,6 @@ namespace element {
     bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, const std::string ID);
     void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID);
     void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID);
-    // void iui_sprite(sprite, sub, int x, int y, raylib::Color color);
-    // void iui_sprite_shadow();
     bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID);
 }
 
@@ -165,4 +148,4 @@ extern raylib::Color   iuiColCheckboxBorder,
 
 }
 
-#endif // NAGAGUI_HPP
+#endif // IMNOTGUI_HPP
