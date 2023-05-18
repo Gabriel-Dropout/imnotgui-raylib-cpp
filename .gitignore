@@ -1,6 +1,4 @@
-!include/
-include/*
-!include/imnotgui.hpp
+include/raylib
 lib
 bin
 .idea
