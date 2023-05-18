@@ -17,24 +17,34 @@ jobs:
       run: mingw32-make setup
       shell: cmd
       
-    - name: make bin/app
-      run: mingw32-make bin/app
+    - name: make bin
+      run: mingw32-make bin
       shell: cmd
       
+    - name: make bin/libimnotgui.a
+      run: mingw32-make bin/libimnotgui.a
+      shell: cmd
+      
+    - name: make demo.exe -C example
+      run: mingw32-make demo.exe -C example
+      shell: cmd
+      
+    - name: 'export library'
+      uses: actions/upload-artifact@v2
+      with:
+          name: libimnotgui.a
+          path: bin/libimnotgui.a
+          
     - name: 'export binary'
       uses: actions/upload-artifact@v2
       with:
-          name: app.exe
-          path: bin/app.exe
+          name: demo.exe
+          path: example/demo.exe
       
     - name: make clean
       run: mingw32-make clean
       shell: cmd
-
-    - name: make bin/app CXX=g++
-      run: mingw32-make bin/app CXX=g++
-      shell: cmd
   
-    - name: make clean
-      run: mingw32-make clean
+    - name: make clean -C example
+      run: mingw32-make clean -C example
       shell: cmd
