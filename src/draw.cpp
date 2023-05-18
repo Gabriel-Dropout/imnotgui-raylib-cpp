@@ -1,5 +1,6 @@
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 #include "raylib/raylib-cpp.hpp"
 #include "imnotgui.hpp"
@@ -27,13 +28,13 @@ void iui_line(int x, int y, int length, float angle, float thick, raylib::Color 
     DrawLineEx(Vector2{(float)x, (float)y}, Vector2{x + length * std::cos(angle*DEG2RAD), y + length * std::sin(angle*DEG2RAD)}, thick, color);
 }
 void iui_label(int x, int y, std::string text, raylib::Color color) {
-    raylib::Vector2 tSize = MeasureTextEx(GetFontDefault(), text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/10, 1));
+    raylib::Vector2 tSize = iui_measureTextEx(text);
     int offX = ((int)tSize.x * iuiLabelHalign)/2;
     int offY = ((int)tSize.y * iuiLabelValign)/2;
     raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
 }
 void iui_label_transform(int x, int y, std::string text, int fontsize, float angle, raylib::Color color) {
-    raylib::Vector2 tSize = MeasureTextEx(GetFontDefault(), text.c_str(), fontsize, std::max(iuiLabelFontsize/10, 1));
+    raylib::Vector2 tSize = iui_measureTextEx(text);
     int offX = ((int)tSize.x << iuiLabelHalign)/2;
     int offY = ((int)tSize.y << iuiLabelValign)/2;
     raylib::DrawText(text, x - offX, y - offY, fontsize, color);
@@ -63,6 +64,22 @@ void iui_sprite_from_atlas(raylib::Texture2D &atlas, rtpAtlasSprite sprite, int 
         angle,
         color);
 }
+
+void draw_textbubble_top(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize) {
+    int arrowHypo = 0.70710678118 * arrowSize;
+    arrowPos = std::clamp(arrowPos, arrowHypo, w - arrowHypo);
+
+    // raylib::Vector2 labelSize = iui_measureTextEx(text);
+    int hprev, vprev;
+    iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_CENTER, hprev, vprev);
+    iui_rect_rot_center(x + arrowPos, y, arrowSize, arrowSize, color, 45);
+    iui_rect(x, y, w, h, color);
+    iui_label(x + w/2, y + h/2, text, textColor);
+    iui_setAlignment(hprev, vprev);
+}
+void draw_textbubble_bottom(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
+void draw_textbubblel_left(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
+void draw_textbubble_right(int x, int y, int w, int h, std::string text, raylib::Color color, raylib::Color textColor, int arrowPos, int arrowSize);
 
 } // namespace draw
 } // namespace imnotgui

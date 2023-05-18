@@ -22,6 +22,11 @@ int main() {
 
     bool ui_check_test = false;
     bool ui_check_test2 = false;
+
+    std::string ui_textbox_testarea_str = "";
+    std::string ui_textbox_number_str = "";
+    int ui_textbox_number = 0;
+    std::string ui_textbox_thicc_str = "";
     
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -31,26 +36,25 @@ int main() {
     raylib::Texture2D atlas("resources/atlas.png");
     
     // Get sprite from the array given a specific index
-    
-    rtpAtlasSprite spr_uimouse_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_0")];
-    rtpAtlasSprite spr_uimouse_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_1")];
-    rtpAtlasSprite spr_uimouse_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_2")];
-    rtpAtlasSprite spr_loss_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_0")];
-    rtpAtlasSprite spr_loss_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_1")];
-    rtpAtlasSprite spr_loss_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_2")];
-    rtpAtlasSprite spr_loss_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_3")];
-    rtpAtlasSprite spr_logo_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_0")];
-    rtpAtlasSprite spr_logo_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_1")];
-    rtpAtlasSprite spr_biglogo = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_biglogo")];
-    rtpAtlasSprite spr_here = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_here")];
-    rtpAtlasSprite spr_diamond = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_diamond")];
-    rtpAtlasSprite spr_icon42_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_0")];
-    rtpAtlasSprite spr_icon42_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_1")];
-    rtpAtlasSprite spr_icon42_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_2")];
-    rtpAtlasSprite spr_icon42_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_3")];
-    rtpAtlasSprite spr_chip64 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_chip64")];
-    rtpAtlasSprite spr_pfp = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_pfp")];
-    rtpAtlasSprite spr_uicheck = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uicheck")];
+    rtpAtlasSprite  spr_uimouse_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_0")],
+                    spr_uimouse_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_1")],
+                    spr_uimouse_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_2")],
+                    spr_loss_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_0")],
+                    spr_loss_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_1")],
+                    spr_loss_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_2")],
+                    spr_loss_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_3")],
+                    spr_logo_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_0")],
+                    spr_logo_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_1")],
+                    spr_biglogo = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_biglogo")],
+                    spr_here = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_here")],
+                    spr_diamond = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_diamond")],
+                    spr_icon42_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_0")],
+                    spr_icon42_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_1")],
+                    spr_icon42_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_2")],
+                    spr_icon42_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icon42_3")],
+                    spr_chip64 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_chip64")],
+                    spr_pfp = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_pfp")],
+                    spr_uicheck = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uicheck")];
 
     iuiButtonShadow = true;
 
@@ -160,14 +164,38 @@ int main() {
                         sprev = iui_setFontSize(42);
                         iui_label(SCREEN_CENTER_X, 180, "=[ Textbox ]=", iuCream);
                         iui_setFontSize(sprev);
+
                         // codebox
                         int strWid = MeasureText("text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iui_getFontSize()) + 10;
                         iui_rect(SCREEN_CENTER_X - (strWid / 2) - 2, 228, (strWid + 4), 104, iuMint);
                         iui_rect(SCREEN_CENTER_X - (strWid / 2), 230, strWid, 100, iuHellaDark);
                         iui_label(SCREEN_CENTER_X, 260, "text_var = iui_textbox(x, y, width, height, text_var, ID);", iuCream);
                         iui_label(SCREEN_CENTER_X, 300, "text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iuCream);
-                
                         iui_setAlignment(hprev, vprev);
+
+                        // textboxes
+                        int textboxY = 370;
+                        iui_textbox(SCREEN_CENTER_X - 420, textboxY, 200, 50, ui_textbox_testarea_str, "7-grand-dad");
+                        iui_intbox(SCREEN_CENTER_X - 420, textboxY + 160, 200, 50, ui_textbox_number_str, ui_textbox_number, "number-plz");
+                        iui_textbox(SCREEN_CENTER_X + 20, textboxY, 400, 210, ui_textbox_thicc_str, "extra-thicc");
+
+                        iui_setAlignment(IUI_LABEL_ALIGN_RIGHT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
+                        iui_label(SCREEN_CENTER_X - 430, textboxY + 25, "STRING", iuCream);
+                        iui_label(SCREEN_CENTER_X - 430, textboxY + 185, "NUMBER ONLY", iuCream);
+                        iui_setAlignment(hprev, vprev);
+                        
+                        // value
+                        std::string bubbleLabel = iui_strTrim(ui_textbox_testarea_str, 400);
+                        int bubbleWid = iui_measureText(bubbleLabel) + 20;
+                        draw_textbubble_top(SCREEN_CENTER_X - 420, (textboxY + 70) + abs(sine01_ * 5), std::max(200, bubbleWid), 50, bubbleLabel, iuCream, iuHellaDark, 32, 20);
+                        
+                        bubbleLabel = "Speed : " + ui_textbox_number_str;
+                        bubbleWid = iui_measureText(bubbleLabel) + 20;
+                        draw_textbubble_top(SCREEN_CENTER_X - 200, (textboxY + 230) + abs(sine01_ * 5), std::max(150, bubbleWid), 50, bubbleLabel, iuCream, iuHellaDark, 32, 20);
+                        
+                        // value test
+                        int chipY = abs(std::sin(iui_animTimer * 0.05 * ui_textbox_number)) * 21;
+                        iui_sprite_from_atlas(atlas, spr_chip64, SCREEN_CENTER_X - 136, (textboxY + 185) - chipY, ui_textbox_number * iui_animTimer, WHITE);
                         break;
                     }
                 }

@@ -9,10 +9,6 @@
 #include "imnotgui.hpp"
 
 namespace imnotgui {
-namespace element {
-
-} // namespace element
-
 
 std::string iui_trim_label(std::string text) {
     int CUTPOS = text.find_first_of("##");
@@ -114,4 +110,12 @@ std::string iui_strTrimNodots(std::string text, int width) {
 raylib::Color iui_colLighter(raylib::Color color, int amount) {
     return raylib::Color(std::clamp(color.r + (int)amount, 0, 255), std::clamp(color.g + (int)(amount*1.3), 0, 255), std::clamp(color.b + (int)(amount*1.5), 0, 255), 255);
 }
+
+int iui_measureText(std::string text) {
+    return MeasureText(text.c_str(), iuiLabelFontsize);
+}
+raylib::Vector2 iui_measureTextEx(std::string text) {
+    return MeasureTextEx(GetFontDefault(), text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/10, 1));
+}
+
 } // namespace imnotgui

@@ -69,6 +69,9 @@ std::string iui_strTrimNodots(std::string text, int width);
 
 raylib::Color iui_colLighter(raylib::Color color, int amount);
 
+int iui_measureText(std::string text);
+raylib::Vector2 iui_measureTextEx(std::string text);
+
 enum iuLabelHAlignment {
     IUI_LABEL_ALIGN_LEFT,
     IUI_LABEL_ALIGN_CENTER,
