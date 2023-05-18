@@ -1,49 +1,46 @@
-### [Are you Korean? Check out the Korean version!](README-KOR.md)
+[KOREAN VERSION HERE](README-KOR.md)
 
 ![imnotgui logo](https://TandyRum1024.github.io/imnotgui_huge.png)
 
 # imnotgui-raylib-cpp
 
-imnotgui-raylib-cpp is a port of ZIK's ImNotGUI UI framework to the raylib-cpp library.
+imnotgui-raylib-cpp is a ported version of [ZIK's ImNotGUI UI framework](https://github.com/TandyRum1024/sincerly-imnotgui-gml/tree/master) for use with [raylib-cpp](https://github.com/RobLoach/raylib-cpp)
+
+The repository is also influenced by [Omar Cornut's Dear ImGUI](https://github.com/ocornut/imgui)
 
 ---
 
 ### Features:
 
-* Simple UI system - designed for quick debugging by incorporating everything in the draw loop
-
-* To be added
-
-This code:
-
-![An example](https://TandyRum1024.github.io/imnotgui/example-code.png)
-
-Produces this result:
-
-![A result](https://TandyRum1024.github.io/imnotgui/example-result.png)
+* Simple UI - Drawing functions include control logic! You just need to draw on the screen.
+* Stylish design - Personally, I think ImNotGUI's UI design is really cool.
+* Active object recognition - When you click a button and move the cursor outside its range, the button remains pressed. Actually, this feature is already implemented in ImNotGUI.
 
 ---
 
-### Usage:
+### ImNotGUI-raylib-cpp Controls:
 
-imnotgui-raylib-cpp provides the following elements:
+There are initially five controls (more will be added!)
 
-* Label
 * Button
 * Tabs
 * Slider
 * TextBox
-* (extra) Sprite
+* CheckBox
 
-Refer to the original imnotgui documentation for usage details of these elements.
+Additionally, it provides convenient drawing functions! (If you want to use ImNotGUI as the backend, you can implement these functions.)
+
+- Label
+- Rectangle
+- Sprite (with/without atlas)
 
 ---
 
 ### How to Build:
 
-1. Include the necessary dependencies (raylib and raylib-cpp) in your project. You can simply running these commands in its root directory:
+1. You need to install the required dependency libraries (raylib/raylib-cpp) for building and development. Since they are already registered as submodules, you can run the following command in the root directory:
 
-   **maxOS & Linux**
+   **macOS & Linux**
 
    ```bash
    $ make setup
@@ -55,56 +52,62 @@ Refer to the original imnotgui documentation for usage details of these elements
    > mingw32-make setup
    ```
 
-2. Build the source code to make a library.
+2. Build the source code to create the library. The examples will be built and executed automatically!
 
-3. place imnotgui.hpp and libimnotgui.a to your projects.
+   ```bash
+   $ make
+   ```
 
-4. enjoy :)
+3. Place `bin/libimnotgui.a`, `include/imnotgui.hpp`, and `include/imnotgui_extra.hpp` in your project.
+
+4. Happy coding!
+
+---
 
 Example:
 
 ```cpp
+#include <string>
+
 #include "raylib/raylib-cpp.hpp"
 #include "imnotgui.hpp"
-#include "imnotgui_extra.hpp"  // for sprite drawing
+#include "imnotgui_extra.hpp"
 
-int main()
-{
-    // Initialization
-    const int screenWidth = 800;
-    const int screenHeight = 450;
 
-    raylib::Window window(screenWidth, screenHeight, "ImNotGUI Example");
-    raylib::Color background(raylib::Color::White);
+int main() {
+    int screenWidth = 800;
+    int screenHeight = 450;
+    std::string TextboxStr;
+    imnotgui::iuiButtonShadow = true;
 
-    // Initialize ImNotGUI
-    imnotgui::Init();
+    raylib::Window w(screenWidth, screenHeight, "ImNotGUI Example");
 
-    while (!window.ShouldClose())
+    SetTargetFPS(60);
+    
+    while (!w.ShouldClose())
     {
-        // Update
-
-        // Draw
         BeginDrawing();
-
-        ClearBackground(background);
-
-        // Draw UI elements
-        imnotgui::iuiBegin();
-
-        imnotgui::element::label(50, 50, "Hello, ImNotGUI!");
-
-        if (imnotgui::Button(50, 100, 100, 30, "Click Me!"))
-        {
-            // Button click logic
-        }
-
-        // Draw other UI elements...
-
-        imnotgui::iuiEnd();
-
+        imnotgui::iui_begin();
+        ClearBackground(imnotgui::iuDark);
+        imnotgui::draw::iui_label(50, 50, "ImNotGUI Example", imnotgui::iuCream);
+        imnotgui::element::iui_button(50, 100, 100, 50, "A Button");
+        imnotgui::element::iui_textbox(50, 175, 400, 50, TextboxStr, "A Textbox");
+        imnotgui::iui_end();
         EndDrawing();
     }
 
     return 0;
 }
+```
+
+![ex1](example1.png)
+
+---
+
+### TODO
+
+- Implement all features of **ImNotGUI**
+- Support bitmap fonts
+- Support Korean input in text boxes
+- Separate Raylib dependencies from the project
+- Write usage documentation
