@@ -1,3 +1,9 @@
+/*
+The source code author is @Gabriel-Dropout.
+imnotgui-raylib-cpp is a ported version of [ZIK's ImNotGUI UI framework](https://github.com/TandyRum1024/sincerly-imnotgui-gml/tree/master)
+for use with [Raylib-cpp](https://github.com/RobLoach/raylib-cpp).
+The repository is also influenced by Omar Cornut's [Dear ImGUI](https://github.com/ocornut/imgui).
+*/
 #ifndef IMNOTGUI_HPP
 #define IMNOTGUI_HPP
 
