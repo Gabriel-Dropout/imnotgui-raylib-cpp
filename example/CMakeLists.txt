@@ -15,5 +15,3 @@ endforeach()
 
 # Copy the resource folder to the binary folder
 file(COPY resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
-# Add more examples as needed

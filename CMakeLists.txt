@@ -10,7 +10,6 @@ set (CMAKE_CXX_STANDARD 17)
 find_package(raylib 4.5.0 QUIET)
 include(FetchContent)
 if (NOT raylib_FOUND)
-    #FetchContent will download and extract this file
     FetchContent_Declare(
         raylib
         URL https://github.com/raysan5/raylib/archive/refs/tags/4.5.0.tar.gz
@@ -37,5 +36,3 @@ FetchContent_MakeAvailable(raylib_cpp)
 
 add_subdirectory(src)
 add_subdirectory(example)
-
-#Important: target_link_libraries also propagates to headers. You can "link" header only libraries in CMake
