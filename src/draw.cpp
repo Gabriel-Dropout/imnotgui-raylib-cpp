@@ -31,20 +31,33 @@ void iui_label(int x, int y, std::string text, raylib::Color color) {
     raylib::Vector2 tSize = iui_measureTextEx(text);
     int offX = ((int)tSize.x * iuiLabelHalign)/2;
     int offY = ((int)tSize.y * iuiLabelValign)/2;
-    raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
+
+    if(iuiFont != nullptr)
+        raylib::DrawTextEx(*iuiFont, text, Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    else
+        raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
 }
 void iui_label_transform(int x, int y, std::string text, int fontsize, float angle, raylib::Color color) {
     raylib::Vector2 tSize = iui_measureTextEx(text);
     int offX = ((int)tSize.x << iuiLabelHalign)/2;
     int offY = ((int)tSize.y << iuiLabelValign)/2;
-    raylib::DrawText(text, x - offX, y - offY, fontsize, color);
+    if(iuiFont != nullptr)
+        raylib::DrawTextEx(*iuiFont, text, Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    else
+        raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
 }
 void iui_label_shadow(int x, int y, std::string text, raylib::Color color, int sx, int sy, raylib::Color scolor) {
     raylib::Vector2 tSize = iui_measureTextEx(text);
     int offX = ((int)tSize.x * iuiLabelHalign)/2;
     int offY = ((int)tSize.y * iuiLabelValign)/2;
-    raylib::DrawText(text, x - offX + sx, y - offY + sy, iuiLabelFontsize, scolor);
-    raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
+    
+    if(iuiFont != nullptr) {
+        raylib::DrawTextEx(*iuiFont, text, Vector2{(float)x - offX + sx, (float)y - offY + sy}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+        raylib::DrawTextEx(*iuiFont, text, Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    } else {
+        raylib::DrawText(text, x - offX + sx, y - offY + sy, iuiLabelFontsize, scolor);
+        raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
+    }
 }
 void iui_label_underline_expensive(int x, int y, std::string text, raylib::Color color, float thick, int offsetY, raylib::Color bgColor);
 void iui_label_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY) {
@@ -53,6 +66,12 @@ void iui_label_underline(int x, int y, std::string text, raylib::Color color, fl
     int offY = ((int)tSize.y * iuiLabelValign)/2;
     DrawRectangle(x - offX, y - offY + tSize.y + offsetY, tSize.x, thick, iui_colLighter_adv(color, -42, 1.15, 1.3, 1.05));
     raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
+    
+    if(iuiFont != nullptr) {
+        raylib::DrawTextEx(*iuiFont, text, Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    } else {
+        raylib::DrawText(text, x - offX, y - offY, iuiLabelFontsize, color);
+    }
 }
 void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep, int width);
 

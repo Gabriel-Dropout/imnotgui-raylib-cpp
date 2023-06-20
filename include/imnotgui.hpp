@@ -54,21 +54,23 @@ namespace element {
     bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID);
 }
 
-std::string iui_trim_label(std::string text);  // Cuts and returns the label part of the input string
-std::string iui_trim_id(std::string text);  // Cuts and returns the ID part of the input string
-
-void iui_get_all(std::string text, int &id, std::string &label);  // Gets LABEL and ID from string
-int iui_get_id(std::string text);  // Gets ID from string
-std::string iui_get_label(std::string text);  // Gets LABEL from string. Same as iui_trim_label
+void iui_begin();  // Begin IMNOTGUI
+void iui_end();  // End IMNOTGUI
 
 void iui_setAlignment(int halign, int valign);  // Sets the alignment
 void iui_setAlignment(int halign, int valign, int &hprev, int &yprev);  // Sets the alignment and returns the previous alignment
 void iui_getAlignment(int &hprev, int &yprev);  // Returns the current alignment
 int iui_setFontSize(int size);  // Sets the font size and returns the previous font size
 int iui_getFontSize();  // Returns the current font size
+raylib::Font* iui_setFont(raylib::Font* font);  // Sets the font and returns the previous font
+raylib::Font* iui_getFont();  // Returns the current font
 
-void iui_begin();  // Begin IMNOTGUI
-void iui_end();  // End IMNOTGUI
+std::string iui_trim_label(std::string text);  // Cuts and returns the label part of the input string
+std::string iui_trim_id(std::string text);  // Cuts and returns the ID part of the input string
+
+void iui_get_all(std::string text, int &id, std::string &label);  // Gets LABEL and ID from string
+int iui_get_id(std::string text);  // Gets ID from string
+std::string iui_get_label(std::string text);  // Gets LABEL from string. Same as iui_trim_label
 
 std::string iui_strTrim(std::string text, int width);
 std::string iui_strTrimNodots(std::string text, int width);
@@ -90,6 +92,7 @@ enum iuLabelVAlignment {
     IUI_LABEL_ALIGN_BOTTOM
 };
 extern int iuiLabelFontsize, iuiLabelHalign, iuiLabelValign;
+extern raylib::Font* iuiFont;
 
 extern const raylib::Color iuHellaDark,
                     iuDark,

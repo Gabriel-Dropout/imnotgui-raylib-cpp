@@ -22,6 +22,7 @@ int iui_animTimer = 0;
 
 
 int iuiLabelFontsize=20, iuiLabelHalign=IUI_LABEL_ALIGN_LEFT, iuiLabelValign=IUI_LABEL_ALIGN_TOP;
+raylib::Font* iuiFont = nullptr;
 
 // Style
 const raylib::Color iuHellaDark(0x191817ff),

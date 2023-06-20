@@ -3,22 +3,22 @@ CFLAGS = -O2 -std=c++17 -I . -I ../ -I ../include/
 LDFLAGS= -L ../lib/Windows/ -L ../bin/
 LDLIBS = -lraylib -limnotgui -pthread -lopengl32 -lgdi32 -lwinmm -static -static-libgcc -static-libstdc++
 OBJS = demo.o
-TARGET = demo.exe
+TARGETS = demo.exe korean.exe
 
 .PHONY: all test execute clean
 
-all: $(TARGET)
+all: $(TARGETS)
 
-$(TARGET): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
+%.exe: %.o
+	$(CC) -o $@ $< $(LDFLAGS) $(LDLIBS)
 
 %.o: %.cpp
 	$(CC) -c $< $(CFLAGS)
 
-test: $(TARGET) execute clean
+test: $(TARGETS) execute clean
 
 execute:
-	-$(TARGET)
+	-./korean.exe
 
 clean:
 	-del /q $(OBJS) $(TARGET)

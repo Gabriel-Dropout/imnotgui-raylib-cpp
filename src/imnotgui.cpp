@@ -87,6 +87,14 @@ int iui_setFontSize(int size) {
 int iui_getFontSize() {
     return iuiLabelFontsize;
 }
+raylib::Font* iui_setFont(raylib::Font* font) {
+    raylib::Font* prev = iuiFont;
+    iuiFont = font;
+    return prev;
+}
+raylib::Font* iui_getFont() {
+    return iuiFont;
+}
 
 std::string iui_strTrim(std::string text, int width) {
     int em_ = MeasureText("M", 20);
