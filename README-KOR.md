@@ -65,7 +65,7 @@ Example:
 ```cpp
 #include <string>
 
-#include "raylib/raylib-cpp.hpp"
+#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 #include "imnotgui_extra.hpp"
 

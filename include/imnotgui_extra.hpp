@@ -3,7 +3,7 @@
 #ifndef IMNOTGUI_EXTRA_HPP
 #define IMNOTGUI_EXTRA_HPP
 
-#include "raylib/raylib-cpp.hpp"
+#include "raylib-cpp.hpp"
 
 // Atlas sprite properties
 typedef struct rtpAtlasSprite {

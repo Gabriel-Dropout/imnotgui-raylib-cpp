@@ -1,4 +1,1 @@
-include/raylib
-lib
-bin
-.idea
+build

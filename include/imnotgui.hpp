@@ -10,7 +10,7 @@ The repository is also influenced by Omar Cornut's [Dear ImGUI](https://github.c
 #include <map>
 #include <string>
 #include <vector>
-#include "raylib/raylib-cpp.hpp"
+#include "raylib-cpp.hpp"
 
 namespace imnotgui {
 extern int iui_hotItem;

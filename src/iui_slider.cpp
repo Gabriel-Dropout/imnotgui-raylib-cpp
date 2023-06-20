@@ -1,8 +1,8 @@
 #include <string>
 #include<algorithm>
 
-#include "raylib/raylib-cpp.hpp"
-#include "raylib/raymath.hpp"
+#include "raylib-cpp.hpp"
+#include "raymath.hpp"
 #include "imnotgui.hpp"
 
 #include <iostream>
