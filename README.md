@@ -12,9 +12,10 @@ The repository is also influenced by [Omar Cornut's Dear ImGUI](https://github.c
 
 ### Features:
 
-* Simple UI - Drawing functions include control logic! You just need to draw on the screen.
+* Simple UI - Drawing functions include control logic! The code itself constructs the UI layout.
 * Stylish design - Personally, I think ImNotGUI's UI design is really cool.
 * Active object recognition - When you click a button and move the cursor outside its range, the button remains pressed. Actually, this feature is already implemented in ImNotGUI.
+* Finite state machine - ImNotGUI stores some information in a state machine, similar to OpenGL or GameMaker. This design is adopted to avoid passing too many parameters to the UI functions. Currently, states exist for text alignment position, font type, and font size.
 
 ---
 
@@ -30,37 +31,42 @@ There are initially five controls (more will be added!)
 
 Additionally, it provides convenient drawing functions! (If you want to use ImNotGUI as the backend, you can implement these functions.)
 
-- Label
-- Rectangle
-- Sprite (with/without atlas)
+- iui_label*: Functions for drawing text.
+- iui_rect*: Functions for drawing rectangles.
+- iui_sprite (with/without atlas): Uses a unique data structure for drawing atlas sprites. That's why it is separately declared in `imnotgui_extra.hpp`.
 
 ---
 
 ### How to Build:
 
-1. You need to install the required dependency libraries (raylib/raylib-cpp) for building and development. Since they are already registered as submodules, you can run the following command in the root directory:
+Now CMake is supported! It automatically handles the dependency libraries (raylib/raylib-cpp) :)
+
+The following example is written based on Makefiles.
+
+1. Create a build folder in your project and build from there. The example will be built in the `example` folder.
 
    **macOS & Linux**
 
    ```bash
-   $ make setup
+   $ mkdir build && cd build
+   $ cmake .. -G "Unix Makefiles"
+   $ make
    ```
 
    **Windows**
 
    ```powershell
-   > mingw32-make setup
+   > mkdir build && cd build
+   > cmake .. -G "MinGW Makefiles"
+   > mingw32-make
    ```
 
-2. Build the source code to create the library. The examples will be built and executed automatically!
+2. Verify that `example/*.exe` runs correctly.
 
-   ```bash
-   $ make
-   ```
-
-3. Place `bin/libimnotgui.a`, `include/imnotgui.hpp`, and `include/imnotgui_extra.hpp` in your project.
+3. Place `build/src/libimnotgui.a`, `include/imnotgui.hpp`, and `include/imnotgui_extra.hpp` in your project.
 
 4. Happy coding!
+
 
 ---
 
@@ -114,8 +120,9 @@ int main() {
 
 ### TODO
 
-- Implement all features of **ImNotGUI**
-- Support bitmap fonts
-- Support Korean input in text boxes
-- Separate Raylib dependencies from the project
-- Write usage documentation
+- [ ]  Implement all features of **ImNotGUI**.
+- [x]  Support bitmap fonts.
+- [x]  Support CMake.
+- [ ]  Remove raylib-cpp dependency.
+- [ ]  Support Korean input for TextBox.
+- [ ]  Write usage documentation.

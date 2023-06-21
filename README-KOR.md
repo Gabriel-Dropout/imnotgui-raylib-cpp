@@ -8,9 +8,10 @@ imnotgui-raylib-cpp 는 ZIK's ImNotGUI UI 프레임워크를 Raylib-cpp에서 �
 
 ### Features:
 
-* 간단한 UI - 드로잉 함수에 컨트롤 로직이 포함되어 있어요! 여러분은 화면에 그리기만 하면 돼요
+* 직접 모드 GUI - 드로잉 함수에 컨트롤 로직이 포함되어 있어요! 코드 자체가 UI 레이아웃을 구성해요.
 * 짱 멋진 디자인 - 개인적으로 ImNotGUI의 UI 디자인은 참 멋지다고 생각해요 :)
-* 활성화 객체 인식 - 버튼을 클릭한 채로 커서가 범위를 벗어났을 때 버튼이 눌린 상태가 유지돼요! 사실 원래부터 ImNotGUI에도 구현돼 있어요
+* 활성화 객체 인식 - 버튼을 클릭한 채로 커서가 범위를 벗어났을 때 버튼이 눌린 상태가 유지돼요! 사실 원래부터 ImNotGUI에도 구현돼 있어요.
+* 유한 상태 머신 - ImNotGUI는 OpenGL이나 게임메이커처럼 몇 가지 정보를 상태 머신에 저장해요. UI함수에 지나치게 많은 파라미터를 전달하지 않도록 하기 위해서 이런 디자인을 채택했어요. 현재는 텍스트 정렬 위치, 폰트 종류, 폰트 크기에 대한 상태가 존재해요.
 
 ---
 
@@ -24,37 +25,41 @@ imnotgui-raylib-cpp 는 ZIK's ImNotGUI UI 프레임워크를 Raylib-cpp에서 �
 * TextBox
 * CheckBox
 
-추가적으로 간편한 드로잉 함수를 제공해요!(만약 백엔드로 ImNotGUI를 사용하고 싶으시다면 이 함수를 구현하시면 돼요)
+추가적으로 간편한 드로잉 함수를 제공해요!(만약 다른 백엔드를 사용하고 싶으시다면 이 함수를 구현하시면 돼요)
 
-- Label
-- Rectangle
-- Sprite(with / without atlas)
+- iui_label_* : 텍스트를 그리는 함수에요.
+- iui_rect_* : 사각형을 그리는 함수에요.
+- iui_sprite(with / without atlas) : 아틀라스 스프라이트를 그리기 위해 고유한 데이터 구조를 사용해요. 이것 때문에 `imnotgui_extra.hpp` 에 따로 선언되어 있어요.
 
 ---
 
 ### How to Build:
 
-1. 빌드 및 개발에 필요한 종속성 라이브러리 (raylib / raylib-cpp)를 설치해야 해요. 이미 서브모듈에 등록되어 있기 때문에 루트 디렉토리에서 아래 명령어를 입력하시면 돼요.
+이제 CMake를 지원하게 되었어요! 종속성 라이브러리(raylib / raylib-cpp)를 자동으로 처리해요 :)
+
+아래 예시는 Makefiles 사용자를 기준으로 작성되었습니다.
+
+1. 프로젝트 내에 build 폴더를 생성하고 여기에서 빌드를 진행해요. 예제가 `example` 폴더에 함께 빌드됩니다.
 
    **maxOS & Linux**
 
    ```bash
-   $ make setup
+   $ mkdir build && cd build
+   $ cmake .. -G "Unix Makefiles"
+   $ make
    ```
 
    **Windows**
 
    ```powershell
-   > mingw32-make setup
+   > mkdir build && cd build
+   > cmake .. -G "MinGW Makefiles"
+   > mingw32-make
    ```
 
-2. 소스코드를 빌드해서 라이브러리를 만들어요. 예제가 함께 빌드되면서 자동으로 실행돼요!
+2. `example/*.exe`가 잘 실행되는지 확인해보세요.
 
-   ```bash
-   $ make
-   ```
-
-3. `bin/libimnotgui.a`와 `include/imnotgui.hpp`, `include/imnotgui_extra.hpp`를 여러분의 프로젝트에 가져다 놓으세요.
+3. `build/src/libimnotgui.a`와 `include/imnotgui.hpp`, `include/imnotgui_extra.hpp`를 여러분의 프로젝트에 가져다 놓으세요.
 
 4. 즐거운 개발 되세요!
 
@@ -102,8 +107,9 @@ int main() {
 
 ### TODO
 
-- **ImNotGUI**의 모든 기능 구현
-- 비트맵 폰트 지원
-- 텍스트박스 한글 입력 지원
-- Raylib 종속성 코드를 프로젝트와 분리
-- 사용법 설명서 작성
+- [ ] **ImNotGUI**의 모든 기능 구현
+- [x] 비트맵 폰트 지원
+- [x] CMake 지원
+- [ ] raylib-cpp 종속성 제거
+- [ ] 텍스트박스 한글 입력 지원
+- [ ] 사용법 설명서 작성
