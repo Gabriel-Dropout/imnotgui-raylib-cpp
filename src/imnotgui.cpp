@@ -115,17 +115,20 @@ std::string iui_strTrimNodots(std::string text, int width) {
 }
 
 Color iui_colLighter(Color color, int amount) {
-    return Color{std::clamp(color.r + (int)amount, 0, 255),
-        std::clamp(color.g + (int)(amount*1.3), 0, 255),
-        std::clamp(color.b + (int)(amount*1.5), 0, 255),
-        255};
+    return Color{
+        (unsigned char) std::clamp(color.r + (int)amount, 0, 255),
+        (unsigned char) std::clamp(color.g + (int)(amount*1.3), 0, 255),
+        (unsigned char) std::clamp(color.b + (int)(amount*1.5), 0, 255),
+        255
+    };
 }
 Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float bmod) {
     return Color{
-        std::clamp(color.r + (int)(amount*rmod), 0, 255),
-        std::clamp(color.g + (int)(amount*gmod), 0, 255),
-        std::clamp(color.b + (int)(amount*bmod), 0, 255),
-        255};
+        (unsigned char) std::clamp(color.r + (int)(amount*rmod), 0, 255),
+        (unsigned char) std::clamp(color.g + (int)(amount*gmod), 0, 255),
+        (unsigned char) std::clamp(color.b + (int)(amount*bmod), 0, 255),
+        255
+    };
 }
 
 int iui_measureText(std::string text) {
