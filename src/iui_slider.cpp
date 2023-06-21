@@ -1,8 +1,6 @@
 #include <string>
 #include<algorithm>
 
-#include "raylib-cpp.hpp"
-#include "raymath.hpp"
 #include "imnotgui.hpp"
 
 #include <iostream>
@@ -40,7 +38,7 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
     }
 
     // draw
-    raylib::Color btnColor = iuiColSlider;
+    Color btnColor = iuiColSlider;
 
     // slider guideline
     draw::iui_rect(x, y - iuiSliderThick/2, width, iuiSliderThick, iuiColSliderLine);
@@ -105,7 +103,7 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
     }
 
     // draw
-    raylib::Color btnColor = iuiColSlider;
+    Color btnColor = iuiColSlider;
 
     // slider guideline
     draw::iui_rect(x - iuiSliderThick/2, y, iuiSliderThick, height, iuiColSliderLine);

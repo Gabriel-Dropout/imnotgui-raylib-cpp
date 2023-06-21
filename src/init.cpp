@@ -1,7 +1,6 @@
 #include <map>
 #include <algorithm>
 
-#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {
@@ -22,23 +21,25 @@ int iui_animTimer = 0;
 
 
 int iuiLabelFontsize=20, iuiLabelHalign=IUI_LABEL_ALIGN_LEFT, iuiLabelValign=IUI_LABEL_ALIGN_TOP;
-raylib::Font* iuiFont = nullptr;
+Font* iuiFont = nullptr;
 
 // Style
-const raylib::Color iuHellaDark(0x191817ff),
-                    iuDark(0x313435ff),
-                    iuDark2(0x3f494fff),
-                    iuNormal(0x637674ff),
-                    iuCream(0xefe8c4ff),
-                    iuCreamDark(0xe0d3a7ff),
-                    iuMint(0x25cda3ff),
-                    iuSky(0x68b9c8ff),
-                    iuRed(0xed3255ff),
-                    iuPiss(0xeabf11ff),
-                    iuBrown(0x5A4D48ff);
+const Color
+    iuHellaDark = {0x19, 0x18, 0x17, 0xff},
+    iuDark = {0x31, 0x34, 0x35, 0xff},
+    iuDark2 = {0x3f, 0x49, 0x4f, 0xff},
+    iuNormal = {0x63, 0x76, 0x74, 0xff},
+    iuCream = {0xef, 0xe8, 0xc4, 0xff},
+    iuCreamDark = {0xe0, 0xd3, 0xa7, 0xff},
+    iuMint = {0x25, 0xcd, 0xa3, 0xff},
+    iuSky = {0x68, 0xb9, 0xc8, 0xff},
+    iuRed = {0xed, 0x32, 0x55, 0xff},
+    iuPiss = {0xea, 0xbf, 0x11, 0xff},
+    iuBrown = {0x5a, 0x4d, 0x48, 0xff};
+
 
 bool iuiButtonShadow    = false;
-raylib::Color   iuiColButtonShadow = iuHellaDark,
+Color   iuiColButtonShadow = iuHellaDark,
                 iuiColButtonBackdrop    = iuDark2,
                 iuiColButtonBackdropTop = iuMint,
                 iuiColButtonActiveBackdrop     = iuHellaDark,
@@ -48,7 +49,7 @@ raylib::Color   iuiColButtonShadow = iuHellaDark,
                 iuiColButtonHotBackdropTop = iuMint,
                 iuiColButtonLabel          = iuCreamDark;
 
-raylib::Color   iuiColTabLabel     = iuCream,
+Color   iuiColTabLabel     = iuCream,
                 iuiColTabHot       = iuNormal,
                 iuiColTabHotAccent = iuPiss,
                 iuiColTabCurrent       = iuHellaDark,
@@ -56,11 +57,11 @@ raylib::Color   iuiColTabLabel     = iuCream,
 
 int iuiColTabNum    = 2; // number of tab colours
 
-raylib::Color   iuiColTab[2]       = {iuDark, iui_colLighter(iuDark, -5)},
+Color   iuiColTab[2]       = {iuDark, iui_colLighter(iuDark, -5)},
                 iuiColTabAccent[2] = {iuNormal, iui_colLighter(iuNormal, -5)};
 
 bool iuiTextBoxRainbow   = true; // rainbow colour when active
-raylib::Color   iuiColTextBoxFill   = iui_colLighter(iuHellaDark, 5),
+Color   iuiColTextBoxFill   = iui_colLighter(iuHellaDark, 5),
                 iuiColTextBoxText   = iuCream,
                 iuiColTextBoxBorder = iuSky,
                 iuiColTextBoxActiveFill   = iuHellaDark,
@@ -80,13 +81,13 @@ int iuiSliderVWid = 42, // vertical
 
 int iuiSliderThick = 8; // How thick the guideline(?) is
 
-raylib::Color   iuiColSliderLine   = iuHellaDark,
+Color   iuiColSliderLine   = iuHellaDark,
                 iuiColSlider       = iuNormal,
                 iuiColSliderActive = iuDark2,
                 iuiColSliderHot    = iui_colLighter(iuNormal, 10);
 
 // Checkbox
-raylib::Color   iuiColCheckboxBorder = iuCream,
+Color   iuiColCheckboxBorder = iuCream,
                 iuiColCheckboxBG = iuHellaDark,
                 iuiColCheckboxFG = iuMint; // the checker colour
 

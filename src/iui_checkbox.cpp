@@ -1,6 +1,5 @@
 #include <string>
 
-#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {

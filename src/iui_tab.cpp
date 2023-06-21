@@ -1,6 +1,5 @@
 #include <string>
 
-#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {
@@ -69,8 +68,8 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
         /// Button draw
         // TODO : Make fancy tab style IDK lol
         int colIdx = (i % iuiColTabNum);
-        raylib::Color colBackdrop = iuiColTab[colIdx];
-        raylib::Color colAccent = iuiColTabAccent[colIdx];
+        Color colBackdrop = iuiColTab[colIdx];
+        Color colAccent = iuiColTabAccent[colIdx];
         
         if(isCurrent) {
             colBackdrop = iuiColTabCurrent;

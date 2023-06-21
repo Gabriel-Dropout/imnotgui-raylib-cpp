@@ -10,7 +10,7 @@ foreach(EXAMPLE_SOURCE ${EXAMPLE_SOURCES})
     add_executable(${EXAMPLE_NAME} ${EXAMPLE_SOURCE})
 
     # Link against the imnotgui library
-    target_link_libraries(${EXAMPLE_NAME} PRIVATE imnotgui)
+    target_link_libraries(${EXAMPLE_NAME} PRIVATE raylib raylib_cpp imnotgui)
 endforeach()
 
 # Copy the resource folder to the binary folder

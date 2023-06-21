@@ -5,7 +5,6 @@
 #include <cmath>
 #include <algorithm>
 
-#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {
@@ -87,12 +86,12 @@ int iui_setFontSize(int size) {
 int iui_getFontSize() {
     return iuiLabelFontsize;
 }
-raylib::Font* iui_setFont(raylib::Font* font) {
-    raylib::Font* prev = iuiFont;
+Font* iui_setFont(Font* font) {
+    Font* prev = iuiFont;
     iuiFont = font;
     return prev;
 }
-raylib::Font* iui_getFont() {
+Font* iui_getFont() {
     return iuiFont;
 }
 
@@ -115,17 +114,24 @@ std::string iui_strTrimNodots(std::string text, int width) {
     return text;
 }
 
-raylib::Color iui_colLighter(raylib::Color color, int amount) {
-    return raylib::Color(std::clamp(color.r + (int)amount, 0, 255), std::clamp(color.g + (int)(amount*1.3), 0, 255), std::clamp(color.b + (int)(amount*1.5), 0, 255), 255);
+Color iui_colLighter(Color color, int amount) {
+    return Color{std::clamp(color.r + (int)amount, 0, 255),
+        std::clamp(color.g + (int)(amount*1.3), 0, 255),
+        std::clamp(color.b + (int)(amount*1.5), 0, 255),
+        255};
 }
-raylib::Color iui_colLighter_adv(raylib::Color color, int amount, float rmod, float gmod, float bmod) {
-    return raylib::Color(std::clamp(color.r + (int)(amount*rmod), 0, 255), std::clamp(color.g + (int)(amount*gmod), 0, 255), std::clamp(color.b + (int)(amount*bmod), 0, 255), 255);
+Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float bmod) {
+    return Color{
+        std::clamp(color.r + (int)(amount*rmod), 0, 255),
+        std::clamp(color.g + (int)(amount*gmod), 0, 255),
+        std::clamp(color.b + (int)(amount*bmod), 0, 255),
+        255};
 }
 
 int iui_measureText(std::string text) {
     return MeasureText(text.c_str(), iuiLabelFontsize);
 }
-raylib::Vector2 iui_measureTextEx(std::string text) {
+Vector2 iui_measureTextEx(std::string text) {
     return MeasureTextEx(GetFontDefault(), text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/10, 1));
 }
 

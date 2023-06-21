@@ -1,7 +1,6 @@
 #include <string>
 #include <cmath>
 
-#include "raylib-cpp.hpp"
 #include "imnotgui.hpp"
 
 namespace imnotgui {

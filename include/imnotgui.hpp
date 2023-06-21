@@ -10,7 +10,8 @@ The repository is also influenced by Omar Cornut's [Dear ImGUI](https://github.c
 #include <map>
 #include <string>
 #include <vector>
-#include "raylib-cpp.hpp"
+
+#include "raylib.h"
 
 namespace imnotgui {
 extern int iui_hotItem;
@@ -28,18 +29,18 @@ extern int iui_textboxDelayTimer;
 extern int iui_animTimer;
 
 namespace draw {
-    void iui_rect(int x, int y, int w, int h, raylib::Color color);
-    void iui_rect_pos(int x1, int y1, int x2, int y2, raylib::Color color);
-    void iui_rect_rot(int x, int y, int w, int h, raylib::Color color, float angle);
-    void iui_rect_rot_center(int x, int y, int w, int h, raylib::Color color, float angle);
-    void iui_rect_rot_origin(int x, int y, int w, int h, raylib::Color color, float angle, int ox, int oy);
-    void iui_line(int x, int y, int length, float angle, float thick, raylib::Color color);
-    void iui_label(int x, int y, std::string text, raylib::Color color);
-    void iui_label_transform(int x, int y, std::string text, float fontsize, float angle, raylib::Color color);
-    void iui_label_shadow(int x, int y, std::string text, raylib::Color color, int sx, int sy, raylib::Color scolor);
-    void iui_label_underline_expensive(int x, int y, std::string text, raylib::Color color, float thick, int offsetY, raylib::Color bgColor);
-    void iui_label_underline(int x, int y, std::string text, raylib::Color color, float thick, int offsetY);
-    void iui_label_ext(int x, int y, std::string text, raylib::Color color, int sep, int width);
+    void iui_rect(int x, int y, int w, int h, Color color);
+    void iui_rect_pos(int x1, int y1, int x2, int y2, Color color);
+    void iui_rect_rot(int x, int y, int w, int h, Color color, float angle);
+    void iui_rect_rot_center(int x, int y, int w, int h, Color color, float angle);
+    void iui_rect_rot_origin(int x, int y, int w, int h, Color color, float angle, int ox, int oy);
+    void iui_line(int x, int y, int length, float angle, float thick, Color color);
+    void iui_label(int x, int y, std::string text, Color color);
+    void iui_label_transform(int x, int y, std::string text, float fontsize, float angle, Color color);
+    void iui_label_shadow(int x, int y, std::string text, Color color, int sx, int sy, Color scolor);
+    void iui_label_underline_expensive(int x, int y, std::string text, Color color, float thick, int offsetY, Color bgColor);
+    void iui_label_underline(int x, int y, std::string text, Color color, float thick, int offsetY);
+    void iui_label_ext(int x, int y, std::string text, Color color, int sep, int width);
 }
 
 namespace element {
@@ -62,8 +63,8 @@ void iui_setAlignment(int halign, int valign, int &hprev, int &yprev);  // Sets 
 void iui_getAlignment(int &hprev, int &yprev);  // Returns the current alignment
 int iui_setFontSize(int size);  // Sets the font size and returns the previous font size
 int iui_getFontSize();  // Returns the current font size
-raylib::Font* iui_setFont(raylib::Font* font);  // Sets the font and returns the previous font
-raylib::Font* iui_getFont();  // Returns the current font
+Font* iui_setFont(Font* font);  // Sets the font and returns the previous font
+Font* iui_getFont();  // Returns the current font
 
 std::string iui_trim_label(std::string text);  // Cuts and returns the label part of the input string
 std::string iui_trim_id(std::string text);  // Cuts and returns the ID part of the input string
@@ -75,11 +76,11 @@ std::string iui_get_label(std::string text);  // Gets LABEL from string. Same as
 std::string iui_strTrim(std::string text, int width);
 std::string iui_strTrimNodots(std::string text, int width);
 
-raylib::Color iui_colLighter(raylib::Color color, int amount);
-raylib::Color iui_colLighter_adv(raylib::Color color, int amount, float rmod, float gmod, float bmod);
+Color iui_colLighter(Color color, int amount);
+Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float bmod);
 
 int iui_measureText(std::string text);
-raylib::Vector2 iui_measureTextEx(std::string text);
+Vector2 iui_measureTextEx(std::string text);
 
 enum iuLabelHAlignment {
     IUI_LABEL_ALIGN_LEFT,
@@ -92,9 +93,9 @@ enum iuLabelVAlignment {
     IUI_LABEL_ALIGN_BOTTOM
 };
 extern int iuiLabelFontsize, iuiLabelHalign, iuiLabelValign;
-extern raylib::Font* iuiFont;
+extern Font* iuiFont;
 
-extern const raylib::Color iuHellaDark,
+extern const Color iuHellaDark,
                     iuDark,
                     iuDark2,
                     iuNormal,
@@ -107,7 +108,7 @@ extern const raylib::Color iuHellaDark,
                     iuBrown;
 
 extern bool iuiButtonShadow;
-extern raylib::Color   iuiColButtonShadow,
+extern Color   iuiColButtonShadow,
                 iuiColButtonBackdrop,
                 iuiColButtonBackdropTop,
                 iuiColButtonActiveBackdrop,
@@ -117,7 +118,7 @@ extern raylib::Color   iuiColButtonShadow,
                 iuiColButtonHotBackdropTop,
                 iuiColButtonLabel;
 
-extern raylib::Color   iuiColTabLabel,
+extern Color   iuiColTabLabel,
                 iuiColTabHot,
                 iuiColTabHotAccent,
                 iuiColTabCurrent,
@@ -125,11 +126,11 @@ extern raylib::Color   iuiColTabLabel,
 
 extern int iuiColTabNum; // number of tab colours
 
-extern raylib::Color   iuiColTab[2],
+extern Color   iuiColTab[2],
                 iuiColTabAccent[2];
 
 extern bool iuiTextBoxRainbow; // rainbow colour when active
-extern raylib::Color   iuiColTextBoxFill,
+extern Color   iuiColTextBoxFill,
                 iuiColTextBoxText,
                 iuiColTextBoxBorder,
                 iuiColTextBoxActiveFill,
@@ -149,13 +150,13 @@ extern int  iuiSliderVWid, // vertical
 
 extern int iuiSliderThick; // How thick the guideline(?) is
 
-extern raylib::Color   iuiColSliderLine,
+extern Color   iuiColSliderLine,
                 iuiColSlider,
                 iuiColSliderActive,
                 iuiColSliderHot;
 
 // Checkbox
-extern raylib::Color   iuiColCheckboxBorder,
+extern Color   iuiColCheckboxBorder,
                 iuiColCheckboxBG,
                 iuiColCheckboxFG; // the checker colour
 
