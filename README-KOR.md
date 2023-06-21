@@ -110,6 +110,6 @@ int main() {
 - [ ] **ImNotGUI**의 모든 기능 구현
 - [x] 비트맵 폰트 지원
 - [x] CMake 지원
-- [ ] raylib-cpp 종속성 제거
+- [x] raylib-cpp 종속성 제거
 - [ ] 텍스트박스 한글 입력 지원
 - [ ] 사용법 설명서 작성

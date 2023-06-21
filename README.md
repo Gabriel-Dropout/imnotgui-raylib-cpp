@@ -123,6 +123,6 @@ int main() {
 - [ ]  Implement all features of **ImNotGUI**.
 - [x]  Support bitmap fonts.
 - [x]  Support CMake.
-- [ ]  Remove raylib-cpp dependency.
+- [x]  Remove raylib-cpp dependency.
 - [ ]  Support Korean input for TextBox.
 - [ ]  Write usage documentation.
