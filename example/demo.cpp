@@ -275,25 +275,26 @@ int main() {
                         iui_label(SCREEN_CENTER_X, 255, "tab_index = iui_tab(x, y, width, height, strings, tab_index, trim mode);", iuCream);
                         iui_setAlignment(hprev, vprev);
                         
-                        iui_tab(SCREEN_CENTER_X - (250 * 2), 350, 250, 64, lossTabVec, lossTabIdx, 1);
+                        iui_tab(SCREEN_CENTER_X - 500, 300, 250, 64, lossTabVec, lossTabIdx, 1);
+                        iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, 1);
 
                         sprev = iui_setFontSize(42);
                         switch(lossTabIdx) {
                             case 0:
                                 iui_sprite_from_atlas(atlas, spr_loss_0, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 200, 510, "0]", iuDark2);
+                                iui_label(SCREEN_CENTER_X - 180, 510, "0]", iuDark2);
                                 break;
                             case 1:
                                 iui_sprite_from_atlas(atlas, spr_loss_1, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 200, 510, "1]", iuDark2);
+                                iui_label(SCREEN_CENTER_X - 180, 510, "1]", iuDark2);
                                 break;
                             case 2:
                                 iui_sprite_from_atlas(atlas, spr_loss_2, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 200, 510, "2]", iuDark2);
+                                iui_label(SCREEN_CENTER_X - 180, 510, "2]", iuDark2);
                                 break;
                             case 3:
                                 iui_sprite_from_atlas(atlas, spr_loss_3, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 200, 510, "3]", iuDark2);
+                                iui_label(SCREEN_CENTER_X - 180, 510, "3]", iuDark2);
                                 break;
                         }
                         iui_setFontSize(sprev);
