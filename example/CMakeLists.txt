@@ -11,6 +11,7 @@ foreach(EXAMPLE_SOURCE ${EXAMPLE_SOURCES})
 
     # Link against the imnotgui library
     target_link_libraries(${EXAMPLE_NAME} PRIVATE raylib raylib_cpp imnotgui)
+    target_include_directories(${EXAMPLE_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 endforeach()
 
 # Copy the resource folder to the binary folder
