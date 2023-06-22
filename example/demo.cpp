@@ -34,7 +34,7 @@ void draw_colorblock(raylib::Color color, std::string text1, std::string text2, 
 int main() {
     std::vector<std::string> mainTabVec = {"IMnotGUI", "elements", "ID and LABEL system", "how?", "contact", "MISC.", "Language Hacker"};
     int mainTabIdx = 0;
-    std::vector<std::string> demoTabVec = {"Button", "Textbox", "Slider", "Tab", "Misc."};
+    std::vector<std::string> demoTabVec = {"Button", "Textbox", "Slider", "Tab", "Misc.", "Extra"};
     int demoTabIdx = 0;
 
     bool ui_check_test = false;
@@ -126,7 +126,7 @@ int main() {
             }
             case 1:{
                 /// Elements
-                int tabW = (int)(1196/5);
+                int tabW = (int)(1196/6);
                 iui_rect(42, 85, 1196, 60, iuHellaDark);
                 switch(iui_tab(42, 90, tabW, 50, demoTabVec, demoTabIdx, 1)) {
                     case 0:{
@@ -239,7 +239,7 @@ int main() {
                         
                         //title
                         sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Textbox ]=", iuCream, 5, 5, iuHellaDark);
+                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Slider ]=", iuCream, 5, 5, iuHellaDark);
                         iui_setFontSize(sprev);
 
                         // codebox
@@ -327,6 +327,22 @@ int main() {
                         
                         iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
                         iui_label(SCREEN_CENTER_X - 240, 500 + sine01_ * 10, "Oh, Also this text thing uses#iui_label(x, y, string, colour)...", iuPiss);
+
+                        iui_setAlignment(hprev, vprev);
+                        break;
+                    }
+                    case 5:{
+                        /// Extra.
+                        int hprev, vprev, sprev;
+                        iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
+                        
+                        //title
+                        sprev = iui_setFontSize(42);
+                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Extra ]=", iuCream, 5, 5, iuHellaDark);
+                        iui_setFontSize(sprev);
+                        
+                        // groupbox
+                        iui_groupbox(SCREEN_CENTER_X - 100, 300, 200, 200, "Groupbox");
 
                         iui_setAlignment(hprev, vprev);
                         break;

@@ -164,5 +164,21 @@ void draw_textbubble_right(int x, int y, int w, int h, std::string text, Color c
     iui_setAlignment(hprev, vprev);
 }
 
+void iui_groupbox(int x, int y, int w, int h, std::string text) {
+    int hprev, vprev;
+    iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_CENTER, hprev, vprev);
+
+    iui_rect(x, y, 2, h, iuMint);
+    iui_rect(x + w - 2, y, 2, h, iuMint);
+    iui_rect(x, y + h - 2, w, 2, iuMint);
+
+    int textWidth = iui_measureText(text);
+    iui_rect(x, y, 12 - 4, 2, iuMint);
+    iui_label(x + 12, y, text, iuMint);
+    iui_rect(x + 12 + textWidth + 4, y, w - 12 - textWidth - 4, 2, iuMint);
+    
+    iui_setAlignment(hprev, vprev);
+}
+
 } // namespace draw
 } // namespace imnotgui

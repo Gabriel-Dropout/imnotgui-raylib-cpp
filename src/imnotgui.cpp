@@ -132,10 +132,12 @@ Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float 
 }
 
 int iui_measureText(std::string text) {
-    return MeasureText(text.c_str(), iuiLabelFontsize);
+    Font curFont = iuiFont == nullptr ? GetFontDefault() : *iuiFont;
+    return MeasureTextEx(curFont, text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/curFont.baseSize, 1)).x;
 }
 Vector2 iui_measureTextEx(std::string text) {
-    return MeasureTextEx(GetFontDefault(), text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/10, 1));
+    Font curFont = iuiFont == nullptr ? GetFontDefault() : *iuiFont;
+    return MeasureTextEx(curFont, text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/curFont.baseSize, 1));
 }
 
 } // namespace imnotgui
