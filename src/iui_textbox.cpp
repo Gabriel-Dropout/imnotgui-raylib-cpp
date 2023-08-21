@@ -8,6 +8,8 @@
 namespace imnotgui {
 namespace element {
 bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
+
     /// Setup
     bool retValue = false;
     int insideWid = w - 4; // used both for drawing and trimming string.
@@ -31,8 +33,8 @@ bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::strin
             iui_textboxCursorPos = text.size();  // default value
             int _relX = GetMouseX() - x - 2 - 8;
             for(int i = 0; i < text.size() - iui_textboxShowPos; i++) {
-                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), iuiLabelFontsize);
-                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), iuiLabelFontsize);
+                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), style.labelFontsize);
+                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), style.labelFontsize);
                 int _averWid = (_tmpWid1 + _tmpWid2) / 2;
                 if(_relX < _averWid) {
                     iui_textboxCursorPos = iui_textboxShowPos + i;
@@ -104,10 +106,10 @@ bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::strin
             important part: invariant 1 dominates 2.
         \*                                                 */
         iui_textboxShowPos = std::clamp(iui_textboxShowPos, 0, iui_textboxCursorPos);  // invariant 1 and 3
-        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), iuiLabelFontsize) <= maxTextWid)  // invariant 2
+        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), style.labelFontsize) <= maxTextWid)  // invariant 2
             iui_textboxShowPos--;
         
-        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), iuiLabelFontsize) > maxTextWid)  // invariant 4
+        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), style.labelFontsize) > maxTextWid)  // invariant 4
             iui_textboxShowPos++;
     }
 
@@ -117,7 +119,7 @@ bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::strin
     std::string trimText;
     bool mustTrim;
     for(trimLen = 1; currentShowPos + trimLen <= text.size(); trimLen++) {
-        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), iuiLabelFontsize);
+        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), style.labelFontsize);
         if(_charWid > maxTextWid) {
             trimLen--;
             break;
@@ -128,18 +130,18 @@ bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::strin
 
     /// DRAW
     // box
-    Color fillColor = iuiColTextBoxFill;
-    Color borderColor = iuiColTextBoxBorder;
+    Color fillColor = style.colTextBoxFill;
+    Color borderColor = style.colTextBoxBorder;
     if(isActive || isFocus) {
-        fillColor = iuiColTextBoxActiveFill;
-        if(iuiTextBoxRainbow){
+        fillColor = style.colTextBoxActiveFill;
+        if(style.isTextBoxRainbowEnabled){
             borderColor = ColorFromHSV(iui_animTimer % 360, 222.0f/255.0f, 1.0f);  // TODO : make it rainbow
         } else {
-            borderColor = iuiColTextBoxActiveBorder;
+            borderColor = style.colTextBoxActiveBorder;
         }
     } else if(isHot) {
-        fillColor = iuiColTextBoxHotFill;
-        borderColor = iuiColTextBoxHotBorder;
+        fillColor = style.colTextBoxHotFill;
+        borderColor = style.colTextBoxHotBorder;
     }
 
     draw::iui_rect(x, y, w, h, borderColor);
@@ -149,38 +151,40 @@ bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::strin
     int hprev, yprev;
     iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
     if(!mustTrim)
-        draw::iui_label(x + 10, y + h/2, trimText, iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText, style.colTextBoxText);
     else {
         std::string trimBase = trimText.substr(0, trimText.size()-3);
         int textOffX;
-        int spacing = std::max(iuiLabelFontsize/10, 1);
+        int spacing = std::max(style.labelFontsize/10, 1);
         std::string trimChar;
 
-        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), style.colTextBoxText);
 
-        textOffX = MeasureText(trimBase.c_str(), iuiLabelFontsize) + spacing;
+        textOffX = MeasureText(trimBase.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-3)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(iuiColTextBoxText, 0.75f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(style.colTextBoxText, 0.75f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-2)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(iuiColTextBoxText, 0.5f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(style.colTextBoxText, 0.5f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-1)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(iuiColTextBoxText, 0.25f));
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(style.colTextBoxText, 0.25f));
 
     }
     iui_setAlignment(hprev, yprev);
 
     // cursor
     if(isFocus) {
-        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), iuiLabelFontsize) - 2;
-        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(iuiColButtonLabel, sin(iui_animTimer*0.1f)));
+        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), style.labelFontsize) - 2;
+        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(style.colButtonLabel, sin(iui_animTimer*0.1f)));
     }
 
     return retValue;
 }
 
 bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
+
     /// Setup
     bool retValue = false;
     int insideWid = w - 4; // used both for drawing and trimming string.
@@ -204,8 +208,8 @@ bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const s
             iui_textboxCursorPos = text.size();  // default value
             int _relX = GetMouseX() - x - 2 - 8;
             for(int i = 0; i < text.size() - iui_textboxShowPos; i++) {
-                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), iuiLabelFontsize);
-                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), iuiLabelFontsize);
+                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), style.labelFontsize);
+                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), style.labelFontsize);
                 int _averWid = (_tmpWid1 + _tmpWid2) / 2;
                 if(_relX < _averWid) {
                     iui_textboxCursorPos = iui_textboxShowPos + i;
@@ -287,10 +291,10 @@ bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const s
             important part: invariant 1 dominates 2.
         \*                                                 */
         iui_textboxShowPos = std::clamp(iui_textboxShowPos, 0, iui_textboxCursorPos);  // invariant 1 and 3
-        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), iuiLabelFontsize) <= maxTextWid)  // invariant 2
+        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), style.labelFontsize) <= maxTextWid)  // invariant 2
             iui_textboxShowPos--;
         
-        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), iuiLabelFontsize) > maxTextWid)  // invariant 4
+        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), style.labelFontsize) > maxTextWid)  // invariant 4
             iui_textboxShowPos++;
     }
 
@@ -300,7 +304,7 @@ bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const s
     std::string trimText;
     bool mustTrim;
     for(trimLen = 1; currentShowPos + trimLen <= text.size(); trimLen++) {
-        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), iuiLabelFontsize);
+        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), style.labelFontsize);
         if(_charWid > maxTextWid) {
             trimLen--;
             break;
@@ -311,18 +315,18 @@ bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const s
 
     /// DRAW
     // box
-    Color fillColor = iuiColTextBoxFill;
-    Color borderColor = iuiColTextBoxBorder;
+    Color fillColor = style.colTextBoxFill;
+    Color borderColor = style.colTextBoxBorder;
     if(isActive || isFocus) {
-        fillColor = iuiColTextBoxActiveFill;
-        if(iuiTextBoxRainbow){
+        fillColor = style.colTextBoxActiveFill;
+        if(style.isTextBoxRainbowEnabled){
             borderColor = ColorFromHSV(iui_animTimer % 360, 222.0f/255.0f, 1.0f);  // TODO : make it rainbow
         } else {
-            borderColor = iuiColTextBoxActiveBorder;
+            borderColor = style.colTextBoxActiveBorder;
         }
     } else if(isHot) {
-        fillColor = iuiColTextBoxHotFill;
-        borderColor = iuiColTextBoxHotBorder;
+        fillColor = style.colTextBoxHotFill;
+        borderColor = style.colTextBoxHotBorder;
     }
 
     draw::iui_rect(x, y, w, h, borderColor);
@@ -332,38 +336,40 @@ bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const s
     int hprev, yprev;
     iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
     if(!mustTrim)
-        draw::iui_label(x + 10, y + h/2, trimText, iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText, style.colTextBoxText);
     else {
         std::string trimBase = trimText.substr(0, trimText.size()-3);
         int textOffX;
-        int spacing = std::max(iuiLabelFontsize/10, 1);
+        int spacing = std::max(style.labelFontsize/10, 1);
         std::string trimChar;
 
-        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), style.colTextBoxText);
 
-        textOffX = MeasureText(trimBase.c_str(), iuiLabelFontsize) + spacing;
+        textOffX = MeasureText(trimBase.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-3)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(iuiColTextBoxText, 0.75f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(style.colTextBoxText, 0.75f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-2)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(iuiColTextBoxText, 0.5f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(style.colTextBoxText, 0.5f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-1)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(iuiColTextBoxText, 0.25f));
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(style.colTextBoxText, 0.25f));
 
     }
     iui_setAlignment(hprev, yprev);
 
     // cursor
     if(isFocus) {
-        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), iuiLabelFontsize) - 2;
-        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(iuiColButtonLabel, sin(iui_animTimer*0.1f)));
+        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), style.labelFontsize) - 2;
+        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(style.colButtonLabel, sin(iui_animTimer*0.1f)));
     }
 
     return retValue;
 }
 
 bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
+
     /// Setup
     bool retValue = false;
     int insideWid = w - 4; // used both for drawing and trimming string.
@@ -387,8 +393,8 @@ bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, con
             iui_textboxCursorPos = text.size();  // default value
             int _relX = GetMouseX() - x - 2 - 8;
             for(int i = 0; i < text.size() - iui_textboxShowPos; i++) {
-                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), iuiLabelFontsize);
-                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), iuiLabelFontsize);
+                int _tmpWid1 = MeasureText(text.substr(iui_textboxShowPos, i).c_str(), style.labelFontsize);
+                int _tmpWid2 = MeasureText(text.substr(iui_textboxShowPos, i+1).c_str(), style.labelFontsize);
                 int _averWid = (_tmpWid1 + _tmpWid2) / 2;
                 if(_relX < _averWid) {
                     iui_textboxCursorPos = iui_textboxShowPos + i;
@@ -471,10 +477,10 @@ bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, con
             important part: invariant 1 dominates 2.
         \*                                                 */
         iui_textboxShowPos = std::clamp(iui_textboxShowPos, 0, iui_textboxCursorPos);  // invariant 1 and 3
-        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), iuiLabelFontsize) <= maxTextWid)  // invariant 2
+        while(iui_textboxShowPos>0 && MeasureText(text.substr(iui_textboxShowPos-1, std::string::npos).c_str(), style.labelFontsize) <= maxTextWid)  // invariant 2
             iui_textboxShowPos--;
         
-        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), iuiLabelFontsize) > maxTextWid)  // invariant 4
+        while(MeasureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos).c_str(), style.labelFontsize) > maxTextWid)  // invariant 4
             iui_textboxShowPos++;
     }
 
@@ -484,7 +490,7 @@ bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, con
     std::string trimText;
     bool mustTrim;
     for(trimLen = 1; currentShowPos + trimLen <= text.size(); trimLen++) {
-        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), iuiLabelFontsize);
+        int _charWid = MeasureText(text.substr(currentShowPos, trimLen).c_str(), style.labelFontsize);
         if(_charWid > maxTextWid) {
             trimLen--;
             break;
@@ -495,18 +501,18 @@ bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, con
 
     /// DRAW
     // box
-    Color fillColor = iuiColTextBoxFill;
-    Color borderColor = iuiColTextBoxBorder;
+    Color fillColor = style.colTextBoxFill;
+    Color borderColor = style.colTextBoxBorder;
     if(isActive || isFocus) {
-        fillColor = iuiColTextBoxActiveFill;
-        if(iuiTextBoxRainbow){
+        fillColor = style.colTextBoxActiveFill;
+        if(style.isTextBoxRainbowEnabled){
             borderColor = ColorFromHSV(iui_animTimer % 360, 222.0f/255.0f, 1.0f);  // TODO : make it rainbow
         } else {
-            borderColor = iuiColTextBoxActiveBorder;
+            borderColor = style.colTextBoxActiveBorder;
         }
     } else if(isHot) {
-        fillColor = iuiColTextBoxHotFill;
-        borderColor = iuiColTextBoxHotBorder;
+        fillColor = style.colTextBoxHotFill;
+        borderColor = style.colTextBoxHotBorder;
     }
 
     draw::iui_rect(x, y, w, h, borderColor);
@@ -516,32 +522,32 @@ bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, con
     int hprev, yprev;
     iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
     if(!mustTrim)
-        draw::iui_label(x + 10, y + h/2, trimText, iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText, style.colTextBoxText);
     else {
         std::string trimBase = trimText.substr(0, trimText.size()-3);
         int textOffX;
-        int spacing = std::max(iuiLabelFontsize/10, 1);
+        int spacing = std::max(style.labelFontsize/10, 1);
         std::string trimChar;
 
-        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), iuiColTextBoxText);
+        draw::iui_label(x + 10, y + h/2, trimText.substr(0, trimText.size()-3), style.colTextBoxText);
 
-        textOffX = MeasureText(trimBase.c_str(), iuiLabelFontsize) + spacing;
+        textOffX = MeasureText(trimBase.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-3)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(iuiColTextBoxText, 0.75f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f)*2, trimChar, Fade(style.colTextBoxText, 0.75f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-2)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(iuiColTextBoxText, 0.5f));
-        textOffX += MeasureText(trimChar.c_str(), iuiLabelFontsize) + spacing;
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 42)*4, trimChar, Fade(style.colTextBoxText, 0.5f));
+        textOffX += MeasureText(trimChar.c_str(), style.labelFontsize) + spacing;
         trimChar = {trimText.at(trimText.size()-1)};
-        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(iuiColTextBoxText, 0.25f));
+        draw::iui_label(x + 10 + textOffX, y + h/2 + sin(iui_animTimer * 0.1f + 84)*6, trimChar, Fade(style.colTextBoxText, 0.25f));
 
     }
     iui_setAlignment(hprev, yprev);
 
     // cursor
     if(isFocus) {
-        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), iuiLabelFontsize) - 2;
-        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(iuiColButtonLabel, sin(iui_animTimer*0.1f)));
+        int cursorX = x + 10 + MeasureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos).c_str(), style.labelFontsize) - 2;
+        draw::iui_rect(cursorX, y + 10, 4, h - 20, Fade(style.colButtonLabel, sin(iui_animTimer*0.1f)));
     }
 
     return retValue;

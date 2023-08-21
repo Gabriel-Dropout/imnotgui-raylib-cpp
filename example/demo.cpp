@@ -81,7 +81,7 @@ int main() {
                     spr_pfp = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_pfp")],
                     spr_uicheck = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uicheck")];
 
-    iuiButtonShadow = true;
+    iuiGlobalStyle.isButtonShadowEnabled = true;
 
     while(!WindowShouldClose()) {
         BeginDrawing();
@@ -145,7 +145,7 @@ int main() {
                         iui_setAlignment(hprev, vprev);
 
                         // normal buttons
-                        iuiButtonShadow = true;
+                        iuiGlobalStyle.isButtonShadowEnabled = true;
                         iui_button(SCREEN_CENTER_X - 500, 300, 420, 84, "A Button.");
                         iui_button(SCREEN_CENTER_X - 500, 400, 200, 84, "Yet\nanother button###ANALS");
                         iui_button(SCREEN_CENTER_X - 280, 400, 200, 84, "And button\nwith same ID###ANALS");
@@ -185,8 +185,7 @@ int main() {
                         iui_rect(SCREEN_CENTER_X + 30 + (demoStrSize.x - underlineWid), 585 + demoStrSize.y, underlineWid, 4, iuRed); // underline
                         iui_label(SCREEN_CENTER_X + 30, 585, demoStr, iuHellaDark);
                         
-                        
-                        iuiButtonShadow = false;
+                        iuiGlobalStyle.isButtonShadowEnabled = false;
                         break;
                     }
                     case 1:{
@@ -252,7 +251,7 @@ int main() {
                         
                         // sliders
                         iui_slider_h(SCREEN_CENTER_X - 110, 400, ui_slider_test_h, 420, 0, 100, "slider-test-h");
-                        iui_slider_v(SCREEN_CENTER_X - 200, 400 - (iuiSliderHHei / 2), ui_slider_test_v, 160 + iuiSliderHHei, 0, 100, "slider-test-v");
+                        iui_slider_v(SCREEN_CENTER_X - 200, 400 - (iuiGlobalStyle.sliderHHei / 2), ui_slider_test_v, 160 + iuiGlobalStyle.sliderHHei, 0, 100, "slider-test-v");
                         iui_slider_h(SCREEN_CENTER_X - 110, 560, ui_slider_test_minmax, 420, 20, 42, "slider-test-minmax");
                         
                         draw_textbubble_right(SCREEN_CENTER_X - 460, 442, 256, 60, "Vertical#(iui_slider_v)", iuCream, iuHellaDark, 30, 20);

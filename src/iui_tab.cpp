@@ -5,6 +5,8 @@
 namespace imnotgui {
 namespace element {
 int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode) {
+    IuiStyle &style = iuiGlobalStyle;
+
     int numTabs = textVec.size();
     
     //array
@@ -67,19 +69,19 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
 
         /// Button draw
         // TODO : Make fancy tab style IDK lol
-        int colIdx = (i % iuiColTabNum);
-        Color colBackdrop = iuiColTab[colIdx];
-        Color colAccent = iuiColTabAccent[colIdx];
+        int colIdx = (i % style.colTabNum);
+        Color colBackdrop = style.colTab[colIdx];
+        Color colAccent = style.colTabAccent[colIdx];
         
         if(isCurrent) {
-            colBackdrop = iuiColTabCurrent;
-            colAccent = iuiColTabCurrentAccent;
+            colBackdrop = style.colTabCurrent;
+            colAccent = style.colTabCurrentAccent;
 
             tabBoxY -= 5;
             tabBoxH += 5;
         } else if(isHot) {
-            colBackdrop = iuiColTabHot;
-            colAccent = iuiColTabHotAccent;
+            colBackdrop = style.colTabHot;
+            colAccent = style.colTabHotAccent;
         }
 
         draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, tabBoxH, colBackdrop);
@@ -88,7 +90,7 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
         // label
         int hprev, yprev;
         iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-        draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, iuiColTabLabel);
+        draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
         iui_setAlignment(hprev, yprev);
 
         // for next tab
@@ -98,6 +100,8 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
 }
 
 int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode) {
+    IuiStyle &style = iuiGlobalStyle;
+
     int numTabs = textVec.size();
     
     //array
@@ -161,19 +165,19 @@ int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int 
 
         /// Button draw
         // TODO : Make fancy tab style IDK lol
-        int colIdx = (i % iuiColTabNum);
-        Color colBackdrop = iuiColTab[colIdx];
-        Color colAccent = iuiColTabAccent[colIdx];
+        int colIdx = (i % style.colTabNum);
+        Color colBackdrop = style.colTab[colIdx];
+        Color colAccent = style.colTabAccent[colIdx];
         
         if(isCurrent) {
-            colBackdrop = iuiColTabCurrent;
-            colAccent = iuiColTabCurrentAccent;
+            colBackdrop = style.colTabCurrent;
+            colAccent = style.colTabCurrentAccent;
 
             tabBoxX -= 5;
             tabBoxW += 5;
         } else if(isHot) {
-            colBackdrop = iuiColTabHot;
-            colAccent = iuiColTabHotAccent;
+            colBackdrop = style.colTabHot;
+            colAccent = style.colTabHotAccent;
         }
 
         draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, tabBoxH, colBackdrop);
@@ -182,7 +186,7 @@ int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int 
         // label
         int hprev, yprev;
         iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-        draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, iuiColTabLabel);
+        draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
         iui_setAlignment(hprev, yprev);
 
         // for next tab

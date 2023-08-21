@@ -20,9 +20,6 @@ int iui_textboxDelayTimer = 0;
 int iui_animTimer = 0;
 
 
-int iuiLabelFontsize=20, iuiLabelHalign=IUI_LABEL_ALIGN_LEFT, iuiLabelValign=IUI_LABEL_ALIGN_TOP;
-Font* iuiFont = nullptr;
-
 // Style
 const Color
     iuHellaDark = {0x19, 0x18, 0x17, 0xff},
@@ -38,57 +35,73 @@ const Color
     iuBrown = {0x5a, 0x4d, 0x48, 0xff};
 
 
-bool iuiButtonShadow    = false;
-Color   iuiColButtonShadow = iuHellaDark,
-                iuiColButtonBackdrop    = iuDark2,
-                iuiColButtonBackdropTop = iuMint,
-                iuiColButtonActiveBackdrop     = iuHellaDark,
-                iuiColButtonActiveBackdropTop  = iuMint,
-                iuiColButtonActiveBackdropTop2 = iuPiss, // when active but mouse is out of the button
-                iuiColButtonHotBackdrop    = iuNormal,
-                iuiColButtonHotBackdropTop = iuMint,
-                iuiColButtonLabel          = iuCreamDark;
+// set variables to default. Refer to the above initialization.
+IuiStyle::IuiStyle() {
+    // Label
+    labelFontsize=20;
+    labelHalign=IUI_LABEL_ALIGN_LEFT;
+    labelValign=IUI_LABEL_ALIGN_TOP;
+    font = nullptr;
 
-Color   iuiColTabLabel     = iuCream,
-                iuiColTabHot       = iuNormal,
-                iuiColTabHotAccent = iuPiss,
-                iuiColTabCurrent       = iuHellaDark,
-                iuiColTabCurrentAccent = iuMint;
+    // Button
+    isButtonShadowEnabled = false;
+    colButtonShadow = iuHellaDark;
+    colButtonBackdrop = iuDark2;
+    colButtonBackdropTop = iuMint;
+    colButtonActiveBackdrop = iuHellaDark;
+    colButtonActiveBackdropTop = iuMint;
+    colButtonActiveBackdropTop2 = iuPiss; // when active but mouse is out of the button
+    colButtonHotBackdrop = iuNormal;
+    colButtonHotBackdropTop = iuMint;
+    colButtonLabel = iuCreamDark;
 
-int iuiColTabNum    = 2; // number of tab colours
+    // Tab
+    colTabLabel = iuCream;
+    colTabHot = iuNormal;
+    colTabHotAccent = iuPiss;
+    colTabCurrent = iuHellaDark;
+    colTabCurrentAccent = iuMint;
 
-Color   iuiColTab[2]       = {iuDark, iui_colLighter(iuDark, -5)},
-                iuiColTabAccent[2] = {iuNormal, iui_colLighter(iuNormal, -5)};
 
-bool iuiTextBoxRainbow   = true; // rainbow colour when active
-Color   iuiColTextBoxFill   = iui_colLighter(iuHellaDark, 5),
-                iuiColTextBoxText   = iuCream,
-                iuiColTextBoxBorder = iuSky,
-                iuiColTextBoxActiveFill   = iuHellaDark,
-                iuiColTextBoxActiveBorder = iuHellaDark,
-                iuiColTextBoxHotFill   = iui_colLighter(iuHellaDark, 7),
-                iuiColTextBoxHotBorder = iuMint;
+    colTabNum = 2; // number of tab colours
 
-// Slider
+    colTab[0] = iuDark;
+    colTab[1] = iui_colLighter(iuDark, -5);
+    colTabAccent[0] = iuNormal;
+    colTabAccent[1] = iui_colLighter(iuNormal, -5);
 
-bool iuiSliderDisplayValue = true; // display min, max and value on active?
+    isTextBoxRainbowEnabled   = true; // rainbow colour when active
+    colTextBoxFill   = iui_colLighter(iuHellaDark, 5);
+    colTextBoxText   = iuCream;
+    colTextBoxBorder = iuSky;
+    colTextBoxActiveFill   = iuHellaDark;
+    colTextBoxActiveBorder = iuHellaDark;
+    colTextBoxHotFill   = iui_colLighter(iuHellaDark, 7);
+    colTextBoxHotBorder = iuMint;
 
-int iuiSliderHWid = 20, // horizontal
-    iuiSliderHHei = 42;
+    // Slider
+    isSliderValueEnabled = true; // display min, max and value on active?
 
-int iuiSliderVWid = 42, // vertical
-    iuiSliderVHei = 20;
+    sliderHWid = 20; // horizontal
+    sliderHHei = 42;
 
-int iuiSliderThickness = 8; // How thick the guideline(?) is
+    sliderVWid = 42; // vertical
+    sliderVHei = 20;
 
-Color   iuiColSliderLine   = iuHellaDark,
-                iuiColSlider       = iuNormal,
-                iuiColSliderActive = iuDark2,
-                iuiColSliderHot    = iui_colLighter(iuNormal, 10);
+    sliderLineThickness = 8; // How thick the guideline(?) is
 
-// Checkbox
-Color   iuiColCheckboxBorder = iuCream,
-                iuiColCheckboxBG = iuHellaDark,
-                iuiColCheckboxFG = iuMint; // the checker colour
+
+    colSliderLine   = iuHellaDark,
+    colSlider       = iuNormal,
+    colSliderActive = iuDark2,
+    colSliderHot    = iui_colLighter(iuNormal, 10);
+
+    // Checkbox
+    colCheckboxBorder = iuCream,
+    colCheckboxBG = iuHellaDark,
+    colCheckboxFG = iuMint; // the checker colour
+}
+
+IuiStyle iuiGlobalStyle;
 
 } // namespace imnotgui

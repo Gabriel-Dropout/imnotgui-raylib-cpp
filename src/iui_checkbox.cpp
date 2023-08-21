@@ -5,6 +5,7 @@
 namespace imnotgui {
 namespace element {
 bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
 
     int _ID;
     std::string LABEL;
@@ -29,14 +30,14 @@ bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID
 
     /// draw
 
-    draw::iui_rect(x-2, y-2, w+4, h+4, iuiColCheckboxBorder);
-    draw::iui_rect(x, y, w, h, iuiColCheckboxBG);
+    draw::iui_rect(x-2, y-2, w+4, h+4, style.colCheckboxBorder);
+    draw::iui_rect(x, y, w, h, style.colCheckboxBG);
 
     if(checked) {
         int hprev, yprev, sprev;
         sprev = iui_setFontSize((int)(w*0.8));
         iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-        draw::iui_label(x + w/2, y + h/2, "V", iuiColCheckboxFG);
+        draw::iui_label(x + w/2, y + h/2, "V", style.colCheckboxFG);
         iui_setAlignment(hprev, yprev);
         iui_setFontSize(sprev);
     }

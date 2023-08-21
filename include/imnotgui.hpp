@@ -106,13 +106,13 @@ enum iuLabelVAlignment {
     IUI_LABEL_ALIGN_BOTTOM
 };
 
-typedef struct iuistyle {
+typedef struct IuiStyle {
     // Label
     int labelFontsize, labelHalign, labelValign;
     Font* font;
 
     // Button
-    bool shouldDrawButtonShadow;
+    bool isButtonShadowEnabled;
     Color   colButtonShadow,
             colButtonBackdrop,
             colButtonBackdropTop,
@@ -130,12 +130,12 @@ typedef struct iuistyle {
             colTabCurrent,
             colTabCurrentAccent;
 
-    int iuiColTabNum; // number of tab colours
+    int colTabNum; // number of tab colours
 
     Color   colTab[2],
             colTabAccent[2];
 
-    bool shouldDrawTextBoxRainbow; // rainbow colour when active
+    bool isTextBoxRainbowEnabled; // rainbow colour when active
     Color   colTextBoxFill,
             colTextBoxText,
             colTextBoxBorder,
@@ -145,7 +145,7 @@ typedef struct iuistyle {
             colTextBoxHotBorder;
 
     // Slider
-    bool shouldDrawSliderValue; // display min, max and value on active?
+    bool isSliderValueEnabled; // display min, max and value on active?
 
     int sliderHWid, // horizontal
         sliderHHei;
@@ -164,64 +164,11 @@ typedef struct iuistyle {
     Color   colCheckboxBorder,
             colCheckboxBG,
             colCheckboxFG; // the checker colour
-} iuiStyle;
 
-extern int iuiLabelFontsize, iuiLabelHalign, iuiLabelValign;
-extern Font* iuiFont;
+    IuiStyle();
+} IuiStyle;
 
-
-extern bool iuiButtonShadow;
-extern Color    iuiColButtonShadow,
-                iuiColButtonBackdrop,
-                iuiColButtonBackdropTop,
-                iuiColButtonActiveBackdrop,
-                iuiColButtonActiveBackdropTop,
-                iuiColButtonActiveBackdropTop2,// when active but mouse is out of the button
-                iuiColButtonHotBackdrop,
-                iuiColButtonHotBackdropTop,
-                iuiColButtonLabel;
-
-extern Color    iuiColTabLabel,
-                iuiColTabHot,
-                iuiColTabHotAccent,
-                iuiColTabCurrent,
-                iuiColTabCurrentAccent;
-
-extern int iuiColTabNum; // number of tab colours
-
-extern Color    iuiColTab[2],
-                iuiColTabAccent[2];
-
-extern bool iuiTextBoxRainbow; // rainbow colour when active
-extern Color    iuiColTextBoxFill,
-                iuiColTextBoxText,
-                iuiColTextBoxBorder,
-                iuiColTextBoxActiveFill,
-                iuiColTextBoxActiveBorder,
-                iuiColTextBoxHotFill,
-                iuiColTextBoxHotBorder;
-
-// Slider
-
-extern bool iuiSliderDisplayValue; // display min, max and value on active?
-
-extern int  iuiSliderHWid, // horizontal
-            iuiSliderHHei;
-
-extern int  iuiSliderVWid, // vertical
-            iuiSliderVHei;
-
-extern int iuiSliderThickness; // How thick the guideline(?) is
-
-extern Color    iuiColSliderLine,
-                iuiColSlider,
-                iuiColSliderActive,
-                iuiColSliderHot;
-
-// Checkbox
-extern Color    iuiColCheckboxBorder,
-                iuiColCheckboxBG,
-                iuiColCheckboxFG; // the checker colour
+extern IuiStyle iuiGlobalStyle;
 
 }
 

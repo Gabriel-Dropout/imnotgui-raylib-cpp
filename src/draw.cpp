@@ -26,50 +26,58 @@ void iui_line(int x, int y, int length, float angle, float thick, Color color) {
     DrawLineEx(Vector2{(float)x, (float)y}, Vector2{x + length * std::cos(angle*DEG2RAD), y + length * std::sin(angle*DEG2RAD)}, thick, color);
 }
 void iui_label(int x, int y, std::string text, Color color) {
-    Vector2 tSize = iui_measureTextEx(text);
-    int offX = ((int)tSize.x * iuiLabelHalign)/2;
-    int offY = ((int)tSize.y * iuiLabelValign)/2;
+    IuiStyle &style = iuiGlobalStyle;
 
-    if(iuiFont != nullptr)
-        DrawTextEx(*iuiFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    Vector2 tSize = iui_measureTextEx(text);
+    int offX = ((int)tSize.x * style.labelHalign)/2;
+    int offY = ((int)tSize.y * style.labelValign)/2;
+
+    if(style.font != nullptr)
+        DrawTextEx(*style.font, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/(*style.font).baseSize, 1), color);
     else
-        DrawText(text.c_str(), x - offX, y - offY, iuiLabelFontsize, color);
+        DrawText(text.c_str(), x - offX, y - offY, style.labelFontsize, color);
 }
 void iui_label_transform(int x, int y, std::string text, int fontsize, float angle, Color color) {
+    // TODO: make angle to work
+    IuiStyle &style = iuiGlobalStyle;
+
     Vector2 tSize = iui_measureTextEx(text);
-    int offX = ((int)tSize.x << iuiLabelHalign)/2;
-    int offY = ((int)tSize.y << iuiLabelValign)/2;
-    if(iuiFont != nullptr)
-        DrawTextEx(*iuiFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    int offX = ((int)tSize.x * style.labelHalign)/2;
+    int offY = ((int)tSize.y * style.labelValign)/2;
+
+    if(style.font != nullptr)
+        DrawTextEx(*style.font, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/(*style.font).baseSize, 1), color);
     else
-        DrawText(text.c_str(), x - offX, y - offY, iuiLabelFontsize, color);
+        DrawText(text.c_str(), x - offX, y - offY, style.labelFontsize, color);
 }
 void iui_label_shadow(int x, int y, std::string text, Color color, int sx, int sy, Color scolor) {
+    IuiStyle &style = iuiGlobalStyle;
+
     Vector2 tSize = iui_measureTextEx(text);
-    int offX = ((int)tSize.x * iuiLabelHalign)/2;
-    int offY = ((int)tSize.y * iuiLabelValign)/2;
+    int offX = ((int)tSize.x * style.labelHalign)/2;
+    int offY = ((int)tSize.y * style.labelValign)/2;
     
-    if(iuiFont != nullptr) {
-        DrawTextEx(*iuiFont, text.c_str(), Vector2{(float)x - offX + sx, (float)y - offY + sy}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
-        DrawTextEx(*iuiFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
+    if(style.font != nullptr) {
+        DrawTextEx(*style.font, text.c_str(), Vector2{(float)x - offX + sx, (float)y - offY + sy}, style.labelFontsize, std::max(style.labelFontsize/(*style.font).baseSize, 1), scolor);
+        DrawTextEx(*style.font, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/(*style.font).baseSize, 1), color);
     } else {
-        DrawText(text.c_str(), x - offX + sx, y - offY + sy, iuiLabelFontsize, scolor);
-        DrawText(text.c_str(), x - offX, y - offY, iuiLabelFontsize, color);
+        DrawText(text.c_str(), x - offX + sx, y - offY + sy, style.labelFontsize, scolor);
+        DrawText(text.c_str(), x - offX, y - offY, style.labelFontsize, color);
     }
 }
 void iui_label_underline_expensive(int x, int y, std::string text, Color color, float thick, int offsetY, Color bgColor);
 void iui_label_underline(int x, int y, std::string text, Color color, float thick, int offsetY) {
+    IuiStyle &style = iuiGlobalStyle;
+
     Vector2 tSize = iui_measureTextEx(text);
-    int offX = ((int)tSize.x * iuiLabelHalign)/2;
-    int offY = ((int)tSize.y * iuiLabelValign)/2;
+    int offX = ((int)tSize.x * style.labelHalign)/2;
+    int offY = ((int)tSize.y * style.labelValign)/2;
     DrawRectangle(x - offX, y - offY + tSize.y + offsetY, tSize.x, thick, iui_colLighter_adv(color, -42, 1.15, 1.3, 1.05));
-    DrawText(text.c_str(), x - offX, y - offY, iuiLabelFontsize, color);
     
-    if(iuiFont != nullptr) {
-        DrawTextEx(*iuiFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, iuiLabelFontsize, std::max(iuiLabelFontsize/(*iuiFont).baseSize, 1), color);
-    } else {
-        DrawText(text.c_str(), x - offX, y - offY, iuiLabelFontsize, color);
-    }
+    if(style.font != nullptr)
+        DrawTextEx(*style.font, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/(*style.font).baseSize, 1), color);
+    else
+        DrawText(text.c_str(), x - offX, y - offY, style.labelFontsize, color);
 }
 void iui_label_ext(int x, int y, std::string text, Color color, int sep, int width);
 

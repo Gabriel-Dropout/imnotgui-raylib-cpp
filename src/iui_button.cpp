@@ -7,6 +7,8 @@ namespace imnotgui {
 
 namespace element {
 bool iui_button(int x, int y, int w, int h, std::string text) {
+    IuiStyle &style = iuiGlobalStyle;
+
     /// Get label and ID.
     int ID;
     std::string LABEL;
@@ -28,33 +30,33 @@ bool iui_button(int x, int y, int w, int h, std::string text) {
     /// Button Draw
     bool isHot = iui_hotItem == ID, isActive = iui_activeItem == ID;
 
-    if(iuiButtonShadow) {
-        draw::iui_rect(x + 8, y + 8, w, h, iuiColButtonShadow);
+    if(style.isButtonShadowEnabled) {
+        draw::iui_rect(x + 8, y + 8, w, h, style.colButtonShadow);
     }
 
     // Hovering
     if(isHot) {
         if(isActive) {
-            draw::iui_rect(x, y, w, h, iuiColButtonActiveBackdrop);  // backdrop
-            draw::iui_rect(x, y, w, 9, iuiColButtonActiveBackdropTop); // top line / box for style?
+            draw::iui_rect(x, y, w, h, style.colButtonActiveBackdrop);  // backdrop
+            draw::iui_rect(x, y, w, 9, style.colButtonActiveBackdropTop); // top line / box for style?
         } else {
-            draw::iui_rect(x, y, w, h, iuiColButtonHotBackdrop);
-            draw::iui_rect(x, y, w, 9, iuiColButtonHotBackdropTop);
+            draw::iui_rect(x, y, w, h, style.colButtonHotBackdrop);
+            draw::iui_rect(x, y, w, 9, style.colButtonHotBackdropTop);
         }
     } else {  // nope
         if(isActive) {
-            draw::iui_rect(x, y, w, h, iuiColButtonActiveBackdrop);
-            draw::iui_rect(x, y, w, 9, iuiColButtonActiveBackdropTop2);
+            draw::iui_rect(x, y, w, h, style.colButtonActiveBackdrop);
+            draw::iui_rect(x, y, w, 9, style.colButtonActiveBackdropTop2);
         } else {
-            draw::iui_rect(x, y, w, h, iuiColButtonBackdrop);
-            draw::iui_rect(x, y, w, 5, iuiColButtonBackdropTop);
+            draw::iui_rect(x, y, w, h, style.colButtonBackdrop);
+            draw::iui_rect(x, y, w, 5, style.colButtonBackdropTop);
         }
     }
 
     // label
     int hprev, yprev;
     iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-    draw::iui_label(x+ w/2, y + h/2, LABEL, iuiColButtonLabel);
+    draw::iui_label(x+ w/2, y + h/2, LABEL, style.colButtonLabel);
     iui_setAlignment(hprev, yprev);
     
     return isClicky;

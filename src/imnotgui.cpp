@@ -65,34 +65,41 @@ void iui_end() {
 
 // Label State
 void iui_setAlignment(int halign, int valign) {
-    iuiLabelHalign = halign;
-    iuiLabelValign = valign;
+    IuiStyle &style = iuiGlobalStyle;
+    style.labelHalign = halign;
+    style.labelValign = valign;
 }
 void iui_setAlignment(int halign, int valign, int &hprev, int &yprev) {
-    hprev = iuiLabelHalign;
-    yprev = iuiLabelValign;
-    iuiLabelHalign = halign;
-    iuiLabelValign = valign;
+    IuiStyle &style = iuiGlobalStyle;
+    hprev = style.labelHalign;
+    yprev = style.labelValign;
+    style.labelHalign = halign;
+    style.labelValign = valign;
 }
 void iui_getAlignment(int &hprev, int &yprev) {
-    hprev = iuiLabelHalign;
-    yprev = iuiLabelValign;
+    IuiStyle &style = iuiGlobalStyle;
+    hprev = style.labelHalign;
+    yprev = style.labelValign;
 }
 int iui_setFontSize(int size) {
-    int prev = iuiLabelFontsize;
-    iuiLabelFontsize = size;
+    IuiStyle &style = iuiGlobalStyle;
+    int prev = style.labelFontsize;
+    style.labelFontsize = size;
     return prev;
 }
 int iui_getFontSize() {
-    return iuiLabelFontsize;
+    IuiStyle &style = iuiGlobalStyle;
+    return style.labelFontsize;
 }
 Font* iui_setFont(Font* font) {
-    Font* prev = iuiFont;
-    iuiFont = font;
+    IuiStyle &style = iuiGlobalStyle;
+    Font* prev = style.font;
+    style.font = font;
     return prev;
 }
 Font* iui_getFont() {
-    return iuiFont;
+    IuiStyle &style = iuiGlobalStyle;
+    return style.font;
 }
 
 std::string iui_strTrimDots(std::string text, int width) {
@@ -132,12 +139,14 @@ Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float 
 }
 
 int iui_measureText(std::string text) {
-    Font curFont = iuiFont == nullptr ? GetFontDefault() : *iuiFont;
-    return MeasureTextEx(curFont, text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/curFont.baseSize, 1)).x;
+    IuiStyle &style = iuiGlobalStyle;
+    Font curFont = style.font == nullptr ? GetFontDefault() : *style.font;
+    return MeasureTextEx(curFont, text.c_str(), style.labelFontsize, std::max(style.labelFontsize/curFont.baseSize, 1)).x;
 }
 Vector2 iui_measureTextEx(std::string text) {
-    Font curFont = iuiFont == nullptr ? GetFontDefault() : *iuiFont;
-    return MeasureTextEx(curFont, text.c_str(), iuiLabelFontsize, std::max(iuiLabelFontsize/curFont.baseSize, 1));
+    IuiStyle &style = iuiGlobalStyle;
+    Font curFont = style.font == nullptr ? GetFontDefault() : *style.font;
+    return MeasureTextEx(curFont, text.c_str(), style.labelFontsize, std::max(style.labelFontsize/curFont.baseSize, 1));
 }
 
 } // namespace imnotgui

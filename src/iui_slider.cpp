@@ -8,8 +8,10 @@
 namespace imnotgui {
 namespace element {
 void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
+
     int sliderX = x + std::clamp(width*(value-min)/(max-min), 0, width);
-    int btnW = iuiSliderHWid, btnH = iuiSliderHHei;
+    int btnW = style.sliderHWid, btnH = style.sliderHHei;
 
     /// Get ID
     int _ID = iui_get_id(ID);
@@ -38,18 +40,18 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
     }
 
     // draw
-    Color btnColor = iuiColSlider;
+    Color btnColor = style.colSlider;
 
     // slider guideline
-    draw::iui_rect(x, y - iuiSliderThickness/2, width, iuiSliderThickness, iuiColSliderLine);
+    draw::iui_rect(x, y - style.sliderLineThickness/2, width, style.sliderLineThickness, style.colSliderLine);
 
     // slider button / handle
     if(isActive) {
         // change slider button color
-        btnColor = iuiColSliderActive;
+        btnColor = style.colSliderActive;
 
         // slider guide text
-        if(iuiSliderDisplayValue) {
+        if(style.isSliderValueEnabled) {
             int hprev, yprev;
             iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
             draw::iui_label(x - 32, y, std::to_string(min), iuMint);
@@ -59,10 +61,10 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
             iui_setAlignment(hprev, yprev);
         }
     }else if(isHot) {
-        btnColor = iuiColSliderHot;
+        btnColor = style.colSliderHot;
 
         // slider guide text
-        if(iuiSliderDisplayValue) {
+        if(style.isSliderValueEnabled) {
             int hprev, yprev;
             iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_TOP, hprev, yprev);
             draw::iui_label(sliderX, y + btnH/2 + 10, std::to_string(value), iuCream);
@@ -73,8 +75,10 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
 }
 
 void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID) {
+    IuiStyle &style = iuiGlobalStyle;
+
     int sliderY = y + std::clamp(height*(value-min)/(max-min), 0, height);
-    int btnW = iuiSliderVWid, btnH = iuiSliderVHei;
+    int btnW = style.sliderVWid, btnH = style.sliderVHei;
 
     /// Get ID
     int _ID = iui_get_id(ID);
@@ -103,18 +107,18 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
     }
 
     // draw
-    Color btnColor = iuiColSlider;
+    Color btnColor = style.colSlider;
 
     // slider guideline
-    draw::iui_rect(x - iuiSliderThickness/2, y, iuiSliderThickness, height, iuiColSliderLine);
+    draw::iui_rect(x - style.sliderLineThickness/2, y, style.sliderLineThickness, height, style.colSliderLine);
 
     // slider button / handle
     if(isActive) {
         // change slider button color
-        btnColor = iuiColSliderActive;
+        btnColor = style.colSliderActive;
 
         // slider guide text
-        if(iuiSliderDisplayValue) {
+        if(style.isSliderValueEnabled) {
             int hprev, yprev;
             iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
             draw::iui_label(x, y - 32, std::to_string(min), iuMint);
@@ -124,10 +128,10 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
             iui_setAlignment(hprev, yprev);
         }
     }else if(isHot) {
-        btnColor = iuiColSliderHot;
+        btnColor = style.colSliderHot;
 
         // slider guide text
-        if(iuiSliderDisplayValue) {
+        if(style.isSliderValueEnabled) {
             int hprev, yprev;
             iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
             draw::iui_label(x + btnW/2 + 10, sliderY, std::to_string(value), iuCream);
