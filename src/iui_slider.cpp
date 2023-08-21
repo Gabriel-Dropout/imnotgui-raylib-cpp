@@ -41,7 +41,7 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
     Color btnColor = iuiColSlider;
 
     // slider guideline
-    draw::iui_rect(x, y - iuiSliderThick/2, width, iuiSliderThick, iuiColSliderLine);
+    draw::iui_rect(x, y - iuiSliderThickness/2, width, iuiSliderThickness, iuiColSliderLine);
 
     // slider button / handle
     if(isActive) {
@@ -106,7 +106,7 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
     Color btnColor = iuiColSlider;
 
     // slider guideline
-    draw::iui_rect(x - iuiSliderThick/2, y, iuiSliderThick, height, iuiColSliderLine);
+    draw::iui_rect(x - iuiSliderThickness/2, y, iuiSliderThickness, height, iuiColSliderLine);
 
     // slider button / handle
     if(isActive) {

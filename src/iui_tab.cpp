@@ -41,7 +41,7 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
             if (tabIdx != i) {
                 switch(trimMode) {
                     case 1: // TRIM
-                        tabLabel = iui_strTrim(tabLabel, w);
+                        tabLabel = iui_strTrimDots(tabLabel, w);
                         break;
                     case 2:
                         tabBoxW = tabLabelWidth + 20;
@@ -134,7 +134,7 @@ int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int 
             if (tabIdx != i) {
                 switch(trimMode) {
                     case 1: // TRIM
-                        tabLabel = iui_strTrim(tabLabel, w);
+                        tabLabel = iui_strTrimDots(tabLabel, w);
                         break;
                     case 2:
                         tabBoxW = tabLabelWidth + 20;

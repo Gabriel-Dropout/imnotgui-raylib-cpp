@@ -219,7 +219,7 @@ int main() {
                         iui_setAlignment(hprev, vprev);
                         
                         // value
-                        std::string bubbleLabel = iui_strTrim(ui_textbox_testarea_str, 400);
+                        std::string bubbleLabel = iui_strTrimDots(ui_textbox_testarea_str, 400);
                         int bubbleWid = iui_measureText(bubbleLabel) + 20;
                         draw_textbubble_top(SCREEN_CENTER_X - 420, (textboxY + 70) + abs(sine01_ * 5), std::max(200, bubbleWid), 50, bubbleLabel, iuCream, iuHellaDark, 32, 20);
                         
@@ -381,7 +381,7 @@ int main() {
                 iui_label(SCREEN_CENTER_X - labelSpacing, infoY, "\" " + idStr + " \"", iuCream);
                 
                 iui_label(infoX + infoWid/2, infoY + infoHei + infoHei, "LABEL : " + iui_trim_label(idStr), iuRed);
-                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_id(idStr), iuCream, iuHellaDark, infoWid/2, 30);
+                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_idstr(idStr), iuCream, iuHellaDark, infoWid/2, 30);
                 iui_rect(infoX, infoY + infoHei + infoHei/2, infoWid, infoHei, iuDark2);
                 iui_label(infoX + infoWid/2, infoY + infoHei + infoHei, "LABEL : " + iui_trim_label(idStr), iuCream);
                 
@@ -392,7 +392,7 @@ int main() {
                 iui_rect(infoX, infoY - infoHei/2, infoWid, infoHei, iuHellaDark);
                 iui_label(SCREEN_CENTER_X, infoY, "\" " + idStr + " \"", iuCream);
                 
-                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_id(idStr), iuCream, iuHellaDark, infoWid/2, 30);
+                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_idstr(idStr), iuCream, iuHellaDark, infoWid/2, 30);
                 iui_rect(infoX, infoY + infoHei + infoHei/2, infoWid, infoHei, iuBrown);
                 iui_label(infoX + infoWid/2, infoY + infoHei + infoHei, "LABEL : " + iui_trim_label(idStr), iuCream);
                 
@@ -403,7 +403,7 @@ int main() {
                 iui_rect(infoX, infoY - infoHei/2, infoWid, infoHei, iuHellaDark);
                 iui_label(SCREEN_CENTER_X + labelSpacing, infoY, "\" " + idStr + " \"", iuCream);
                 
-                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_id(idStr), iuCream, iuHellaDark, infoWid/2, 30);
+                draw_textbubble_top(infoX, infoY + infoHei/2, infoWid, infoHei, "ID : " + iui_trim_idstr(idStr), iuCream, iuHellaDark, infoWid/2, 30);
                 iui_rect(infoX, infoY + infoHei + infoHei/2, infoWid, infoHei, iuNormal);
                 iui_label(infoX + infoWid/2, infoY + infoHei + infoHei, "LABEL : " + iui_trim_label(idStr), iuCream);
                 

@@ -1,36 +1,32 @@
+
 cmake_minimum_required(VERSION 3.14)
-project(
-  imnotgui
-  VERSION 0.1
-  DESCRIPTION "imnotgui library and examples"
-  LANGUAGES CXX)
+project(imnotgui)
+
+# Set project-wide version
+set(PROJECT_VERSION_MAJOR 0)
+set(PROJECT_VERSION_MINOR 1)
+set(PROJECT_VERSION_PATCH 0)
+set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set (CMAKE_CXX_STANDARD 17)
-
-# Fetch Raylib
-find_package(raylib 4.5.0 QUIET)
 include(FetchContent)
-if (NOT raylib_FOUND)
-    FetchContent_Declare(
-        raylib
-        URL https://github.com/raysan5/raylib/archive/refs/tags/4.5.0.tar.gz
-    )
-    FetchContent_GetProperties(raylib)
-    if (NOT raylib_POPULATED)
-        set(FETCHCONTENT_QUIET NO)
-        FetchContent_Populate(raylib)
-        set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-        option(CUSTOMIZE_BUILD "" ON)
-        option(SUPPORT_SCREEN_CAPTURE "" OFF)
+## Resolve dependencies ##
 
-        add_subdirectory(${raylib_SOURCE_DIR} ${raylib_BINARY_DIR})
-    endif()
-endif()
+# Fetch raylib
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG 4.5.0
+)
+FetchContent_MakeAvailable(raylib)
 
-# Fetch Raylib-cpp
+# Fetch raylib_cpp
 FetchContent_Declare(
     raylib_cpp
-    URL https://github.com/RobLoach/raylib-cpp/archive/refs/tags/v4.5.0.tar.gz
+    GIT_REPOSITORY https://github.com/RobLoach/raylib-cpp.git
+    GIT_TAG v4.5.0
 )
 FetchContent_MakeAvailable(raylib_cpp)
 

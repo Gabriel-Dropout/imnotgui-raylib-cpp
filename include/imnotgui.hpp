@@ -14,9 +14,9 @@ The repository is also influenced by Omar Cornut's [Dear ImGUI](https://github.c
 #include "raylib.h"
 
 namespace imnotgui {
-extern int iui_hotItem;
-extern int iui_activeItem;
-extern int iui_kbFocusItem;
+extern int iui_hotItem;  // The item that is currently hovered over
+extern int iui_activeItem;  // The item that is currently active
+extern int iui_kbFocusItem;  // The item that is currently focused by keyboard
 extern int iui_idx;
 extern std::map<std::string, int> iui_idMap;
 extern int iui_textboxShowPos;
@@ -57,7 +57,7 @@ namespace element {
 }
 
 void iui_begin();  // Begin IMNOTGUI
-void iui_end();  // End IMNOTGUI
+void iui_end();    // End IMNOTGUI
 
 void iui_setAlignment(int halign, int valign);  // Sets the alignment
 void iui_setAlignment(int halign, int valign, int &hprev, int &yprev);  // Sets the alignment and returns the previous alignment
@@ -68,14 +68,14 @@ Font* iui_setFont(Font* font);  // Sets the font and returns the previous font
 Font* iui_getFont();  // Returns the current font
 
 std::string iui_trim_label(std::string text);  // Cuts and returns the label part of the input string
-std::string iui_trim_id(std::string text);  // Cuts and returns the ID part of the input string
+std::string iui_trim_idstr(std::string text);  // Cuts and returns the ID part of the input string
 
 void iui_get_all(std::string text, int &id, std::string &label);  // Gets LABEL and ID from string
 int iui_get_id(std::string text);  // Gets ID from string
 std::string iui_get_label(std::string text);  // Gets LABEL from string. Same as iui_trim_label
 
+std::string iui_strTrimDots(std::string text, int width);
 std::string iui_strTrim(std::string text, int width);
-std::string iui_strTrimNodots(std::string text, int width);
 
 Color iui_colLighter(Color color, int amount);
 Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float bmod);
@@ -83,20 +83,7 @@ Color iui_colLighter_adv(Color color, int amount, float rmod, float gmod, float 
 int iui_measureText(std::string text);
 Vector2 iui_measureTextEx(std::string text);
 
-enum iuLabelHAlignment {
-    IUI_LABEL_ALIGN_LEFT,
-    IUI_LABEL_ALIGN_CENTER,
-    IUI_LABEL_ALIGN_RIGHT
-};
-enum iuLabelVAlignment {
-    IUI_LABEL_ALIGN_TOP,
-    IUI_LABEL_ALIGN_MIDDLE,
-    IUI_LABEL_ALIGN_BOTTOM
-};
-extern int iuiLabelFontsize, iuiLabelHalign, iuiLabelValign;
-extern Font* iuiFont;
-
-extern const Color iuHellaDark,
+extern const Color  iuHellaDark,
                     iuDark,
                     iuDark2,
                     iuNormal,
@@ -108,8 +95,83 @@ extern const Color iuHellaDark,
                     iuPiss,
                     iuBrown;
 
+enum iuLabelHAlignment {
+    IUI_LABEL_ALIGN_LEFT,
+    IUI_LABEL_ALIGN_CENTER,
+    IUI_LABEL_ALIGN_RIGHT
+};
+enum iuLabelVAlignment {
+    IUI_LABEL_ALIGN_TOP,
+    IUI_LABEL_ALIGN_MIDDLE,
+    IUI_LABEL_ALIGN_BOTTOM
+};
+
+typedef struct iuistyle {
+    // Label
+    int labelFontsize, labelHalign, labelValign;
+    Font* font;
+
+    // Button
+    bool shouldDrawButtonShadow;
+    Color   colButtonShadow,
+            colButtonBackdrop,
+            colButtonBackdropTop,
+            colButtonActiveBackdrop,
+            colButtonActiveBackdropTop,
+            colButtonActiveBackdropTop2,// when active but mouse is out of the button
+            colButtonHotBackdrop,
+            colButtonHotBackdropTop,
+            colButtonLabel;
+
+    // Tab
+    Color   colTabLabel,
+            colTabHot,
+            colTabHotAccent,
+            colTabCurrent,
+            colTabCurrentAccent;
+
+    int iuiColTabNum; // number of tab colours
+
+    Color   colTab[2],
+            colTabAccent[2];
+
+    bool shouldDrawTextBoxRainbow; // rainbow colour when active
+    Color   colTextBoxFill,
+            colTextBoxText,
+            colTextBoxBorder,
+            colTextBoxActiveFill,
+            colTextBoxActiveBorder,
+            colTextBoxHotFill,
+            colTextBoxHotBorder;
+
+    // Slider
+    bool shouldDrawSliderValue; // display min, max and value on active?
+
+    int sliderHWid, // horizontal
+        sliderHHei;
+
+    int sliderVWid, // vertical
+        sliderVHei;
+
+    int sliderLineThickness; // How thick the guideline(?) is
+
+    Color   colSliderLine,
+            colSlider,
+            colSliderActive,
+            colSliderHot;
+
+    // Checkbox
+    Color   colCheckboxBorder,
+            colCheckboxBG,
+            colCheckboxFG; // the checker colour
+} iuiStyle;
+
+extern int iuiLabelFontsize, iuiLabelHalign, iuiLabelValign;
+extern Font* iuiFont;
+
+
 extern bool iuiButtonShadow;
-extern Color   iuiColButtonShadow,
+extern Color    iuiColButtonShadow,
                 iuiColButtonBackdrop,
                 iuiColButtonBackdropTop,
                 iuiColButtonActiveBackdrop,
@@ -119,7 +181,7 @@ extern Color   iuiColButtonShadow,
                 iuiColButtonHotBackdropTop,
                 iuiColButtonLabel;
 
-extern Color   iuiColTabLabel,
+extern Color    iuiColTabLabel,
                 iuiColTabHot,
                 iuiColTabHotAccent,
                 iuiColTabCurrent,
@@ -127,11 +189,11 @@ extern Color   iuiColTabLabel,
 
 extern int iuiColTabNum; // number of tab colours
 
-extern Color   iuiColTab[2],
+extern Color    iuiColTab[2],
                 iuiColTabAccent[2];
 
 extern bool iuiTextBoxRainbow; // rainbow colour when active
-extern Color   iuiColTextBoxFill,
+extern Color    iuiColTextBoxFill,
                 iuiColTextBoxText,
                 iuiColTextBoxBorder,
                 iuiColTextBoxActiveFill,
@@ -149,15 +211,15 @@ extern int  iuiSliderHWid, // horizontal
 extern int  iuiSliderVWid, // vertical
             iuiSliderVHei;
 
-extern int iuiSliderThick; // How thick the guideline(?) is
+extern int iuiSliderThickness; // How thick the guideline(?) is
 
-extern Color   iuiColSliderLine,
+extern Color    iuiColSliderLine,
                 iuiColSlider,
                 iuiColSliderActive,
                 iuiColSliderHot;
 
 // Checkbox
-extern Color   iuiColCheckboxBorder,
+extern Color    iuiColCheckboxBorder,
                 iuiColCheckboxBG,
                 iuiColCheckboxFG; // the checker colour
 

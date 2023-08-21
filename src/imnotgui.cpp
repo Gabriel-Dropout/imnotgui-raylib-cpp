@@ -14,14 +14,14 @@ std::string iui_trim_label(std::string text) {
     if(CUTPOS == std::string::npos) return text;
     return text.substr(0, CUTPOS);
 }
-std::string iui_trim_id(std::string text) {
+std::string iui_trim_idstr(std::string text) {
     int CUTPOS = text.find_first_of("##");
     if(CUTPOS == std::string::npos) return text;
     return text.substr(CUTPOS + 2, text.size() - CUTPOS - 2);
 }
 
 void iui_get_all(std::string text, int& ID, std::string& label) {
-    std::string _TMPID = iui_trim_id(text);
+    std::string _TMPID = iui_trim_idstr(text);
     int _MAPID = iui_idMap[_TMPID];
 
     if(_MAPID == 0) {
@@ -35,7 +35,7 @@ void iui_get_all(std::string text, int& ID, std::string& label) {
     return;
 }
 int iui_get_id(std::string text) {
-    std::string _TMPID = iui_trim_id(text);
+    std::string _TMPID = iui_trim_idstr(text);
     int _MAPID = iui_idMap[_TMPID];
 
     if(_MAPID == 0) {
@@ -95,23 +95,23 @@ Font* iui_getFont() {
     return iuiFont;
 }
 
-std::string iui_strTrim(std::string text, int width) {
-    int em_ = MeasureText("M", 20);
-    int strLen = text.size();
-    
-    if(strLen * em_ > width) {
-        text = text.substr(0, std::max(width/em_ - 3, 0)) + "...";
+std::string iui_strTrimDots(std::string text, int width) {
+    if(iui_measureText(text) <= width) return text;
+
+    std::string curText = text + "...";
+    while(iui_measureText(curText) > width && curText.size() >= 4) {
+        curText.erase(curText.size() - 4, 1);
     }
-    return text;
+    return curText;
 }
-std::string iui_strTrimNodots(std::string text, int width) {
-    int em_ = MeasureText("M", 20);
-    int strLen = text.size();
-    
-    if(strLen * em_ > width) {
-        text = text.substr(0, std::max(width/em_ - 1, 0));  // different from original code
+std::string iui_strTrim(std::string text, int width) {
+    if(iui_measureText(text) <= width) return text;
+
+    std::string curText = text;
+    while(iui_measureText(curText) > width && curText.size() >= 1) {
+        curText.erase(curText.size() - 1, 1);
     }
-    return text;
+    return curText;
 }
 
 Color iui_colLighter(Color color, int amount) {

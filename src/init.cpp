@@ -79,7 +79,7 @@ int iuiSliderHWid = 20, // horizontal
 int iuiSliderVWid = 42, // vertical
     iuiSliderVHei = 20;
 
-int iuiSliderThick = 8; // How thick the guideline(?) is
+int iuiSliderThickness = 8; // How thick the guideline(?) is
 
 Color   iuiColSliderLine   = iuHellaDark,
                 iuiColSlider       = iuNormal,

@@ -6,7 +6,6 @@
 #include "imnotgui_extra.hpp"
 
 namespace imnotgui {
-// If you wanna use different backends, you can change this namespace fileds.
 namespace draw {
 void iui_rect(int x, int y, int w, int h, Color color) {
     DrawRectangle(x, y, w, h, color);
