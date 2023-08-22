@@ -3,6 +3,8 @@
 #ifndef IMNOTGUI_EXTRA_HPP
 #define IMNOTGUI_EXTRA_HPP
 
+#include <string>
+
 #include "raylib.h"
 
 // Atlas sprite properties
