@@ -6,12 +6,9 @@
 #include "imnotgui.hpp"
 #include "imnotgui_extra.hpp"
 
-#include "resources/atlas.h"
-
 using namespace imnotgui;
 using namespace imnotgui::draw;
 using namespace imnotgui::element;
-
 
 std::string Linebreak(Font font, std::string text, int maxWidth, float fontSize, float spacing);
 

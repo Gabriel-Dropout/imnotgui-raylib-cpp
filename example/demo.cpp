@@ -1,18 +1,32 @@
 #include <iostream>
 #include <string>
 
+#include "raylib.h"
 #include "raylib-cpp.hpp"
+
 #include "imnotgui.hpp"
 #include "imnotgui_extra.hpp"
 
-#include "resources/atlas.h"
+#define RTEXLOADER_IMPLEMENTATION
+#include "include/rtexloader.hpp"
 
 using namespace imnotgui;
 using namespace imnotgui::draw;
 using namespace imnotgui::element;
 
-// Get one sprite index position from the array by nameId
-static int GetSpriteIndex(rtpAtlasSprite *spriteDesc, int spriteCount, const char *nameId);
+// Draw a sprite from atlas
+void DrawSprite(std::string sprite, int x, int y, Color color) {
+    DrawSpriteAtlas(atlas, getSprite(sprite), x, y, 0, color);
+}
+void DrawSprite(std::string sprite, int x, int y, float angle, Color color) {
+    DrawSpriteAtlas(atlas, getSprite(sprite), x, y, angle, color);
+}
+void DrawSprite(std::string sprite, int x, int y, float xscale, float yscale, float angle, Color color) {
+    DrawSpriteAtlas(atlas, getSprite(sprite), x, y, xscale, yscale, angle, color);
+}
+void DrawSprite(std::string sprite, Rectangle slice, int x, int y, float xscale, float yscale, float angle, Color color) {
+    DrawSpriteAtlas(atlas, getSprite(sprite), slice, x, y, xscale, yscale, angle, color);
+}
 
 float colBrightness(raylib::Color color) {
     return (float)sqrt(color.r*color.r*0.241 + color.g*color.g*0.691 + color.b*color.b*0.068);
@@ -57,29 +71,7 @@ int main() {
     InitWindow(1280, 720, "ImNotGUI Demo");
     SetTargetFPS(60);
 
-    raylib::Texture2D atlas("resources/atlas.png");
-    raylib::Texture2D profile("resources/profile.png");
-    
-    // Get sprite from the array given a specific index
-    rtpAtlasSprite  spr_uimouse_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_0")],
-                    spr_uimouse_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_1")],
-                    spr_uimouse_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uimouse_2")],
-                    spr_loss_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_0")],
-                    spr_loss_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_1")],
-                    spr_loss_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_2")],
-                    spr_loss_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_loss_3")],
-                    spr_logo_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_0")],
-                    spr_logo_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_logo_1")],
-                    spr_biglogo = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_biglogo")],
-                    spr_here = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_here")],
-                    spr_diamond = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_diamond")],
-                    spr_icons42_0 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icons42_0")],
-                    spr_icons42_1 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icons42_1")],
-                    spr_icons42_2 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icons42_2")],
-                    spr_icons42_3 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_icons42_3")],
-                    spr_chip64 = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_chip64")],
-                    spr_pfp = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_pfp")],
-                    spr_uicheck = rtpDescAtlas[GetSpriteIndex(rtpDescAtlas, ATLAS_ATLAS_SPRITE_COUNT, "spr_uicheck")];
+    initAtlas("resources/atlas.png");    
 
     iuiGlobalStyle.isButtonShadowEnabled = true;
 
@@ -101,9 +93,9 @@ int main() {
         int TAB_X = 42;
 
         switch(imnotgui::element::iui_tab(TAB_X, 30, 140, 50, mainTabVec, mainTabIdx, 2)) {
-            case 0:{
+            case 0: {
                 /// Intro
-                iui_sprite_from_atlas(atlas, spr_biglogo, SCREEN_CENTER_X, SCREEN_CENTER_Y/2, WHITE);
+                DrawSprite("spr_biglogo", SCREEN_CENTER_X, SCREEN_CENTER_Y/2, WHITE);
                 iui_label(SCREEN_CENTER_X - 257, SCREEN_CENTER_Y/4 + 12, "Sincerely,", iuCream);
                 int hprev, vprev;
                 iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
@@ -114,7 +106,7 @@ int main() {
                 float sinned = sine01_;
                 float cosBoi = cos(iui_animTimer * 0.1) * 12;
                 float loopTime = 1320 - ((iui_animTimer*2)%1680);
-                iui_sprite_from_atlas(atlas, spr_chip64, loopTime, (SCREEN_CENTER_Y*2) - 70 - abs(cosBoi), sinned * 12, WHITE);
+                DrawSprite("spr_chip64", loopTime, (SCREEN_CENTER_Y*2) - 70 - abs(cosBoi), sinned * 12, WHITE);
                 iui_label_shadow(loopTime + 40, (SCREEN_CENTER_Y * 2) - 90 - abs(cosBoi), "<- A random bloke,\n   plz ignore.", iuPiss, 2, 2, iuHellaDark);
 
                 iui_rect(SCREEN_CENTER_X - 300, SCREEN_CENTER_Y / 1.2, 600, 300, iuHellaDark);
@@ -228,7 +220,7 @@ int main() {
                         
                         // value test
                         int chipY = abs(std::sin(iui_animTimer * 0.05 * ui_textbox_number)) * 21;
-                        iui_sprite_from_atlas(atlas, spr_chip64, SCREEN_CENTER_X - 136, (textboxY + 185) - chipY, ui_textbox_number * iui_animTimer, WHITE);
+                        DrawSprite("spr_chip64", SCREEN_CENTER_X - 136, (textboxY + 185) - chipY, ui_textbox_number * iui_animTimer, WHITE);
                         break;
                     }
                     case 2:{
@@ -278,24 +270,8 @@ int main() {
                         iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, 1);
 
                         sprev = iui_setFontSize(42);
-                        switch(lossTabIdx) {
-                            case 0:
-                                iui_sprite_from_atlas(atlas, spr_loss_0, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 180, 510, "0]", iuDark2);
-                                break;
-                            case 1:
-                                iui_sprite_from_atlas(atlas, spr_loss_1, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 180, 510, "1]", iuDark2);
-                                break;
-                            case 2:
-                                iui_sprite_from_atlas(atlas, spr_loss_2, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 180, 510, "2]", iuDark2);
-                                break;
-                            case 3:
-                                iui_sprite_from_atlas(atlas, spr_loss_3, SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                                iui_label(SCREEN_CENTER_X - 180, 510, "3]", iuDark2);
-                                break;
-                        }
+                        DrawSprite(TextFormat("spr_loss_%d", lossTabIdx), SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
+                        iui_label(SCREEN_CENTER_X - 180, 510, TextFormat("%d]", lossTabIdx), iuDark2);
                         iui_setFontSize(sprev);
                         break;
                     }
@@ -432,28 +408,28 @@ int main() {
                 
                 iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                 
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY + 5, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY, iuMint);
+                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                DrawSprite("spr_diamond", listX, listY, iuMint);
                 iui_label_shadow(listX + 30, listY, "ABUSES GAMEMAKER'S SPRITE-BATCH SYSTEM", iuCream, 0, 5, iuHellaDark);
                 
                 listY += 35;
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY + 5, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY, iuMint);
+                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                DrawSprite("spr_diamond", listX, listY, iuMint);
                 iui_label_shadow(listX + 30, listY, "...WHICH MAKES THE MOST OUT OF SINGLE DRAW CALL. (= REALLY  FAST!)", iuCream, 0, 5, iuHellaDark);
                 
                 listY += 35;
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY + 5, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY, iuMint);
+                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                DrawSprite("spr_diamond", listX, listY, iuMint);
                 iui_label_shadow(listX + 30, listY, "HEAVILY INSPIRED FROM DEAR IMGUI'S VERTEX BUFFER SYSTEM", iuCream, 0, 5, iuHellaDark);
                 
                 listY = SCREEN_CENTER_Y + 110;
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY + 5, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY, iuMint);
+                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                DrawSprite("spr_diamond", listX, listY, iuMint);
                 iui_label_shadow(listX + 30, listY, "VERTEX BUFFER IS NOT GOOD FOR MOVING THINGS LIKE GUI D: (NOT FUNNY)", iuCream, 0, 5, iuHellaDark);
                 
                 listY += 35;
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY + 5, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_diamond, listX, listY, iuMint);
+                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                DrawSprite("spr_diamond", listX, listY, iuMint);
                 iui_label_shadow(listX + 30, listY + 18, "SHOVING VERTICES INTO VERTEX BUFFER IS\nREALLY EXPENSIVE FOR CPU (NOT FUNNY [2])", iuCream, 0, 5, iuHellaDark);
                 
                 iui_setAlignment(hprev, vprev);
@@ -477,7 +453,7 @@ int main() {
                 // iui_rect(marginX + 10, 85, 1186 - marginWid, 595, iuDark2);
                 
                 // pfp
-                iui_sprite_from_atlas(atlas, spr_pfp, pfpX, pfpY, WHITE);
+                DrawSprite("spr_pfp_0", pfpX, pfpY, WHITE);
                 
                 // namecard
                 sprev = iui_setFontSize(42);
@@ -525,7 +501,7 @@ int main() {
                 // we can't use shadow variant here; We want fully solid shadow, Not tinted shadow.
                 // Thankfully the icon is rectangle... That means we can draw Rect for shadow!
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_0, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_0", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "Twitter : ", iuCream);
                 
                 // clickable stuff
@@ -554,7 +530,7 @@ int main() {
                 
                 /// Youtube
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_1, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_1", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "YT : ", iuCream);
                 
                 linkStr = ":D MilkForDunk";
@@ -579,7 +555,7 @@ int main() {
                 
                 /// Naver
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_2, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_2", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "NAVER blog : ", iuCream);
                 
                 linkStr = "rjansrhals";
@@ -604,7 +580,7 @@ int main() {
                 
                 /// GitHub
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_3, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_3", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "GitHub : ", iuCream);
                 
                 linkStr = "TandyRum1024";
@@ -695,10 +671,7 @@ int main() {
                 // iui_rect(marginX + 10, 85, 1186 - marginWid, 595, iuDark2);
                 
                 // pfp
-                DrawTexturePro(profile,
-                                raylib::Rectangle{0.f,0.f,420.f,420.f},
-                                raylib::Rectangle{(float)pfpX, (float)pfpY,200.f,200.f},
-                                raylib::Vector2{100, 100}, 0.f, WHITE);
+                DrawSprite("spr_pfp_1", pfpX, pfpY, WHITE);
                 
                 // namecard
                 sprev = iui_setFontSize(42);
@@ -746,7 +719,7 @@ int main() {
                 // we can't use shadow variant here; We want fully solid shadow, Not tinted shadow.
                 // Thankfully the icon is rectangle... That means we can draw Rect for shadow!
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_0, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_0", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "Github Blog : ", iuCream);
                 
                 // clickable stuff
@@ -775,7 +748,7 @@ int main() {
                 
                 /// Youtube
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_1, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_1", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "NAVER blog : ", iuCream);
                 
                 linkStr = "Trash Can";
@@ -800,7 +773,7 @@ int main() {
                 
                 /// Naver
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_2, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_2", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "NAVER blog2 : ", iuCream);
                 
                 linkStr = "DEV NOTE";
@@ -825,7 +798,7 @@ int main() {
                 
                 /// GitHub
                 iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                iui_sprite_from_atlas(atlas, spr_icons42_3, linkX, linkY, WHITE);
+                DrawSprite("spr_icons42_3", linkX, linkY, WHITE);
                 iui_label(linkX + 31, linkY, "GitHub : ", iuCream);
                 
                 linkStr = "TandyRum1024";
@@ -852,23 +825,7 @@ int main() {
         EndDrawing();
     }
 
+    unloadAtlas();
     CloseWindow();
     return 0;
-}
-
-// Get one sprite index position from the array by nameId
-static int GetSpriteIndex(rtpAtlasSprite *spriteDesc, int spriteCount, const char *nameId)
-{
-    int index = 0;
-    
-    for (int i = 0; i < spriteCount; i++)
-    {
-        if (TextIsEqual(nameId, spriteDesc[i].nameId))
-        {
-            index = i;
-            break;
-        }
-    }
-    
-    return index;
 }

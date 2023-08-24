@@ -81,34 +81,6 @@ void iui_label_underline(int x, int y, std::string text, Color color, float thic
 }
 void iui_label_ext(int x, int y, std::string text, Color color, int sep, int width);
 
-void iui_sprite(Texture2D &texture, int x, int y, Color color) {
-    DrawTexture(texture, x, y, color);
-}
-void iui_sprite_from_atlas(Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, Color color) {
-    DrawTexturePro(atlas,
-        Rectangle{(float)sprite.positionX, (float)sprite.positionY, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
-        Rectangle{(float)x, (float)y, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
-        Vector2{(float)sprite.originX, (float)sprite.originY},
-        0.f,
-        color);
-}
-void iui_sprite_from_atlas(Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float angle, Color color) {
-    DrawTexturePro(atlas,
-        Rectangle{(float)sprite.positionX, (float)sprite.positionY, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
-        Rectangle{(float)x, (float)y, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
-        Vector2{(float)sprite.originX, (float)sprite.originY},
-        angle,
-        color);
-}
-void iui_sprite_from_atlas(Texture2D &atlas, rtpAtlasSprite sprite, int x, int y, float xscale, float yscale, float angle, Color color) {
-    DrawTexturePro(atlas,
-        Rectangle{(float)sprite.positionX, (float)sprite.positionY, (float)sprite.sourceWidth, (float)sprite.sourceHeight},
-        Rectangle{(float)x, (float)y, (float)sprite.sourceWidth*xscale, (float)sprite.sourceHeight*yscale},
-        Vector2{(float)sprite.originX*xscale, (float)sprite.originY*yscale},
-        angle,
-        color);
-}
-
 void draw_textbubble_top(int x, int y, int w, int h, std::string text, Color color, Color textColor, int arrowPos, int arrowSize) {
     int arrowHypo = 0.70710678118 * arrowSize;
     arrowPos = std::clamp(arrowPos, arrowHypo, w - arrowHypo);
