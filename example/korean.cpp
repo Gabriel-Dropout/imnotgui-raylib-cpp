@@ -34,7 +34,7 @@ int main() {
     // Onetime Linebreak
     int maxWidth = 1280 - 69*2;
     int fontSize = 24;
-    sampleText = Linebreak(fnt_kor, sampleText, maxWidth, fontSize, fontSize/fnt_kor.baseSize);
+    sampleText = Linebreak(fnt_kor, sampleText, maxWidth, fontSize, (int)(fontSize/fnt_kor.baseSize));
 
     SetTargetFPS(60);
     while(!WindowShouldClose()) {

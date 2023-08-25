@@ -7,10 +7,11 @@
 
 namespace imnotgui {
 namespace element {
-void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID) {
+template <typename T>
+void iui_slider_h_base(int x, int y, T &value, int width, T min, T max, const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;
 
-    int sliderX = x + std::clamp(width*(value-min)/(max-min), 0, width);
+    int sliderX = x + std::clamp((int)(width*(value-min)/(max-min)), 0, width);
     int btnW = style.sliderHWid, btnH = style.sliderHHei;
 
     /// Get ID
@@ -36,7 +37,7 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
         value = std::clamp(value, min, max);
 
         // update slider position
-        sliderX = x + std::clamp(width*(value-min)/(max-min), 0, width);
+        sliderX = x + std::clamp((int)(width*(value-min)/(max-min)), 0, width);
     }
 
     // draw
@@ -74,10 +75,18 @@ void iui_slider_h(int x, int y, int &value, int width, int min, int max, const s
     draw::iui_rect(sliderX - btnW/2, y - btnH/2, btnW, btnH, btnColor);
 }
 
-void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID) {
+void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID) {
+    iui_slider_h_base<int>(x, y, value, width, min, max, ID);
+}
+void iui_slider_h(int x, int y, float &value, int width, float min, float max, const std::string ID) {
+    iui_slider_h_base<float>(x, y, value, width, min, max, ID);
+}
+
+template<typename T>
+void iui_slider_v_base(int x, int y, T &value, int height, T min, T max, const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;
 
-    int sliderY = y + std::clamp(height*(value-min)/(max-min), 0, height);
+    int sliderY = y + std::clamp((int)(height*(value-min)/(max-min)), 0, height);
     int btnW = style.sliderVWid, btnH = style.sliderVHei;
 
     /// Get ID
@@ -103,7 +112,7 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
         value = std::clamp(value, min, max);
 
         // update slider position
-        sliderY = y + std::clamp(height*(value-min)/(max-min), 0, height);
+        sliderY = y + std::clamp((int)(height*(value-min)/(max-min)), 0, height);
     }
 
     // draw
@@ -140,5 +149,14 @@ void iui_slider_v(int x, int y, int &value, int height, int min, int max, const 
     }
     draw::iui_rect(x - btnW/2, sliderY - btnH/2, btnW, btnH, btnColor);
 }
+
+void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID) {
+    iui_slider_v_base<int>(x, y, value, height, min, max, ID);
+}
+
+void iui_slider_v(int x, int y, float &value, int height, float min, float max, const std::string ID) {
+    iui_slider_v_base<float>(x, y, value, height, min, max, ID);
+}
+
 } // namespace element
 } // namespace imnotgui

@@ -4,7 +4,7 @@
 
 namespace imnotgui {
 namespace element {
-int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode) {
+int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode) {
     IuiStyle &style = iuiGlobalStyle;
 
     int numTabs = textVec.size();
@@ -99,7 +99,7 @@ int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &t
     return tabIdx;
 }
 
-int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode) {
+int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode) {
     IuiStyle &style = iuiGlobalStyle;
 
     int numTabs = textVec.size();

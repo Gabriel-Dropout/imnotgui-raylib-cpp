@@ -46,13 +46,15 @@ namespace draw {
 namespace element {
     bool iui_button(int x, int y, int w, int h, std::string text);
     bool iui_button_nodraw(int x, int y, int w, int h, std::string text);
-    int iui_tab(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode);
-    int iui_tab_v(int x, int y, int w, int h, std::vector<std::string> textVec, int &tabIdx, int trimMode);
+    int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode);
+    int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode);
     bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::string ID);
     bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const std::string ID);
     bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, const std::string ID);
     void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID);
+    void iui_slider_h(int x, int y, float &value, int width, float min, float max, const std::string ID);
     void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID);
+    void iui_slider_v(int x, int y, float &value, int height, float min, float max, const std::string ID);
     bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID);
 }
 
