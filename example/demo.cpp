@@ -56,7 +56,7 @@ int main() {
     std::string ui_textbox_testarea_str = "";
     std::string ui_textbox_number_str = "";
     int ui_textbox_number = 0;
-    std::string ui_textbox_thicc_str = "";
+    std::vector<std::string> ui_textbox_str_vec = {""};
 
     int ui_slider_test_h = 0;
     int ui_slider_test_v = 0;
@@ -199,7 +199,7 @@ int main() {
                         int textboxY = 370;
                         iui_textbox(SCREEN_CENTER_X - 420, textboxY, 200, 50, ui_textbox_testarea_str, "7-grand-dad");
                         iui_intbox(SCREEN_CENTER_X - 420, textboxY + 160, 200, 50, ui_textbox_number_str, ui_textbox_number, "number-plz");
-                        iui_textbox(SCREEN_CENTER_X + 20, textboxY, 400, 210, ui_textbox_thicc_str, "extra-thicc");
+                        iui_multi_textbox(SCREEN_CENTER_X + 20, textboxY, 400, 210, ui_textbox_str_vec, "extra-thicc");
 
                         iui_setAlignment(IUI_LABEL_ALIGN_RIGHT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         iui_label(SCREEN_CENTER_X - 430, textboxY + 25, "STRING", iuCream);
@@ -249,13 +249,13 @@ int main() {
                     }
                     case 3:{
                         /// Tabs
-                        int hprev, vprev, sprev;
+                        int hprev, vprev;
                         iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         
                         //title
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Tabs ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
+                        {   ScopedFontSizeSetter _(42);
+                            iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Tabs ]=", iuCream, 5, 5, iuHellaDark);
+                        }
                         // codebox
                         int strWid = iui_measureText("tab_index = iui_tab(x, y, width, height, strings, tab_index, trim mode);") + 10;
                         iui_rect(SCREEN_CENTER_X - (strWid / 2) - 2, 228, (strWid + 4), 54, iuMint);
@@ -266,21 +266,21 @@ int main() {
                         iui_tab(SCREEN_CENTER_X - 500, 300, 250, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
                         iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
 
-                        sprev = iui_setFontSize(42);
-                        DrawSprite(TextFormat("spr_loss_%d", lossTabIdx), SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
-                        iui_label(SCREEN_CENTER_X - 180, 510, TextFormat("%d]", lossTabIdx), iuDark2);
-                        iui_setFontSize(sprev);
+                        {   ScopedFontSizeSetter _(42);
+                            DrawSprite(TextFormat("spr_loss_%d", lossTabIdx), SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);
+                            iui_label(SCREEN_CENTER_X - 180, 510, TextFormat("%d]", lossTabIdx), iuDark2);
+                        }
                         break;
                     }
                     case 4:{
                         /// Misc.
-                        int hprev, vprev, sprev;
+                        int hprev, vprev;
                         iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         
                         //title
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Misc. ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
+                        {   ScopedFontSizeSetter _(42);
+                            iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Misc. ]=", iuCream, 5, 5, iuHellaDark);
+                        }
                         
                         // rect
                         raylib::Color iuRainbow = raylib::Color::FromHSV((int)(iui_animTimer*0.1f)%360, 1.0f, 1.0f);
@@ -305,13 +305,13 @@ int main() {
                     }
                     case 5:{
                         /// Extra.
-                        int hprev, vprev, sprev;
+                        int hprev, vprev;
                         iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         
                         //title
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Extra ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
+                        {   ScopedFontSizeSetter _(42);
+                            iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Extra ]=", iuCream, 5, 5, iuHellaDark);
+                        }
                         
                         // groupbox
                         iui_groupbox(SCREEN_CENTER_X - 100, 300, 200, 200, "Groupbox");
@@ -326,11 +326,11 @@ int main() {
                 /// ID demo
                 
                 // text
-                int hprev, vprev, sprev;
+                int hprev, vprev;
                 iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                sprev = iui_setFontSize(42);
-                iui_label_shadow(SCREEN_CENTER_X, SCREEN_CENTER_Y / 3, "=[ The ID and LABEL system ]=", iuCream, 0, 10, iuHellaDark);
-                iui_setFontSize(sprev);
+                {   ScopedFontSizeSetter _(42);
+                    iui_label_shadow(SCREEN_CENTER_X, SCREEN_CENTER_Y / 3, "=[ The ID and LABEL system ]=", iuCream, 0, 10, iuHellaDark);
+                }
 
                 
                 raylib::Color AMERIKACOLOR = iuPiss;
@@ -379,8 +379,6 @@ int main() {
                 iui_rect(infoX, infoY + infoHei + infoHei/2, infoWid, infoHei, iuNormal);
                 iui_label(infoX + infoWid/2, infoY + infoHei + infoHei, "LABEL : " + iui_trim_label(idStr), iuCream);
                 
-                iui_setFontSize(sprev);
-                
                 iui_setAlignment(hprev, vprev);
                 break;
             }
@@ -389,218 +387,210 @@ int main() {
                 
                 // How
                 
-                int hprev, vprev, sprev;
-                sprev = iui_setFontSize(42);
-                iui_label(120, (SCREEN_CENTER_Y / 3) + 10, "How?", iuHellaDark);
-                iui_label(120, SCREEN_CENTER_Y / 3, "How?", iuCream);
-                iui_label(120, (SCREEN_CENTER_Y + 10), "WHY NOT VERTEX BUFFER?", iuHellaDark);
-                iui_label(120, SCREEN_CENTER_Y, "WHY NOT VERTEX BUFFER?", iuCream);
+                int hprev, vprev;
+                {   ScopedFontSizeSetter _(42);
+                    iui_label(120, (SCREEN_CENTER_Y / 3) + 10, "How?", iuHellaDark);
+                    iui_label(120, SCREEN_CENTER_Y / 3, "How?", iuCream);
+                    iui_label(120, (SCREEN_CENTER_Y + 10), "WHY NOT VERTEX BUFFER?", iuHellaDark);
+                    iui_label(120, SCREEN_CENTER_Y, "WHY NOT VERTEX BUFFER?", iuCream);
 
-                
-                // list o' stuff
-                int listX = 130;
-                int listY = (SCREEN_CENTER_Y / 3) + 100;
-                
-                iui_setFontSize(24);
-                
-                iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                
-                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
-                DrawSprite("spr_diamond", listX, listY, iuMint);
-                iui_label_shadow(listX + 30, listY, "ABUSES GAMEMAKER'S SPRITE-BATCH SYSTEM", iuCream, 0, 5, iuHellaDark);
-                
-                listY += 35;
-                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
-                DrawSprite("spr_diamond", listX, listY, iuMint);
-                iui_label_shadow(listX + 30, listY, "...WHICH MAKES THE MOST OUT OF SINGLE DRAW CALL. (= REALLY  FAST!)", iuCream, 0, 5, iuHellaDark);
-                
-                listY += 35;
-                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
-                DrawSprite("spr_diamond", listX, listY, iuMint);
-                iui_label_shadow(listX + 30, listY, "HEAVILY INSPIRED FROM DEAR IMGUI'S VERTEX BUFFER SYSTEM", iuCream, 0, 5, iuHellaDark);
-                
-                listY = SCREEN_CENTER_Y + 110;
-                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
-                DrawSprite("spr_diamond", listX, listY, iuMint);
-                iui_label_shadow(listX + 30, listY, "VERTEX BUFFER IS NOT GOOD FOR MOVING THINGS LIKE GUI D: (NOT FUNNY)", iuCream, 0, 5, iuHellaDark);
-                
-                listY += 35;
-                DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
-                DrawSprite("spr_diamond", listX, listY, iuMint);
-                iui_label_shadow(listX + 30, listY + 18, "SHOVING VERTICES INTO VERTEX BUFFER IS\nREALLY EXPENSIVE FOR CPU (NOT FUNNY [2])", iuCream, 0, 5, iuHellaDark);
-                
-                iui_setAlignment(hprev, vprev);
-                iui_setFontSize(sprev);
+                    
+                    // list o' stuff
+                    int listX = 130;
+                    int listY = (SCREEN_CENTER_Y / 3) + 100;
+                    
+                    iui_setFontSize(24);
+                    
+                    iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
+                    
+                    DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                    DrawSprite("spr_diamond", listX, listY, iuMint);
+                    iui_label_shadow(listX + 30, listY, "ABUSES GAMEMAKER'S SPRITE-BATCH SYSTEM", iuCream, 0, 5, iuHellaDark);
+                    
+                    listY += 35;
+                    DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                    DrawSprite("spr_diamond", listX, listY, iuMint);
+                    iui_label_shadow(listX + 30, listY, "...WHICH MAKES THE MOST OUT OF SINGLE DRAW CALL. (= REALLY  FAST!)", iuCream, 0, 5, iuHellaDark);
+                    
+                    listY += 35;
+                    DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                    DrawSprite("spr_diamond", listX, listY, iuMint);
+                    iui_label_shadow(listX + 30, listY, "HEAVILY INSPIRED FROM DEAR IMGUI'S VERTEX BUFFER SYSTEM", iuCream, 0, 5, iuHellaDark);
+                    
+                    listY = SCREEN_CENTER_Y + 110;
+                    DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                    DrawSprite("spr_diamond", listX, listY, iuMint);
+                    iui_label_shadow(listX + 30, listY, "VERTEX BUFFER IS NOT GOOD FOR MOVING THINGS LIKE GUI D: (NOT FUNNY)", iuCream, 0, 5, iuHellaDark);
+                    
+                    listY += 35;
+                    DrawSprite("spr_diamond", listX, listY + 5, iuHellaDark);
+                    DrawSprite("spr_diamond", listX, listY, iuMint);
+                    iui_label_shadow(listX + 30, listY + 18, "SHOVING VERTICES INTO VERTEX BUFFER IS\nREALLY EXPENSIVE FOR CPU (NOT FUNNY [2])", iuCream, 0, 5, iuHellaDark);
+                    
+                    iui_setAlignment(hprev, vprev);
+                }
                 break;
             }
             case 4:{
-                int hprev, vprev, sprev;
-
-                /// DEV INFO
-                int pfpX = SCREEN_CENTER_X / 2.5;
-                int pfpY = SCREEN_CENTER_Y / 1.5;
-                int marginWid = (pfpX - 42) * 2;
-                int marginX   = 42 + marginWid;
-                
-                // backdrop
-                iui_rect(42, 85, marginWid, 595, iuHellaDark);
-                iui_rect(42, 85, marginWid, 300, iuMint);
-                iui_rect(marginX, 85, 10, 595, iuCream);
-                
-                // iui_rect(marginX + 10, 85, 1186 - marginWid, 595, iuDark2);
-                
-                // pfp
-                DrawSprite("spr_pfp_0", pfpX, pfpY, WHITE);
-                
-                // namecard
-                sprev = iui_setFontSize(42);
-                
-                raylib::Vector2 nameSize = iui_measureTextEx("MILKFORDUNK");
-                int nameW = nameSize.x + 16;
-                int nameH = 52 + 12;
-                int nameX = pfpX;
-                int nameY = pfpY + 110;
-                
-                iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                
-                // Big name
-                iui_rect(42, nameY - nameH/2, marginWid, nameH + 20, iuDark);
-                iui_rect(nameX - nameW/2, nameY - nameH/2, nameW, nameH + 20, iuBrown);
-                iui_label_shadow(nameX, nameY, "MILKFORDUNK", iuCream, 0, 9, iuHellaDark);
-                
-                iui_setFontSize(20);
-                
-                // AKA
-                iui_label(nameX, nameY + 38, "(AKA ZIKBAKGURI)", iuPiss);     
-                
-                iui_setFontSize(24);
-                
-                // Smol desc.
-                nameY += 100;
-                iui_label_shadow(nameX, nameY, "- IS 18 Y/O GAME DEV BOYO", iuCream, 0, 4, iuHellaDark);
-                iui_label_shadow(nameX, nameY + 50, "- IS TOTAL DINK", iuCream, 0, 4, iuHellaDark);
-                iui_label_shadow(nameX, nameY + 100, "(IS ALSO ARTIST)", iuCream, 0, 4, iuHellaDark);
-                
-                iui_setFontSize(20);
-                
-                // click-able smol link
-                int linkX    = marginX + 60;
-                int linkY    = pfpY - 79;
-                int iconSize = 21; // half size of the icon
-                raylib::Color linkColour = iuSky;
-                std::string linkStr    = "@ZIKBAKGURI";
-                raylib::Vector2 linkSize;
-                int linkOffX, linkW, linkH;
-
-                iui_setAlignment(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE);
-                
-                /// Twitter
-                // we can't use shadow variant here; We want fully solid shadow, Not tinted shadow.
-                // Thankfully the icon is rectangle... That means we can draw Rect for shadow!
-                iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                DrawSprite("spr_icons42_0", linkX, linkY, WHITE);
-                iui_label(linkX + 31, linkY, "Twitter : ", iuCream);
-                
-                // clickable stuff
-                linkSize = iui_measureTextEx(linkStr);
-                linkW = linkSize.x;
-                linkH = linkSize.y;
-                linkOffX = (linkX + 31 + iui_measureText("Twitter : "));
-                
-                // check click
-                if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-twitter")){}
-                    //url_open("https://twitter.com/ZIKBAKGURI");
+                int hprev, vprev;
+                {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+                    /// DEV INFO
+                    int pfpX = SCREEN_CENTER_X / 2.5;
+                    int pfpY = SCREEN_CENTER_Y / 1.5;
+                    int marginWid = (pfpX - 42) * 2;
+                    int marginX   = 42 + marginWid;
                     
-                // check hover
-                if (iui_hotItem == iui_get_id("btn-twitter"))
-                {
-                    linkColour = iuRed;
-                    iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
-                }
-                
-                iui_label(linkOffX, linkY, linkStr, linkColour);
-                
-                // prepare for another line
-                linkColour = iuSky;
-                linkY += 62;
-                
-                
-                /// Youtube
-                iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                DrawSprite("spr_icons42_1", linkX, linkY, WHITE);
-                iui_label(linkX + 31, linkY, "YT : ", iuCream);
-                
-                linkStr = ":D MilkForDunk";
-                linkSize = iui_measureTextEx(linkStr);
-                linkW = linkSize.x;
-                linkH = linkSize.y;
-                linkOffX = (linkX + 31 + iui_measureText("YT : "));
+                    // backdrop
+                    iui_rect(42, 85, marginWid, 595, iuHellaDark);
+                    iui_rect(42, 85, marginWid, 300, iuMint);
+                    iui_rect(marginX, 85, 10, 595, iuCream);
+                    
+                    // iui_rect(marginX + 10, 85, 1186 - marginWid, 595, iuDark2);
+                    
+                    // pfp
+                    DrawSprite("spr_pfp_0", pfpX, pfpY, WHITE);
+                    
+                    // namecard
+                    int nameX = pfpX;
+                    int nameY = pfpY + 110;
 
-                if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-yt")){}
-                    // url_open("https://www.youtube.com/user/XDJcreepXfail");
-                if (iui_hotItem == iui_get_id("btn-yt"))
-                {
-                    linkColour = iuRed;
-                    iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
-                }
-                
-                iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
-                
-                linkColour = iuSky;
-                linkY += 62;
-                
-                
-                /// Naver
-                iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                DrawSprite("spr_icons42_2", linkX, linkY, WHITE);
-                iui_label(linkX + 31, linkY, "NAVER blog : ", iuCream);
-                
-                linkStr = "rjansrhals";
-                linkSize = iui_measureTextEx(linkStr);
-                linkW = linkSize.x;
-                linkH = linkSize.y;
-                linkOffX = (linkX + 31 + iui_measureText("NAVER blog : "));
+                    {   ScopedFontSizeSetter _(42);
+                        // Big name
+                        int nameW = iui_measureText("MILKFORDUNK") + 16;
+                        int nameH = 52 + 12;
+                        iui_rect(42, nameY - nameH/2, marginWid, nameH + 20, iuDark);
+                        iui_rect(nameX - nameW/2, nameY - nameH/2, nameW, nameH + 20, iuBrown);
+                        iui_label_shadow(nameX, nameY, "MILKFORDUNK", iuCream, 0, 9, iuHellaDark);
+                    }
+                    
+                    // AKA
+                    iui_label(nameX, nameY + 38, "(AKA ZIKBAKGURI)", iuPiss);     
+                    
+                    {   ScopedFontSizeSetter _(24);
+                        // Smol desc.
+                        nameY += 100;
+                        iui_label_shadow(nameX, nameY, "- IS 18 Y/O GAME DEV BOYO", iuCream, 0, 4, iuHellaDark);
+                        iui_label_shadow(nameX, nameY + 50, "- IS TOTAL DINK", iuCream, 0, 4, iuHellaDark);
+                        iui_label_shadow(nameX, nameY + 100, "(IS ALSO ARTIST)", iuCream, 0, 4, iuHellaDark);
+                    }
+                    
+                    // click-able smol link
+                    int linkX    = marginX + 60;
+                    int linkY    = pfpY - 79;
+                    int iconSize = 21; // half size of the icon
+                    raylib::Color linkColour = iuSky;
+                    std::string linkStr    = "@ZIKBAKGURI";
+                    raylib::Vector2 linkSize;
+                    int linkOffX, linkW, linkH;
 
-                if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-naver")){}
-                    // url_open("http://blog.naver.com/rjansrhals");
-                if (iui_hotItem == iui_get_id("btn-naver"))
-                {
-                    linkColour = iuRed;
-                    iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
-                }
-                
-                iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
-                
-                linkColour = iuSky;
-                linkY += 62;
-                
-                
-                /// GitHub
-                iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
-                DrawSprite("spr_icons42_3", linkX, linkY, WHITE);
-                iui_label(linkX + 31, linkY, "GitHub : ", iuCream);
-                
-                linkStr = "TandyRum1024";
-                linkSize = iui_measureTextEx(linkStr);
-                linkW = linkSize.x;
-                linkH = linkSize.y;
-                linkOffX = (linkX + 31 + iui_measureText("GitHub : "));
+                    {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE);
+                        /// Twitter
+                        // we can't use shadow variant here; We want fully solid shadow, Not tinted shadow.
+                        // Thankfully the icon is rectangle... That means we can draw Rect for shadow!
+                        iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
+                        DrawSprite("spr_icons42_0", linkX, linkY, WHITE);
+                        iui_label(linkX + 31, linkY, "Twitter : ", iuCream);
+                        
+                        // clickable stuff
+                        linkSize = iui_measureTextEx(linkStr);
+                        linkW = linkSize.x;
+                        linkH = linkSize.y;
+                        linkOffX = (linkX + 31 + iui_measureText("Twitter : "));
+                        
+                        // check click
+                        if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-twitter")){}
+                            //url_open("https://twitter.com/ZIKBAKGURI");
+                            
+                        // check hover
+                        if (iui_hotItem == iui_get_id("btn-twitter"))
+                        {
+                            linkColour = iuRed;
+                            iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
+                        }
+                        
+                        iui_label(linkOffX, linkY, linkStr, linkColour);
+                        
+                        // prepare for another line
+                        linkColour = iuSky;
+                        linkY += 62;
+                        
+                        
+                        /// Youtube
+                        iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
+                        DrawSprite("spr_icons42_1", linkX, linkY, WHITE);
+                        iui_label(linkX + 31, linkY, "YT : ", iuCream);
+                        
+                        linkStr = ":D MilkForDunk";
+                        linkSize = iui_measureTextEx(linkStr);
+                        linkW = linkSize.x;
+                        linkH = linkSize.y;
+                        linkOffX = (linkX + 31 + iui_measureText("YT : "));
 
-                if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-gh")){}
-                    // url_open("https://github.com/TandyRum1024");
-                if (iui_hotItem == iui_get_id("btn-gh"))
-                {
-                    linkColour = iuRed;
-                    iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
+                        if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-yt")){}
+                            // url_open("https://www.youtube.com/user/XDJcreepXfail");
+                        if (iui_hotItem == iui_get_id("btn-yt"))
+                        {
+                            linkColour = iuRed;
+                            iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
+                        }
+                        
+                        iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
+                        
+                        linkColour = iuSky;
+                        linkY += 62;
+                        
+                        
+                        /// Naver
+                        iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
+                        DrawSprite("spr_icons42_2", linkX, linkY, WHITE);
+                        iui_label(linkX + 31, linkY, "NAVER blog : ", iuCream);
+                        
+                        linkStr = "rjansrhals";
+                        linkSize = iui_measureTextEx(linkStr);
+                        linkW = linkSize.x;
+                        linkH = linkSize.y;
+                        linkOffX = (linkX + 31 + iui_measureText("NAVER blog : "));
+
+                        if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-naver")){}
+                            // url_open("http://blog.naver.com/rjansrhals");
+                        if (iui_hotItem == iui_get_id("btn-naver"))
+                        {
+                            linkColour = iuRed;
+                            iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
+                        }
+                        
+                        iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
+                        
+                        linkColour = iuSky;
+                        linkY += 62;
+                        
+                        
+                        /// GitHub
+                        iui_rect(linkX - iconSize, linkY - iconSize + 10, 42, 42, iuHellaDark);
+                        DrawSprite("spr_icons42_3", linkX, linkY, WHITE);
+                        iui_label(linkX + 31, linkY, "GitHub : ", iuCream);
+                        
+                        linkStr = "TandyRum1024";
+                        linkSize = iui_measureTextEx(linkStr);
+                        linkW = linkSize.x;
+                        linkH = linkSize.y;
+                        linkOffX = (linkX + 31 + iui_measureText("GitHub : "));
+
+                        if (iui_button_nodraw(linkOffX - 2, linkY - linkH/2 - 2, linkW + 4, linkH + 4, "btn-gh")){}
+                            // url_open("https://github.com/TandyRum1024");
+                        if (iui_hotItem == iui_get_id("btn-gh"))
+                        {
+                            linkColour = iuRed;
+                            iui_rect(linkOffX - 2, linkY - 10, linkW, linkH, iuDark2);
+                        }
+                        
+                        iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
+                        
+                        linkY += 62;
+                        
+                        iui_label(linkX - 21, linkY, "Contact me via e-mail @ yubin2892@gmail.com !", iuMint);
+                    }
                 }
-                
-                iui_label_underline(linkOffX, linkY, linkStr, linkColour, 2, -2);
-                
-                linkY += 62;
-                
-                iui_label(linkX - 21, linkY, "Contact me via e-mail @ yubin2892@gmail.com !", iuMint);
-                
-                iui_setAlignment(hprev, vprev);
                 break;
             }
             case 5:{

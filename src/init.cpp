@@ -13,8 +13,11 @@ int iui_kbFocusItem = -1;
 int iui_idx = 0;
 std::map<std::string, int> iui_idMap;
 
-int iui_textboxShowPos = 0;
-int iui_textboxCursorPos = 0;
+int iui_textboxShowPos    = 0;
+int iui_textboxCursorPos  = 0;
+int iui_textboxShowLine   = 0;
+int iui_textboxCursorLine = 0;
+int iui_textboxPreferredX = -1;
 int iui_textboxCooldownTimer = 0;
 int iui_textboxDelayTimer = 0;
 
