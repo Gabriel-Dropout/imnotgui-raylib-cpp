@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 
 #include "imnotgui.hpp"
 
@@ -12,25 +13,15 @@ bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID
     iui_get_all(ID, _ID, LABEL);
 
     // is hover
-    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h})) {
-        iui_hotItem = _ID;
-
-        // ... and is clicked
-        if(iui_activeItem == -1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            iui_activeItem = _ID;
-        }
-    }
-
-    bool isHot = iui_hotItem == _ID, isActive = iui_activeItem == _ID;
-
-    // is 'Pressed' (AKA The user pressed and released the button)
-    if(isHot && isActive && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+    makeHoverable(_ID, x, y, w, h);
+    makeActivable(_ID);
+    if(makeClickable(_ID)) {
         checked = !checked;
     }
 
     /// draw
-
-    draw::iui_rect(x-2, y-2, w+4, h+4, style.colCheckboxBorder);
+    int thickness = style.checkboxBorderThickness;
+    draw::iui_rect(x-thickness, y-thickness, w+thickness, h+thickness, style.colCheckboxBorder);
     draw::iui_rect(x, y, w, h, style.colCheckboxBG);
 
     if(checked) {

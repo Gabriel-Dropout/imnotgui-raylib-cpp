@@ -38,14 +38,14 @@ int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec,
         tabBoxH = h;
         
         // Tab label
-        int tabLabelWidth = MeasureText(tabLabel.c_str(), 20);
+        int tabLabelWidth = iui_measureText(tabLabel);
         if(tabLabelWidth > w) {
             if (tabIdx != i) {
                 switch(trimMode) {
-                    case 1: // TRIM
+                    case IUI_TAB_TRIM: // TRIM
                         tabLabel = iui_strTrimDots(tabLabel, w);
                         break;
-                    case 2:
+                    case IUI_TAB_FLEX:
                         tabBoxW = tabLabelWidth + 20;
                         break;
                 }
@@ -53,23 +53,17 @@ int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec,
                 tabBoxW = tabLabelWidth + 20;
             }
         }
-        
-        // is hover
-        if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)tabBoxX, (float)tabBoxY, (float)tabBoxW, (float)tabBoxH})) {
-            iui_hotItem = tabID;
-            isHot = true;
 
-            // ... and is clicked
-            if(iui_activeItem == -1 && IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-                iui_activeItem = tabID;
-                tabIdx = i;
-            }
+        // is hover
+        isHot = makeHoverable(tabID, tabBoxX, tabBoxY, tabBoxW, tabBoxH);
+        makeActivable(tabID);
+        if(makePressable(tabID)) {
+            tabIdx = i;
         }
         isCurrent = tabIdx == i;
 
         /// Button draw
-        // TODO : Make fancy tab style IDK lol
-        int colIdx = (i % style.colTabNum);
+        int colIdx = (i % IuiStyle::colTabNum);
         Color colBackdrop = style.colTab[colIdx];
         Color colAccent = style.colTabAccent[colIdx];
         
@@ -77,15 +71,15 @@ int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec,
             colBackdrop = style.colTabCurrent;
             colAccent = style.colTabCurrentAccent;
 
-            tabBoxY -= 5;
-            tabBoxH += 5;
+            tabBoxY -= style.tabAccentHei;
+            tabBoxH += style.tabAccentHei;
         } else if(isHot) {
             colBackdrop = style.colTabHot;
             colAccent = style.colTabHotAccent;
         }
 
         draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, tabBoxH, colBackdrop);
-        draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, 5, colAccent);
+        draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, style.tabAccentHei, colAccent);
 
         // label
         int hprev, yprev;
@@ -133,14 +127,14 @@ int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVe
         tabBoxH = h;
         
         // Tab label
-        int tabLabelWidth = MeasureText(tabLabel.c_str(), 20);
+        int tabLabelWidth = iui_measureText(tabLabel);
         if(tabLabelWidth > w) {
             if (tabIdx != i) {
                 switch(trimMode) {
-                    case 1: // TRIM
+                    case IUI_TAB_TRIM: // TRIM
                         tabLabel = iui_strTrimDots(tabLabel, w);
                         break;
-                    case 2:
+                    case IUI_TAB_FLEX:
                         tabBoxW = tabLabelWidth + 20;
                         // tabBoxX = x + w - tabBoxW;
                         break;
@@ -173,21 +167,25 @@ int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVe
             colBackdrop = style.colTabCurrent;
             colAccent = style.colTabCurrentAccent;
 
-            tabBoxX -= 5;
-            tabBoxW += 5;
+            tabBoxX -= style.tabAccentHei;
+            tabBoxW += style.tabAccentHei;
         } else if(isHot) {
             colBackdrop = style.colTabHot;
             colAccent = style.colTabHotAccent;
         }
 
         draw::iui_rect(tabBoxX, tabBoxY, tabBoxW, tabBoxH, colBackdrop);
-        draw::iui_rect(tabBoxX, tabBoxY, 5, tabBoxH, colAccent);
+        draw::iui_rect(tabBoxX, tabBoxY, style.tabAccentHei, tabBoxH, colAccent);
 
         // label
-        int hprev, yprev;
-        iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-        draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
-        iui_setAlignment(hprev, yprev);
+        //int hprev, yprev;
+        //iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
+        {
+            ScopedAlignmentSetter sas(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE);
+            draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
+        }
+        //draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
+        //iui_setAlignment(hprev, yprev);
 
         // for next tab
         tabBoxY += tabBoxH;

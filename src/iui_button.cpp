@@ -17,39 +17,32 @@ bool iui_button(int x, int y, int w, int h, std::string text) {
     /// Button logic
     bool isClicky = false;
 
-    // is hover
-    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h})) {
-        iui_hotItem = ID;
-        if(iui_activeItem == -1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            iui_activeItem = ID;
-        }
-    }
-    if(iui_hotItem == ID && iui_activeItem == ID && IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-        isClicky = true;
+    /// make button hoverable, activable, and clickable
+    bool isHot = makeHoverable(ID, x, y, w, h);
+    bool isActive = makeActivable(ID);
+    isClicky = makeClickable(ID);
     
     /// Button Draw
-    bool isHot = iui_hotItem == ID, isActive = iui_activeItem == ID;
-
     if(style.isButtonShadowEnabled) {
-        draw::iui_rect(x + 8, y + 8, w, h, style.colButtonShadow);
+        draw::iui_rect(x + style.buttonShadowOffsetX, y + style.buttonShadowOffsetY, w, h, style.colButtonShadow);
     }
 
     // Hovering
     if(isHot) {
         if(isActive) {
             draw::iui_rect(x, y, w, h, style.colButtonActiveBackdrop);  // backdrop
-            draw::iui_rect(x, y, w, 9, style.colButtonActiveBackdropTop); // top line / box for style?
+            draw::iui_rect(x, y, w, style.buttonActiveAccentHei, style.colButtonActiveBackdropTop); // top line / box for style?
         } else {
             draw::iui_rect(x, y, w, h, style.colButtonHotBackdrop);
-            draw::iui_rect(x, y, w, 9, style.colButtonHotBackdropTop);
+            draw::iui_rect(x, y, w, style.buttonActiveAccentHei, style.colButtonHotBackdropTop);
         }
     } else {  // nope
         if(isActive) {
             draw::iui_rect(x, y, w, h, style.colButtonActiveBackdrop);
-            draw::iui_rect(x, y, w, 9, style.colButtonActiveBackdropTop2);
+            draw::iui_rect(x, y, w, style.buttonActiveAccentHei, style.colButtonActiveBackdropTop2);
         } else {
             draw::iui_rect(x, y, w, h, style.colButtonBackdrop);
-            draw::iui_rect(x, y, w, 5, style.colButtonBackdropTop);
+            draw::iui_rect(x, y, w, style.buttonAccentHei, style.colButtonBackdropTop);
         }
     }
 
@@ -70,16 +63,10 @@ bool iui_button_nodraw(int x, int y, int w, int h, std::string text) {
     /// Button logic
     bool isClicky = false;
 
-    // is hover
-    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h})) {
-        iui_hotItem = ID;
-        if(iui_activeItem == -1 && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            iui_activeItem = ID;
-        }
-    }
-    if(iui_hotItem == ID && iui_activeItem == ID && IsMouseButtonReleased(MOUSE_LEFT_BUTTON))
-        isClicky = true;
-    
+    /// make button hoverable, activable, and clickable
+    makeHoverable(ID, x, y, w, h);
+    makeActivable(ID);
+    isClicky = makeClickable(ID);
     return isClicky;
 }
 } // namespace element

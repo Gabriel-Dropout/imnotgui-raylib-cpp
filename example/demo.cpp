@@ -36,13 +36,12 @@ void draw_colorblock(raylib::Color color, std::string text1, std::string text2, 
     if(colBrightness(color) > 130) {
         stringColor = iuHellaDark;
     }
-    int hprev, vprev;
-    iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-    iui_rect(x, y, w, h - 40, color);
-    iui_rect(x, y + h - 40, w, 40, iui_colLighter(color, -20));
-    iui_label(x + w/2, y + 24, text1, stringColor);
-    iui_label(x + w/2, y + h - 20, text2, stringColor);
-    iui_setAlignment(hprev, vprev);
+    {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+        iui_rect(x, y, w, h - 40, color);
+        iui_rect(x, y + h - 40, w, 40, iui_colLighter(color, -20));
+        iui_label(x + w/2, y + 24, text1, stringColor);
+        iui_label(x + w/2, y + h - 20, text2, stringColor);
+    }
 }
 
 int main() {
@@ -92,15 +91,15 @@ int main() {
 
         int TAB_X = 42;
 
-        switch(imnotgui::element::iui_tab(TAB_X, 30, 140, 50, mainTabVec, mainTabIdx, 2)) {
+        switch(imnotgui::element::iui_tab(TAB_X, 30, 140, 50, mainTabVec, mainTabIdx, IUI_TAB_FLEX)) {
             case 0: {
                 /// Intro
                 DrawSprite("spr_biglogo", SCREEN_CENTER_X, SCREEN_CENTER_Y/2, WHITE);
                 iui_label(SCREEN_CENTER_X - 257, SCREEN_CENTER_Y/4 + 12, "Sincerely,", iuCream);
-                int hprev, vprev;
-                iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                iui_label(SCREEN_CENTER_X, SCREEN_CENTER_Y/1.4, "-=[Dear ImGui bootleg(?) implementation in Raylib]=-", iuCream);
-                iui_setAlignment(hprev, vprev);
+
+                {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+                    iui_label(SCREEN_CENTER_X, SCREEN_CENTER_Y/1.4, "-=[Dear ImGui bootleg(?) implementation in Raylib]=-", iuCream);
+                }
 
                 // sprite
                 float sinned = sine01_;
@@ -120,21 +119,20 @@ int main() {
                 /// Elements
                 int tabW = (int)(1196/6);
                 iui_rect(42, 85, 1196, 60, iuHellaDark);
-                switch(iui_tab(42, 90, tabW, 50, demoTabVec, demoTabIdx, 1)) {
+                switch(iui_tab(42, 90, tabW, 50, demoTabVec, demoTabIdx, IUI_TAB_TRIM)) {
                     case 0:{
                         /// Button
-                        int hprev, vprev, sprev;
-                        iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Button ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
+                        {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+                            {   ScopedFontSizeSetter _(42);
+                                iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Button ]=", iuCream, 5, 5, iuHellaDark);
+                            }
 
-                        int strWid = MeasureText("is_clicked = iui_button(x, y, width, height, ID and label);", iui_getFontSize()) + 10;
+                            int strWid = MeasureText("is_clicked = iui_button(x, y, width, height, ID and label);", iui_getFontSize()) + 10;
 
-                        iui_rect(SCREEN_CENTER_X - strWid/2 - 2, 228, strWid+4, 54, iuMint);
-                        iui_rect(SCREEN_CENTER_X - strWid/2, 230, strWid, 50, iuHellaDark);
-                        iui_label(SCREEN_CENTER_X, 255, "is_clicked = iui_button(x, y, width, height, ID and label);", iuCream);
-                        iui_setAlignment(hprev, vprev);
+                            iui_rect(SCREEN_CENTER_X - strWid/2 - 2, 228, strWid+4, 54, iuMint);
+                            iui_rect(SCREEN_CENTER_X - strWid/2, 230, strWid, 50, iuHellaDark);
+                            iui_label(SCREEN_CENTER_X, 255, "is_clicked = iui_button(x, y, width, height, ID and label);", iuCream);
+                        }
 
                         // normal buttons
                         iuiGlobalStyle.isButtonShadowEnabled = true;
@@ -143,14 +141,14 @@ int main() {
                         iui_button(SCREEN_CENTER_X - 280, 400, 200, 84, "And button\nwith same ID###ANALS");
 
                         // checker
-                        iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
-                        iui_label(SCREEN_CENTER_X - 400, 580, "I love dogs", iuCream);
-                        iui_label(SCREEN_CENTER_X - 180, 580, "I love cats", iuCream);      
-                        iui_label(SCREEN_CENTER_X - 290, 620, "THANOS CAR", iuCream);
-                        ui_check_test = iui_checkbox(SCREEN_CENTER_X - 400, 600, 20, 20, ui_check_test, "check_test");
-                        ui_check_test2 = iui_checkbox(SCREEN_CENTER_X - 180, 600, 20, 20, ui_check_test2, "check_test_2");
-                        iui_checkbox(SCREEN_CENTER_X - 290, 640, 40, 40, true, "check_wew");
-                        iui_setAlignment(hprev, vprev);
+                        {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+                            iui_label(SCREEN_CENTER_X - 400, 580, "I love dogs", iuCream);
+                            iui_label(SCREEN_CENTER_X - 180, 580, "I love cats", iuCream);      
+                            iui_label(SCREEN_CENTER_X - 290, 620, "THANOS CAR", iuCream);
+                            ui_check_test = iui_checkbox(SCREEN_CENTER_X - 400, 600, 20, 20, ui_check_test, "check_test");
+                            ui_check_test2 = iui_checkbox(SCREEN_CENTER_X - 180, 600, 20, 20, ui_check_test2, "check_test_2");
+                            iui_checkbox(SCREEN_CENTER_X - 290, 640, 40, 40, true, "check_wew");
+                        }
                         
                         // button with different ID than string
                         iui_button(SCREEN_CENTER_X + 40, 300, 200, 84, "Button with\nDifferent ID###SPECIAL_ID"); // ID Key = Hash of "SPECIAL_ID"
@@ -182,21 +180,20 @@ int main() {
                     }
                     case 1:{
                         /// Textbox
-                        int hprev, vprev, sprev;
-                        iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
+                        int hprev, vprev;
+                        {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
+                            //title
+                            {   ScopedFontSizeSetter _(42);
+                                iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Textbox ]=", iuCream, 5, 5, iuHellaDark);
+                            }
 
-                        //title
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Textbox ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
-
-                        // codebox
-                        int strWid = MeasureText("text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iui_getFontSize()) + 10;
-                        iui_rect(SCREEN_CENTER_X - (strWid / 2) - 2, 228, (strWid + 4), 104, iuMint);
-                        iui_rect(SCREEN_CENTER_X - (strWid / 2), 230, strWid, 100, iuHellaDark);
-                        iui_label(SCREEN_CENTER_X, 260, "text_var = iui_textbox(x, y, width, height, text_var, ID);", iuCream);
-                        iui_label(SCREEN_CENTER_X, 300, "text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iuCream);
-                        iui_setAlignment(hprev, vprev);
+                            // codebox
+                            int strWid = MeasureText("text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iui_getFontSize()) + 10;
+                            iui_rect(SCREEN_CENTER_X - (strWid / 2) - 2, 228, (strWid + 4), 104, iuMint);
+                            iui_rect(SCREEN_CENTER_X - (strWid / 2), 230, strWid, 100, iuHellaDark);
+                            iui_label(SCREEN_CENTER_X, 260, "text_var = iui_textbox(x, y, width, height, text_var, ID);", iuCream);
+                            iui_label(SCREEN_CENTER_X, 300, "text_var = iui_textbox_numberonly(x, y, width, height, text_var, ID);", iuCream);
+                        }
 
                         // textboxes
                         int textboxY = 370;
@@ -229,9 +226,9 @@ int main() {
                         iui_setAlignment(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         
                         //title
-                        sprev = iui_setFontSize(42);
-                        iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Slider ]=", iuCream, 5, 5, iuHellaDark);
-                        iui_setFontSize(sprev);
+                        {   ScopedFontSizeSetter _(42);
+                            iui_label_shadow(SCREEN_CENTER_X, 180, "=[ Slider ]=", iuCream, 5, 5, iuHellaDark);
+                        }
 
                         // codebox
                         int strWid = iui_measureText("value_var = iui_slider_v(x, y, value_var, height, minval, maxval, ID);") + 10;
@@ -266,8 +263,8 @@ int main() {
                         iui_label(SCREEN_CENTER_X, 255, "tab_index = iui_tab(x, y, width, height, strings, tab_index, trim mode);", iuCream);
                         iui_setAlignment(hprev, vprev);
                         
-                        iui_tab(SCREEN_CENTER_X - 500, 300, 250, 64, lossTabVec, lossTabIdx, 1);
-                        iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, 1);
+                        iui_tab(SCREEN_CENTER_X - 500, 300, 250, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
+                        iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
 
                         sprev = iui_setFontSize(42);
                         DrawSprite(TextFormat("spr_loss_%d", lossTabIdx), SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);

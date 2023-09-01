@@ -49,16 +49,17 @@ int iui_get_id(std::string text) {
 
 // Begin IMNOTGUI
 void iui_begin() {
-    iui_hotItem = -1;
+    iui_hotItemBack = -1;
     iui_animTimer++;
 }
 // End IMNOTGUI
 void iui_end() {
-    if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-        if(iui_activeItem == -1) {
-            iui_activeItem = -0xDEADBEEF;
-        }
-    } else {
+    // swap hotItem buffers
+    iui_hotItem = iui_hotItemBack;
+
+    // reset activeItem
+    // WHY not in iui_begin? to check item click, we need to maintain iui_activeItem for 1 frame after mouse release.
+    if(!IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
         iui_activeItem = -1;
     }
 }

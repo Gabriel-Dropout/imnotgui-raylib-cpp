@@ -6,6 +6,7 @@
 namespace imnotgui {
 
 // Global variables
+int iui_hotItemBack = -1;
 int iui_hotItem = -1;
 int iui_activeItem = -1;
 int iui_kbFocusItem = -1;
@@ -45,6 +46,11 @@ IuiStyle::IuiStyle() {
 
     // Button
     isButtonShadowEnabled = false;
+    buttonShadowOffsetX = 8;
+    buttonShadowOffsetY = 8;
+    buttonAccentHei = 5;
+    buttonActiveAccentHei = 9;
+
     colButtonShadow = iuHellaDark;
     colButtonBackdrop = iuDark2;
     colButtonBackdropTop = iuMint;
@@ -56,6 +62,7 @@ IuiStyle::IuiStyle() {
     colButtonLabel = iuCreamDark;
 
     // Tab
+    tabAccentHei = 5;
     colTabLabel = iuCream;
     colTabHot = iuNormal;
     colTabHotAccent = iuPiss;
@@ -63,14 +70,17 @@ IuiStyle::IuiStyle() {
     colTabCurrentAccent = iuMint;
 
 
-    colTabNum = 2; // number of tab colours
-
     colTab[0] = iuDark;
     colTab[1] = iui_colLighter(iuDark, -5);
     colTabAccent[0] = iuNormal;
     colTabAccent[1] = iui_colLighter(iuNormal, -5);
 
     isTextBoxRainbowEnabled   = true; // rainbow colour when active
+    textboxBorderThickness = 2;
+    textboxTextPadding = 8;
+    textboxCursorThickness = 2;
+    textboxCursorPadding = 10;
+
     colTextBoxFill   = iui_colLighter(iuHellaDark, 5);
     colTextBoxText   = iuCream;
     colTextBoxBorder = iuSky;
@@ -90,6 +100,8 @@ IuiStyle::IuiStyle() {
 
     sliderLineThickness = 8; // How thick the guideline(?) is
 
+    sliderEndValueOffset = 32;
+    sliderCurValueOffset = 10;
 
     colSliderLine   = iuHellaDark,
     colSlider       = iuNormal,
@@ -97,6 +109,7 @@ IuiStyle::IuiStyle() {
     colSliderHot    = iui_colLighter(iuNormal, 10);
 
     // Checkbox
+    int checkboxBorderThickness = 2;
     colCheckboxBorder = iuCream,
     colCheckboxBG = iuHellaDark,
     colCheckboxFG = iuMint; // the checker colour

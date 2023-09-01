@@ -90,7 +90,7 @@ int main() {
         iui_rect(42, 680, 1196, 40, imnotgui::iuHellaDark);
         iui_rect(62, 85, 450, 595, imnotgui::iuDark2);
 
-        switch(iui_tab(42, 30, 200, 55, {"Intbox", "Floatbox"}, tabIdx, 1)) {
+        switch(iui_tab(42, 30, 200, 55, {"Intbox", "Floatbox"}, tabIdx, IUI_TAB_TRIM)) {
         case 0: {
             iui_setFontSize(25);
             iui_label_shadow(104, 120, "Enter any integer!", RAYWHITE, 5, 5, BLACK);

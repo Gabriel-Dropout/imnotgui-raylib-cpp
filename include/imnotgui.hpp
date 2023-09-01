@@ -14,7 +14,8 @@ The repository is also influenced by Omar Cornut's [Dear ImGUI](https://github.c
 #include "raylib.h"
 
 namespace imnotgui {
-extern int iui_hotItem;  // The item that is currently hovered over
+extern int iui_hotItemBack;  // back buffer for iui_hotItem. Each element updates the back buffer when it is hovered over
+extern int iui_hotItem;  // The item that is currently hovered over(actually 1 frame behind)
 extern int iui_activeItem;  // The item that is currently active
 extern int iui_kbFocusItem;  // The item that is currently focused by keyboard
 extern int iui_idx;
@@ -61,6 +62,35 @@ namespace element {
 void iui_begin();  // Begin IMNOTGUI
 void iui_end();    // End IMNOTGUI
 
+inline bool makeHoverable(int ID, Rectangle rect) {
+    if(CheckCollisionPointRec(GetMousePosition(), rect))
+        iui_hotItemBack = ID;
+
+    return iui_hotItem == ID;
+}
+inline bool makeHoverable(int ID, int x, int y, int w, int h) {
+    if(CheckCollisionPointRec(GetMousePosition(), Rectangle{(float)x, (float)y, (float)w, (float)h}))
+        iui_hotItemBack = ID;
+
+    return iui_hotItem == ID;
+}
+inline bool makeActivable(int ID) {  // Returns true if the item is active
+    if(iui_hotItem == ID && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        iui_activeItem = ID;
+
+    return iui_activeItem == ID;
+}
+inline bool makePressable(int ID) {  // Returns true if the item is pressed
+    if(iui_hotItem == ID && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        return true;
+    
+    return false;
+}
+inline bool makeClickable(int ID) {
+    return (iui_hotItem == ID && iui_activeItem == ID && IsMouseButtonReleased(MOUSE_LEFT_BUTTON));
+}
+
+// State management functions
 void iui_setAlignment(int halign, int valign);  // Sets the alignment
 void iui_setAlignment(int halign, int valign, int &hprev, int &yprev);  // Sets the alignment and returns the previous alignment
 void iui_getAlignment(int &hprev, int &yprev);  // Returns the current alignment
@@ -68,6 +98,46 @@ int iui_setFontSize(int size);  // Sets the font size and returns the previous f
 int iui_getFontSize();  // Returns the current font size
 Font* iui_setFont(Font* font);  // Sets the font and returns the previous font
 Font* iui_getFont();  // Returns the current font
+
+// Scoped State management classes
+class ScopedStateSetter {
+// non-copyable
+private:
+    auto operator=( ScopedStateSetter const& ) -> ScopedStateSetter& = delete;
+    ScopedStateSetter( ScopedStateSetter const& ) = delete;
+public:
+    auto operator=( ScopedStateSetter&& ) -> ScopedStateSetter& = default;
+    ScopedStateSetter() = default;
+    ScopedStateSetter( ScopedStateSetter&& ) = default;
+
+// non-constructible
+public:
+    template<typename... Args> void* operator new(std::size_t,Args...) = delete;
+};
+
+class ScopedAlignmentSetter: ScopedStateSetter {
+private:
+    int hprev, vprev;
+public:
+    ScopedAlignmentSetter(int halign, int valign) {iui_setAlignment(halign, valign, hprev, vprev);}
+    ~ScopedAlignmentSetter() {iui_setAlignment(hprev, vprev);}
+};
+
+class ScopedFontSizeSetter: ScopedStateSetter {
+private:
+    int prev;
+public:
+    ScopedFontSizeSetter(int size) {prev = iui_setFontSize(size);}
+    ~ScopedFontSizeSetter() {iui_setFontSize(prev);}
+};
+
+class ScopedFontSetter: ScopedStateSetter {
+private:
+    Font* prev;
+public:
+    ScopedFontSetter(Font* font) {prev = iui_setFont(font);}
+    ~ScopedFontSetter() {iui_setFont(prev);}
+};
 
 std::string iui_trim_label(std::string text);  // Cuts and returns the label part of the input string
 std::string iui_trim_idstr(std::string text);  // Cuts and returns the ID part of the input string
@@ -107,15 +177,21 @@ enum iuLabelVAlignment {
     IUI_LABEL_ALIGN_MIDDLE,
     IUI_LABEL_ALIGN_BOTTOM
 };
+enum iuTabTrimMode {
+    IUI_TAB_TRIM,
+    IUI_TAB_FLEX,
+};
 
 typedef struct IuiStyle {
-    // Label
+    /// Label
     int labelFontsize, labelHalign, labelValign;
     Font* font;
 
-    // Button
+    /// Button
     bool isButtonShadowEnabled;
-    Color   colButtonShadow,
+    int buttonShadowOffsetX, buttonShadowOffsetY;
+    int buttonAccentHei, buttonActiveAccentHei;
+    Color   colButtonLabel,
             colButtonBackdrop,
             colButtonBackdropTop,
             colButtonActiveBackdrop,
@@ -123,30 +199,31 @@ typedef struct IuiStyle {
             colButtonActiveBackdropTop2,// when active but mouse is out of the button
             colButtonHotBackdrop,
             colButtonHotBackdropTop,
-            colButtonLabel;
+            colButtonShadow;
 
-    // Tab
+    /// Tab
+    static constexpr int colTabNum = 2; // number of tab colours
+    int tabAccentHei;
     Color   colTabLabel,
+            colTab[2],
+            colTabAccent[2],
             colTabHot,
             colTabHotAccent,
             colTabCurrent,
             colTabCurrentAccent;
 
-    int colTabNum; // number of tab colours
-
-    Color   colTab[2],
-            colTabAccent[2];
-
+    /// Textbox
     bool isTextBoxRainbowEnabled; // rainbow colour when active
-    Color   colTextBoxFill,
-            colTextBoxText,
+    int textboxBorderThickness, textboxTextPadding, textboxCursorThickness, textboxCursorPadding;
+    Color   colTextBoxText,
+            colTextBoxFill,
             colTextBoxBorder,
             colTextBoxActiveFill,
             colTextBoxActiveBorder,
             colTextBoxHotFill,
             colTextBoxHotBorder;
 
-    // Slider
+    /// Slider
     bool isSliderValueEnabled; // display min, max and value on active?
 
     int sliderHWid, // horizontal
@@ -157,12 +234,16 @@ typedef struct IuiStyle {
 
     int sliderLineThickness; // How thick the guideline(?) is
 
+    int sliderEndValueOffset, // How far the min and max values are from the slider
+        sliderCurValueOffset; // How far the current value is from the slider
+
     Color   colSliderLine,
             colSlider,
             colSliderActive,
             colSliderHot;
 
     // Checkbox
+    int checkboxBorderThickness;
     Color   colCheckboxBorder,
             colCheckboxBG,
             colCheckboxFG; // the checker colour

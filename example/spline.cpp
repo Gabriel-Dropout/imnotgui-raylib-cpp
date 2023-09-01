@@ -292,7 +292,7 @@ int main() {
         // sidebar
         imnotgui::element::iui_tab_v(30, 120, 240, 64,
             {"Bezier", "Bezier Spline", "Natural Spline", "Hermite Spline", "Cardinal Spline", "B-spline"},
-            toggleGroupActive, 1);
+            toggleGroupActive, imnotgui::IUI_TAB_TRIM);
         if(toggleGroupActive == SP_C2) {
             // center, red, big
             std::string _not_available = "Currently Not Available :(";
