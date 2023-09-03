@@ -21,19 +21,26 @@ The repository is also influenced by [Omar Cornut's Dear ImGUI](https://github.c
 
 ### ImNotGUI-raylib-cpp Controls:
 
-There are initially five controls (more will be added!)
+There are initially six controls (more will be added!)
 
 * Button
 * Tabs
 * Slider
 * TextBox
+* Multiline Textbox
 * CheckBox
 
 Additionally, it provides convenient drawing functions! (If you want to use ImNotGUI as the backend, you can implement these functions.)
 
 - iui_label*: Functions for drawing text.
+
 - iui_rect*: Functions for drawing rectangles.
-- iui_sprite (with/without atlas): Uses a unique data structure for drawing atlas sprites. That's why it is separately declared in `imnotgui_extra.hpp`.
+
+- ~~iui_sprite (with/without atlas): Uses a unique data structure for drawing atlas sprites. That's why it is separately declared in `imnotgui_extra.hpp`.~~
+
+  Forcing a specific atlas structure on library users is bad behavior!
+
+  If you need to draw sprites, please see [rTexLoader](https://github.com/Gabriel-Dropout/rTexLoader) :)
 
 ---
 
@@ -120,9 +127,9 @@ int main() {
 
 ### TODO
 
-- [ ]  Implement all features of **ImNotGUI**.
-- [x]  Support bitmap fonts.
-- [x]  Support CMake.
-- [x]  Remove raylib-cpp dependency.
-- [ ]  Support Korean input for TextBox.
-- [ ]  Write usage documentation.
+- [x] Support bitmap fonts.
+- [x] Support CMake.
+- [x] Remove raylib-cpp dependency.
+- [ ] Implement multiline textbox.
+- [ ] Support Korean input for TextBox.
+- [ ] Write usage documentation.

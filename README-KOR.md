@@ -17,19 +17,26 @@ imnotgui-raylib-cpp 는 ZIK's ImNotGUI UI 프레임워크를 Raylib-cpp에서 �
 
 ### ImNotGUI-raylib-cpp Controls:
 
-기본적으로 다섯 개의 컨트롤이 있어요(더 추가될 거에요!)
+기본적으로 여섯 개의 컨트롤이 있어요(더 추가될 거에요!)
 
 * Button
 * Tabs
 * Slider
 * TextBox
+* Multiline-textbox
 * CheckBox
 
 추가적으로 간편한 드로잉 함수를 제공해요!(만약 다른 백엔드를 사용하고 싶으시다면 이 함수를 구현하시면 돼요)
 
 - iui_label_* : 텍스트를 그리는 함수에요.
+
 - iui_rect_* : 사각형을 그리는 함수에요.
-- iui_sprite(with / without atlas) : 아틀라스 스프라이트를 그리기 위해 고유한 데이터 구조를 사용해요. 이것 때문에 `imnotgui_extra.hpp` 에 따로 선언되어 있어요.
+
+- ~~iui_sprite(with / without atlas) : 아틀라스 스프라이트를 그리기 위해 고유한 데이터 구조를 사용해요. 이것 때문에 `imnotgui_extra.hpp` 에 따로 선언되어 있어요.~~
+
+  라이브러리 사용자에게 특정 아틀라스 구조체를 강요하는 것은 나쁜 행동이에요!
+
+  스프라이트 그리기가 필요하시다면 [rTexLoader](https://github.com/Gabriel-Dropout/rTexLoader)를 참고해주세요 :)
 
 ---
 
@@ -107,9 +114,9 @@ int main() {
 
 ### TODO
 
-- [ ] **ImNotGUI**의 모든 기능 구현
 - [x] 비트맵 폰트 지원
 - [x] CMake 지원
 - [x] raylib-cpp 종속성 제거
+- [x] 멀티라인 텍스트박스 구현
 - [ ] 텍스트박스 한글 입력 지원
 - [ ] 사용법 설명서 작성

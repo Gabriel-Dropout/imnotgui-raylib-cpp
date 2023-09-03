@@ -313,8 +313,8 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
                     _endPos++;
                 }
 
-                int _startX = x + (_bT + _tP) + iui_measureText(_text.substr(0, _startPos)) - iui_textboxShowOff;
-                int _endX = x + (_bT + _tP) + iui_measureText(_text.substr(0, _endPos)) - iui_textboxShowOff;
+                int _startX = textRect.x + iui_measureText(_text.substr(0, _startPos)) - iui_textboxShowOff;
+                int _endX = textRect.x + iui_measureText(_text.substr(0, _endPos)) - iui_textboxShowOff;
                 int _startY = textRect.y + textHei*(i - iui_textboxShowLine);
 
                 Rectangle _selectRect = {(float)_startX, (float)_startY, (float)(_endX - _startX), (float)textHei};
