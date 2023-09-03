@@ -56,7 +56,7 @@ int main() {
     std::string ui_textbox_testarea_str = "";
     std::string ui_textbox_number_str = "";
     int ui_textbox_number = 0;
-    std::vector<std::string> ui_textbox_str_vec = {""};
+    std::string ui_textbox_multi_str = "";
 
     int ui_slider_test_h = 0;
     int ui_slider_test_v = 0;
@@ -199,7 +199,7 @@ int main() {
                         int textboxY = 370;
                         iui_textbox(SCREEN_CENTER_X - 420, textboxY, 200, 50, ui_textbox_testarea_str, "7-grand-dad");
                         iui_intbox(SCREEN_CENTER_X - 420, textboxY + 160, 200, 50, ui_textbox_number_str, ui_textbox_number, "number-plz");
-                        iui_multi_textbox(SCREEN_CENTER_X + 20, textboxY, 400, 210, ui_textbox_str_vec, "extra-thicc");
+                        iui_multi_textbox(SCREEN_CENTER_X + 20, textboxY, 400, 210, ui_textbox_multi_str, "extra-thicc");
 
                         iui_setAlignment(IUI_LABEL_ALIGN_RIGHT, IUI_LABEL_ALIGN_MIDDLE, hprev, vprev);
                         iui_label(SCREEN_CENTER_X - 430, textboxY + 25, "STRING", iuCream);

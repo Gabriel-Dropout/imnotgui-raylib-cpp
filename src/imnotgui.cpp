@@ -51,6 +51,7 @@ int iui_get_id(std::string text) {
 void iui_begin() {
     iui_hotItemBack = -1;
     iui_animTimer++;
+    iui_cursorTimer++;
 }
 // End IMNOTGUI
 void iui_end() {

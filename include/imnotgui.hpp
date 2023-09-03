@@ -20,22 +20,27 @@ extern int iui_activeItem;   // The item that is currently active
 extern int iui_kbFocusItem;  // The item that is currently focused by keyboard
 extern int iui_idx;
 extern std::map<std::string, int> iui_idMap;
-extern int iui_textboxShowPos;
-extern int iui_textboxCursorPos;
-extern int iui_textboxShowLine;    // only for multiline textboxes
-extern int iui_textboxCursorLine;  // only for multiline textboxes
-extern int iui_textboxPreferredX;   // only for multiline textboxes
-/*  what is iui_textboxPreferredX?
-    when up/down button is pressed, the cursor will jump to the another line.
-    but even when using proportional font, the cursor should maintain its x position as much as possible.
-    so iui_textboxPreferredX stores the x position of the cursor before jumping to another line.
+
+extern int iui_textboxSelectIdx;   // When select-mode, start position of the selected region.
+extern int iui_textboxCursorIdx;   // When select-mode, end position of the selected region
+                                   // When non-select-mode, above two variables are identical.
+extern int iui_textboxShowPos;     // only for singleline textboxes (index property)
+extern int iui_textboxShowOff;     // only for multiline textboxes  (width property)
+extern int iui_textboxShowLine;    // only for multiline textboxes  (index property)
+extern int iui_textboxPreferredX;  // only for multiline textboxes  (width property)
+/*  What the heck is iui_textboxPreferredX?
+    When the up/down keys are pressed, the cursor jumps to another line.
+    But even when using proportional fonts, the cursor should keep its x position as much as possible.
+    So iui_textboxPreferredX stores the x position of the cursor before jumping to another line.
 */
+
 #define TEXTBOX_COOLDOWN 40
 #define TEXTBOX_DELAY 2
 extern int iui_textboxCooldownTimer;
 extern int iui_textboxDelayTimer;
 
 extern int iui_animTimer;
+extern int iui_cursorTimer;
 
 namespace draw {
     void iui_rect(int x, int y, int w, int h, Color color);
@@ -60,7 +65,7 @@ namespace element {
     bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::string ID);
     bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const std::string ID);
     bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, const std::string ID);
-    void iui_multi_textbox(int x, int y, int w, int h, std::vector<std::string> &textVec, const std::string ID);
+    void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std::string ID);
     void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID);
     void iui_slider_h(int x, int y, float &value, int width, float min, float max, const std::string ID);
     void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID);

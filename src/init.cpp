@@ -14,14 +14,16 @@ int iui_idx = 0;
 std::map<std::string, int> iui_idMap;
 
 int iui_textboxShowPos    = 0;
-int iui_textboxCursorPos  = 0;
+int iui_textboxShowOff    = 0;
+int iui_textboxSelectIdx  = 0;
+int iui_textboxCursorIdx  = 0;
 int iui_textboxShowLine   = 0;
-int iui_textboxCursorLine = 0;
 int iui_textboxPreferredX = -1;
 int iui_textboxCooldownTimer = 0;
 int iui_textboxDelayTimer = 0;
 
 int iui_animTimer = 0;
+int iui_cursorTimer = 0;
 
 
 // Style
@@ -78,6 +80,7 @@ IuiStyle::IuiStyle() {
     colTabAccent[0] = iuNormal;
     colTabAccent[1] = iui_colLighter(iuNormal, -5);
 
+    // Textbox
     isTextBoxRainbowEnabled   = true; // rainbow colour when active
     textboxBorderThickness = 2;
     textboxTextPadding = 8;

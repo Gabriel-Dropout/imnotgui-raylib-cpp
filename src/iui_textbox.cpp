@@ -32,20 +32,20 @@ bool iui_textbox_base(int x, int y, int w, int h, std::string &text, bool (*vali
         iui_kbFocusItem = _ID;
 
         // Cursor pointing logic
-        iui_textboxCursorPos = text.size();  // default value
+        iui_textboxSelectIdx = text.size();  // default value
         int _relX = GetMouseX() - x - _bT - _tP;
         for(int i = 0; i < text.size() - iui_textboxShowPos; i++) {
             int _tmpWid1 = iui_measureText(text.substr(iui_textboxShowPos, i));
             int _tmpWid2 = iui_measureText(text.substr(iui_textboxShowPos, i+1));
             int _averWid = (_tmpWid1 + _tmpWid2) / 2;
             if(_relX < _averWid) {
-                iui_textboxCursorPos = iui_textboxShowPos + i;
+                iui_textboxSelectIdx = iui_textboxShowPos + i;
                 break;
             }
         }
     } else if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && iui_kbFocusItem == _ID) {
         iui_kbFocusItem = -1;
-        iui_textboxCursorPos = 0;
+        iui_textboxSelectIdx = 0;
         iui_textboxShowPos = 0;
     }
 
@@ -66,35 +66,35 @@ bool iui_textbox_base(int x, int y, int w, int h, std::string &text, bool (*vali
         }
 
         if(codepoint != 0) {
-            if(validChecker(text, iui_textboxCursorPos, (char) codepoint)) {
-                text.insert(iui_textboxCursorPos, 1, (char)codepoint);
-                iui_textboxCursorPos++;
+            if(validChecker(text, iui_textboxSelectIdx, (char) codepoint)) {
+                text.insert(iui_textboxSelectIdx, 1, (char)codepoint);
+                iui_textboxSelectIdx++;
             }
         }
         if(IsKeyPressed(KEY_BACKSPACE) || (IsKeyDown(KEY_BACKSPACE) && iui_textboxCooldownTimer > TEXTBOX_COOLDOWN)) {
             iui_textboxDelayTimer++;
             if(IsKeyPressed(KEY_BACKSPACE) || iui_textboxDelayTimer % TEXTBOX_DELAY == 0) {
-                if(iui_textboxCursorPos > 0) {
-                    text.erase(iui_textboxCursorPos - 1, 1);
-                    iui_textboxCursorPos--;
+                if(iui_textboxSelectIdx > 0) {
+                    text.erase(iui_textboxSelectIdx - 1, 1);
+                    iui_textboxSelectIdx--;
                 }
             }
         }
         if(IsKeyPressed(KEY_RIGHT) || (IsKeyDown(KEY_RIGHT) && iui_textboxCooldownTimer > TEXTBOX_COOLDOWN)) {
             iui_textboxDelayTimer++;
             if(IsKeyPressed(KEY_RIGHT) || iui_textboxDelayTimer % TEXTBOX_DELAY == 0) {
-                iui_textboxCursorPos = std::min(iui_textboxCursorPos + 1, (int)text.size());
+                iui_textboxSelectIdx = std::min(iui_textboxSelectIdx + 1, (int)text.size());
             }
         }
         if(IsKeyPressed(KEY_LEFT) || (IsKeyDown(KEY_LEFT) && iui_textboxCooldownTimer > TEXTBOX_COOLDOWN)) {
             iui_textboxDelayTimer++;
             if(IsKeyPressed(KEY_LEFT) || iui_textboxDelayTimer % TEXTBOX_DELAY == 0) {
-                iui_textboxCursorPos = std::max(iui_textboxCursorPos - 1, 0);
+                iui_textboxSelectIdx = std::max(iui_textboxSelectIdx - 1, 0);
             }
         }
         if(IsKeyPressed(KEY_ENTER)) {
             iui_kbFocusItem = -1;
-            iui_textboxCursorPos = 0;
+            iui_textboxSelectIdx = 0;
             iui_textboxShowPos = 0;
             retValue = true;
         }
@@ -107,11 +107,11 @@ bool iui_textbox_base(int x, int y, int w, int h, std::string &text, bool (*vali
 
             important part: invariant 1 dominates 2.
         \*                                                 */
-        iui_textboxShowPos = std::clamp(iui_textboxShowPos, 0, iui_textboxCursorPos);  // invariant 1 and 3
+        iui_textboxShowPos = std::clamp(iui_textboxShowPos, 0, iui_textboxSelectIdx);  // invariant 1 and 3
         while(iui_textboxShowPos>0 && iui_measureText(text.substr(iui_textboxShowPos-1, std::string::npos)) <= maxTextWid)  // invariant 2
             iui_textboxShowPos--;
         
-        while(iui_measureText(text.substr(iui_textboxShowPos, iui_textboxCursorPos-iui_textboxShowPos)) > maxTextWid)  // invariant 4
+        while(iui_measureText(text.substr(iui_textboxShowPos, iui_textboxSelectIdx-iui_textboxShowPos)) > maxTextWid)  // invariant 4
             iui_textboxShowPos++;
     }
 
@@ -178,7 +178,7 @@ bool iui_textbox_base(int x, int y, int w, int h, std::string &text, bool (*vali
 
     // cursor
     if(isFocus) {
-        int cursorX = x + (_bT + _tP) + iui_measureText(trimText.substr(0, iui_textboxCursorPos - iui_textboxShowPos)) - _cT/2;
+        int cursorX = x + (_bT + _tP) + iui_measureText(trimText.substr(0, iui_textboxSelectIdx - iui_textboxShowPos)) - _cT/2;
         draw::iui_rect(cursorX, y + _cP, _cT, h - _cP*2, Fade(style.colButtonLabel, sin(iui_animTimer*0.1f)));
     }
 
@@ -193,7 +193,7 @@ bool intChecker(std::string text, int cursorPos, char codepoint) {
     bool isNegative = text.size() > 0 && text.at(0) == '-';
     int numChar = text.size() - isNegative;
     if(((numChar < 9) && ('0' <= codepoint && codepoint <= '9')) ||
-       (codepoint == '-' && iui_textboxCursorPos == 0 && !isNegative)) {
+       (codepoint == '-' && iui_textboxSelectIdx == 0 && !isNegative)) {
         return true;
     }
     return false;
@@ -203,7 +203,7 @@ bool floatChecker(std::string text, int cursorPos, char codepoint) {
     bool hasDot = text.find('.') != std::string::npos;
     int numChar = text.size() - isNegative - hasDot;
     if(((numChar <10) && ('0' <= codepoint && codepoint <= '9')) ||
-        (codepoint == '-' && iui_textboxCursorPos == 0 && !isNegative) ||
+        (codepoint == '-' && iui_textboxSelectIdx == 0 && !isNegative) ||
         (codepoint == '.' && !hasDot)) {
         return true;
     }

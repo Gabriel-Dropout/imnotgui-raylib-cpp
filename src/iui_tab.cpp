@@ -178,14 +178,9 @@ int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVe
         draw::iui_rect(tabBoxX, tabBoxY, style.tabAccentHei, tabBoxH, colAccent);
 
         // label
-        //int hprev, yprev;
-        //iui_setAlignment(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE, hprev, yprev);
-        {
-            ScopedAlignmentSetter sas(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE);
+        {   ScopedAlignmentSetter sas(IUI_LABEL_ALIGN_MIDDLE, IUI_LABEL_ALIGN_MIDDLE);
             draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
         }
-        //draw::iui_label(tabBoxX + tabBoxW/2, tabBoxY + tabBoxH/2, tabLabel, style.colTabLabel);
-        //iui_setAlignment(hprev, yprev);
 
         // for next tab
         tabBoxY += tabBoxH;
