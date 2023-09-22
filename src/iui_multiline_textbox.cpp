@@ -22,6 +22,7 @@ static Rectangle clipRect(Rectangle rect1, Rectangle rect2);
 
 static bool isSelectMode();
 
+void iui_multi_textbox(Rectangle rect, std::string &text, const std::string ID) {iui_multi_textbox(rect.x, rect.y, rect.width, rect.height, text, ID);}
 void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std::string ID) {
 
     IuiStyle &style = iuiGlobalStyle;

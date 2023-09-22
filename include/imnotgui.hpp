@@ -49,28 +49,52 @@ namespace draw {
     void iui_rect_rot_center(int x, int y, int w, int h, Color color, float angle);
     void iui_rect_rot_origin(int x, int y, int w, int h, Color color, float angle, int ox, int oy);
     void iui_line(int x, int y, int length, float angle, float thick, Color color);
-    void iui_label(int x, int y, std::string text, Color color);
-    void iui_label_transform(int x, int y, std::string text, float fontsize, float angle, Color color);
-    void iui_label_shadow(int x, int y, std::string text, Color color, int sx, int sy, Color scolor);
-    void iui_label_underline_expensive(int x, int y, std::string text, Color color, float thick, int offsetY, Color bgColor);
-    void iui_label_underline(int x, int y, std::string text, Color color, float thick, int offsetY);
-    void iui_label_ext(int x, int y, std::string text, Color color, int sep, int width);
+    void iui_label(int x, int y, const std::string &text, Color color);
+    void iui_label_shadow(int x, int y, const std::string &text, Color color, int sx, int sy, Color scolor);
+    void iui_label_underline(int x, int y, const std::string &text, Color color, float thick, int offsetY);
+    void iui_label_transform(int x, int y, const std::string &text, float fontsize, float angle, Color color);
+    void iui_label_box(Rectangle rect, const std::string &text, Color color);
+    void iui_label_box_shadow(Rectangle rect, const std::string &text, Color color, int sx, int sy, Color scolor);
+    void iui_label_box_underline(Rectangle rect, const std::string &text, Color color, float thick, int offsetY);
+}
+
+namespace layout {
+    std::pair<Rectangle, Rectangle> split_h(Rectangle rect, float ratio, int offset = 0);
+    std::pair<Rectangle, Rectangle> split_v(Rectangle rect, float ratio, int offset = 0);
+    Rectangle pad(Rectangle rect, int offset);
+    Rectangle pad(Rectangle rect, int offsety, int offsetx);
+    Rectangle pad(Rectangle rect, int offsett, int offsetr, int offsetb, int offsetl);
+    Vector2 pos_of(Rectangle rect, float ratiox, float ratioy, int offsetx = 0, int offsety = 0);
+    Vector2 pos_of(Rectangle rect, Vector2 ratiov, Vector2 offsetv);
 }
 
 namespace element {
-    bool iui_button(int x, int y, int w, int h, std::string text);
-    bool iui_button_nodraw(int x, int y, int w, int h, std::string text);
-    int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode);
-    int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode);
+    bool iui_button(Rectangle rect            , const std::string &text);
+    bool iui_button(int x, int y, int w, int h, const std::string &text);
+    bool iui_button_nodraw(Rectangle rect            , const std::string &text);
+    bool iui_button_nodraw(int x, int y, int w, int h, const std::string &text);
+
+    int iui_tab_h(Rectangle rect            , int minElemW, int maxElemW, const std::vector<std::string> &textVec, int &tabIdx);
+    int iui_tab_h(int x, int y, int w, int h, int minElemW, int maxElemW, const std::vector<std::string> &textVec, int &tabIdx);
+    int iui_tab_v(Rectangle rect            , int elemH, const std::vector<std::string> &textVec, int &tabIdx);
+    int iui_tab_v(int x, int y, int w, int h, int elemH, const std::vector<std::string> &textVec, int &tabIdx);
+
+    bool iui_textbox(Rectangle rect            , std::string &text, const std::string ID);
     bool iui_textbox(int x, int y, int w, int h, std::string &text, const std::string ID);
+    bool iui_intbox(Rectangle rect            , std::string &text, int &ret, const std::string ID);
     bool iui_intbox(int x, int y, int w, int h, std::string &text, int &ret, const std::string ID);
+    bool iui_floatbox(Rectangle rect            , std::string &text, float &ret, const std::string ID);
     bool iui_floatbox(int x, int y, int w, int h, std::string &text, float &ret, const std::string ID);
+    void iui_multi_textbox(Rectangle rect            , std::string &text, const std::string ID);
     void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std::string ID);
-    void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID);
-    void iui_slider_h(int x, int y, float &value, int width, float min, float max, const std::string ID);
-    void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID);
-    void iui_slider_v(int x, int y, float &value, int height, float min, float max, const std::string ID);
+
+    bool iui_checkbox(Rectangle rect            , bool checked, const std::string ID);
     bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID);
+
+    void iui_slider_h(int x, int y, int width, int &value, int min, int max, const std::string ID);
+    void iui_slider_h(int x, int y, int width, float &value, float min, float max, const std::string ID);
+    void iui_slider_v(int x, int y, int height, int &value, int min, int max, const std::string ID);
+    void iui_slider_v(int x, int y, int height, float &value, float min, float max, const std::string ID);
 }
 
 void iui_begin();  // Begin IMNOTGUI
@@ -95,12 +119,9 @@ inline bool makeActivable(int ID) {  // Returns true if the item is active
     return iui_activeItem == ID;
 }
 inline bool makePressable(int ID) {  // Returns true if the item is pressed
-    if(iui_hotItem == ID && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-        return true;
-    
-    return false;
+    return (iui_hotItem == ID && IsMouseButtonPressed(MOUSE_LEFT_BUTTON));
 }
-inline bool makeClickable(int ID) {
+inline bool makeClickable(int ID) {  // Returns true if the item is active but just released inside the area
     return (iui_hotItem == ID && iui_activeItem == ID && IsMouseButtonReleased(MOUSE_LEFT_BUTTON));
 }
 

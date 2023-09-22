@@ -7,6 +7,9 @@
 
 namespace imnotgui {
 namespace element {
+bool iui_textbox(Rectangle rect, std::string &text, const std::string ID) {return iui_textbox(rect.x, rect.y, rect.width, rect.height, text, ID);}
+bool iui_intbox(Rectangle rect, std::string &text, int &ret, const std::string ID) {return iui_intbox(rect.x, rect.y, rect.width, rect.height, text, ret, ID);}
+bool iui_floatbox(Rectangle rect, std::string &text, float &ret, const std::string ID) {return iui_floatbox(rect.x, rect.y, rect.width, rect.height, text, ret, ID);}
 
 bool iui_textbox_base(int x, int y, int w, int h, std::string &text, bool (*validChecker)(std::string, int, char), const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;

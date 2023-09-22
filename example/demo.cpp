@@ -91,7 +91,7 @@ int main() {
 
         int TAB_X = 42;
 
-        switch(imnotgui::element::iui_tab(TAB_X, 30, 140, 50, mainTabVec, mainTabIdx, IUI_TAB_FLEX)) {
+        switch(imnotgui::element::iui_tab_h(TAB_X, 30, 9999, 50, 140, 9999, mainTabVec, mainTabIdx)) {
             case 0: {
                 /// Intro
                 DrawSprite("spr_biglogo", SCREEN_CENTER_X, SCREEN_CENTER_Y/2, WHITE);
@@ -119,7 +119,7 @@ int main() {
                 /// Elements
                 int tabW = (int)(1196/6);
                 iui_rect(42, 85, 1196, 60, iuHellaDark);
-                switch(iui_tab(42, 90, tabW, 50, demoTabVec, demoTabIdx, IUI_TAB_TRIM)) {
+                switch(iui_tab_h(42, 90, 9999, 50, tabW, tabW, demoTabVec, demoTabIdx)) {
                     case 0:{
                         /// Button
                         {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_CENTER, IUI_LABEL_ALIGN_MIDDLE);
@@ -239,9 +239,9 @@ int main() {
                         iui_setAlignment(hprev, vprev);
                         
                         // sliders
-                        iui_slider_h(SCREEN_CENTER_X - 110, 400, ui_slider_test_h, 420, 0, 100, "slider-test-h");
-                        iui_slider_v(SCREEN_CENTER_X - 200, 400 - (iuiGlobalStyle.sliderHHei / 2), ui_slider_test_v, 160 + iuiGlobalStyle.sliderHHei, 0, 100, "slider-test-v");
-                        iui_slider_h(SCREEN_CENTER_X - 110, 560, ui_slider_test_minmax, 420, 20, 42, "slider-test-minmax");
+                        iui_slider_h(SCREEN_CENTER_X - 110, 400, 420, ui_slider_test_h, 0, 100, "slider-test-h");
+                        iui_slider_v(SCREEN_CENTER_X - 200, 400 - (iuiGlobalStyle.sliderHHei / 2), 160 + iuiGlobalStyle.sliderHHei, ui_slider_test_v, 0, 100, "slider-test-v");
+                        iui_slider_h(SCREEN_CENTER_X - 110, 560, 420, ui_slider_test_minmax, 20, 42, "slider-test-minmax");
                         
                         draw_textbubble_right(SCREEN_CENTER_X - 460, 442, 256, 60, "Vertical#(iui_slider_v)", iuCream, iuHellaDark, 30, 20);
                         draw_textbubble_topbottom(SCREEN_CENTER_X, 450, 256, 60, "Horizontal#(iui_slider_h)", iuCream, iuHellaDark, 100, 20 + (sine01_ * 4));
@@ -263,8 +263,8 @@ int main() {
                         iui_label(SCREEN_CENTER_X, 255, "tab_index = iui_tab(x, y, width, height, strings, tab_index, trim mode);", iuCream);
                         iui_setAlignment(hprev, vprev);
                         
-                        iui_tab(SCREEN_CENTER_X - 500, 300, 250, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
-                        iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 64, lossTabVec, lossTabIdx, IUI_TAB_TRIM);
+                        iui_tab_h(SCREEN_CENTER_X - 500, 300, 1000 + 400*sinf(iui_animTimer*DEG2RAD*2), 64, 250, 250, lossTabVec, lossTabIdx);
+                        iui_tab_v(SCREEN_CENTER_X - 500, 300 + 96, 200, 256 + 128*sinf(iui_animTimer*DEG2RAD*2), 64, lossTabVec, lossTabIdx);
 
                         {   ScopedFontSizeSetter _(42);
                             DrawSprite(TextFormat("spr_loss_%d", lossTabIdx), SCREEN_CENTER_X, 550, 0.5f, 0.5f, 0, WHITE);

@@ -1,57 +1,85 @@
 #include <string>
+#include <vector>
+#include <algorithm>  // std::sort
+#include <numeric>    // std::accumulate
 
 #include "imnotgui.hpp"
+#include <iostream>
+
+typedef struct TabElement {
+    int ID;
+    std::string label;
+    float width;
+};
+
+// if sum of width > maxSum, width = min(width, supremum) is applied to all elements. What should be the supremum?
+float calcSupremum(const std::vector<TabElement> &elements, float maxSum) {
+    if(elements.size() == 0) return 0;
+
+    std::vector<float> widths;
+    for(auto &e : elements) {widths.push_back(e.width);}
+    std::sort(widths.rbegin(), widths.rend());
+    widths.push_back(0);
+
+    float sum = std::accumulate(widths.begin(), widths.end(), 0.0f);
+    int supIdx = 0;
+
+    while(sum > maxSum) {
+        float delta = (widths[supIdx] - widths[supIdx + 1])*(supIdx + 1);
+        sum -= delta;
+        supIdx++;
+    }
+    float supremum = widths[supIdx] + (supIdx==0 ? 0 : (maxSum - sum)/supIdx);
+
+    return supremum;
+}
 
 namespace imnotgui {
 namespace element {
-int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode) {
+int iui_tab_h(Rectangle rect, int minElemW, int maxElemW, const std::vector<std::string> &textVec, int &tabIdx) {
+    return iui_tab_h(rect.x, rect.y, rect.width, rect.height, minElemW, maxElemW, textVec, tabIdx);
+}
+int iui_tab_v(Rectangle rect, int elemH, const std::vector<std::string> &textVec, int &tabIdx) {
+    return iui_tab_v(rect.x, rect.y, rect.width, rect.height, elemH, textVec, tabIdx);
+}
+int iui_tab_h(int x, int y, int w, int h, int minElemW, int maxElemW, const std::vector<std::string> &textVec, int &tabIdx) {
     IuiStyle &style = iuiGlobalStyle;
 
     int numTabs = textVec.size();
-    
-    //array
-    std::vector<int> IDs;
-    std::vector<std::string> labels;
+    if(numTabs == 0) return -1;
 
-    /// ID for each tabs
+    /// construct elements
+    std::vector<TabElement> elements;
+    std::vector<float> widths;
     int _ID;
     std::string _label;
     for(int i = 0; i < numTabs; i++) {
         iui_get_all(textVec[i], _ID, _label);
-        IDs.push_back(_ID);
-        labels.push_back(_label);
+        float _width = (float)std::clamp(iui_measureText(_label) + 20, minElemW, maxElemW);
+        elements.push_back(TabElement{_ID, _label, _width});
+        widths.push_back(_width);
     }
 
-    /// Button logic for each tabs
+    /// calculate supremum
+    float supremum = calcSupremum(elements, w);
 
+    /// Button logic for each tabs
     bool isHot, isCurrent;
-    int tabBoxX = x, tabBoxY = y, tabBoxW = w, tabBoxH = h;
+    int tabBoxX = x, tabBoxY, tabBoxW, tabBoxH;
     for(int i = 0; i < numTabs; i++) {
         isCurrent = false;
         isHot = false;
-
-        int tabID = IDs[i];
-        std::string tabLabel = labels[i];
+        TabElement &_elem = elements[i];
+        int tabID = _elem.ID;
+        std::string tabLabel = _elem.label;
 
         tabBoxY = y;
-        tabBoxW = w;
+        tabBoxW = std::min(_elem.width, supremum);
         tabBoxH = h;
         
-        // Tab label
-        int tabLabelWidth = iui_measureText(tabLabel);
-        if(tabLabelWidth > w) {
-            if (tabIdx != i) {
-                switch(trimMode) {
-                    case IUI_TAB_TRIM: // TRIM
-                        tabLabel = iui_strTrimDots(tabLabel, w);
-                        break;
-                    case IUI_TAB_FLEX:
-                        tabBoxW = tabLabelWidth + 20;
-                        break;
-                }
-            } else {
-                tabBoxW = tabLabelWidth + 20;
-            }
+        // trim label
+        if(iui_measureText(tabLabel) > tabBoxW) {
+            tabLabel = iui_strTrimDots(tabLabel, tabBoxW);
         }
 
         // is hover
@@ -93,55 +121,41 @@ int iui_tab(int x, int y, int w, int h, const std::vector<std::string> &textVec,
     return tabIdx;
 }
 
-int iui_tab_v(int x, int y, int w, int h, const std::vector<std::string> &textVec, int &tabIdx, int trimMode) {
+int iui_tab_v(int x, int y, int w, int h, int elemH, const std::vector<std::string> &textVec, int &tabIdx) {
     IuiStyle &style = iuiGlobalStyle;
 
     int numTabs = textVec.size();
+    if(numTabs == 0) return -1;
     
-    //array
-    std::vector<int> IDs;
-    std::vector<std::string> labels;
-
-    /// ID for each tabs
+    /// construct elements
+    std::vector<TabElement> elements;
     int _ID;
     std::string _label;
     for(int i = 0; i < numTabs; i++) {
         iui_get_all(textVec[i], _ID, _label);
-        IDs.push_back(_ID);
-        labels.push_back(_label);
+        elements.push_back(TabElement{_ID, _label, (float)w});
     }
 
-    /// Button logic for each tabs
+    /// calculate elemH
+    elemH = std::min(elemH, h / numTabs);
 
+    /// Button logic for each tabs
     bool isHot, isCurrent;
-    int tabBoxX = x, tabBoxY = y, tabBoxW = w, tabBoxH = h;
+    int tabBoxX, tabBoxY = y, tabBoxW, tabBoxH;
     for(int i = 0; i < numTabs; i++) {
         isCurrent = false;
         isHot = false;
-
-        int tabID = IDs[i];
-        std::string tabLabel = labels[i];
+        TabElement &_elem = elements[i];
+        int tabID = _elem.ID;
+        std::string tabLabel = _elem.label;
 
         tabBoxX = x;
-        tabBoxW = w;
-        tabBoxH = h;
+        tabBoxW = _elem.width;
+        tabBoxH = elemH;
         
-        // Tab label
-        int tabLabelWidth = iui_measureText(tabLabel);
-        if(tabLabelWidth > w) {
-            if (tabIdx != i) {
-                switch(trimMode) {
-                    case IUI_TAB_TRIM: // TRIM
-                        tabLabel = iui_strTrimDots(tabLabel, w);
-                        break;
-                    case IUI_TAB_FLEX:
-                        tabBoxW = tabLabelWidth + 20;
-                        // tabBoxX = x + w - tabBoxW;
-                        break;
-                }
-            } else {
-                tabBoxW = tabLabelWidth + 20;
-            }
+        // trim label
+        if(iui_measureText(tabLabel) > tabBoxW) {
+            tabLabel = iui_strTrimDots(tabLabel, tabBoxW);
         }
         
         // is hover
