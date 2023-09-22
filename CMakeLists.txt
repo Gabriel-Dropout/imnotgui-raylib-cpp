@@ -5,7 +5,7 @@ project(imnotgui)
 # Set project-wide version
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 2)
-set(PROJECT_VERSION_PATCH 0)
+set(PROJECT_VERSION_PATCH 2)
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(raylib)
 FetchContent_Declare(
     raylib_cpp
     GIT_REPOSITORY https://github.com/RobLoach/raylib-cpp.git
-    GIT_TAG v4.5.0
+    GIT_TAG v4.5.1
 )
 FetchContent_MakeAvailable(raylib_cpp)
 

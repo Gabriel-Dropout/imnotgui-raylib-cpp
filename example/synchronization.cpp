@@ -90,14 +90,14 @@ int main() {
         iui_rect(42, 680, 1196, 40, imnotgui::iuHellaDark);
         iui_rect(62, 85, 450, 595, imnotgui::iuDark2);
 
-        switch(iui_tab(42, 30, 200, 55, {"Intbox", "Floatbox"}, tabIdx, IUI_TAB_TRIM)) {
+        switch(iui_tab_h(42, 30, 9999, 55, 200, 200, {"Intbox", "Floatbox"}, tabIdx)) {
         case 0: {
             iui_setFontSize(25);
             iui_label_shadow(104, 120, "Enter any integer!", RAYWHITE, 5, 5, BLACK);
             iui_setFontSize(20);
             iui_intbox(104, 170, 300, 50, intboxText, intValue, "INTBOX");
-            iui_slider_h(104, 280, intValue, 300, -100, 100, "INTSLIDER_H");
-            iui_slider_v(464, 100, intValue, 200, -100, 100, "INTSLIDER_V");
+            iui_slider_h(104, 280, 300, intValue, -100, 100, "INTSLIDER_H");
+            iui_slider_v(464, 100, 200, intValue, -100, 100, "INTSLIDER_V");
             iui_setFontSize(25);
             iui_label_shadow(104, 450, "<(-)\\", WHITE, 5, 5, BLACK);
             iui_label_shadow(102, 480, "   _/_   <- What a nice flamingo!", WHITE, 5, 5, BLACK);
@@ -121,8 +121,8 @@ int main() {
             iui_label_shadow(104, 120, "Enter any float!", RAYWHITE, 5, 5, BLACK);
             iui_setFontSize(20);
             iui_floatbox(104, 170, 300, 50, floatboxText, floatValue, "FLOATBOX");
-            iui_slider_h(104, 280, floatValue, 300, -100.0f, 100.0f, "FLOATSLIDER_H");
-            iui_slider_v(464, 100, floatValue, 200, -100.0f, 100.0f, "FLOATSLIDER_V");
+            iui_slider_h(104, 280, 300, floatValue, -100.0f, 100.0f, "FLOATSLIDER_H");
+            iui_slider_v(464, 100, 200, floatValue, -100.0f, 100.0f, "FLOATSLIDER_V");
             iui_setFontSize(25);
             iui_label_shadow(104, 450, "(o) (o) (o)", WHITE, 5, 5, BLACK);
             iui_label_shadow(102, 480, " (o) (o) (o)   <- Bunch of donuts", WHITE, 5, 5, BLACK);

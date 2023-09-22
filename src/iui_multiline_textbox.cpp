@@ -22,6 +22,7 @@ static Rectangle clipRect(Rectangle rect1, Rectangle rect2);
 
 static bool isSelectMode();
 
+void iui_multi_textbox(Rectangle rect, std::string &text, const std::string ID) {iui_multi_textbox(rect.x, rect.y, rect.width, rect.height, text, ID);}
 void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std::string ID) {
 
     IuiStyle &style = iuiGlobalStyle;
@@ -244,6 +245,10 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
                 iui_textboxShowLine++;
         }
     }
+    
+
+    int currentShowLine = isFocus ? iui_textboxShowLine : 0;
+    int currentShowOff = isFocus ? iui_textboxShowOff : 0;
 
     /// DRAW
     // box
@@ -269,7 +274,7 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
     for(int i = 0; i < numOfLines + 2; i++) {
         // cut off the part that is out of the box
         Rectangle _rect = clipRect(innerRect, _stripeRect);
-        draw::iui_rect(_rect.x, _rect.y, _rect.width, _rect.height, iui_colLighter(fillColor, (i + iui_textboxShowLine)%2 ? 0 : 5));
+        draw::iui_rect(_rect.x, _rect.y, _rect.width, _rect.height, iui_colLighter(fillColor, (i + currentShowLine)%2 ? 0 : 5));
         _stripeRect.y += textHei;
     }
     
@@ -281,9 +286,9 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
             int _line = idx2Lin(text, iui_textboxCursorIdx),
                 _pos = idx2Pos(text, iui_textboxCursorIdx);
 
-            if(_line >= iui_textboxShowLine && _line < iui_textboxShowLine + numOfLines) {
-                int cursorX = x + (_bT + _tP) + iui_measureText(getCurText().substr(iui_textboxShowPos, _pos)) - iui_textboxShowOff - _cT/2;
-                int cursorY = y + h/2 + textHei*(_line - iui_textboxShowLine) - textHei*(numOfLines - 1)/2;
+            if(_line >= currentShowLine && _line < currentShowLine + numOfLines) {
+                int cursorX = x + (_bT + _tP) + iui_measureText(getCurText().substr(0, _pos)) - currentShowOff - _cT/2;
+                int cursorY = y + h/2 + textHei*(_line - currentShowLine) - textHei*(numOfLines - 1)/2;
 
                 float _alpha = (iui_cursorTimer < 120) ? 1 : cos((iui_cursorTimer - 120)*0.1f);
                 draw::iui_rect(cursorX, cursorY - textHei/2, _cT, textHei, Fade(style.colButtonLabel, _alpha));
@@ -303,7 +308,7 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
             }
 
             for(int i = firstLine; i<=lastLine; i++) {
-                if(i < iui_textboxShowLine - 1 || i >= iui_textboxShowLine + numOfLines + 1) continue;
+                if(i < currentShowLine - 1 || i >= currentShowLine + numOfLines + 1) continue;
 
                 std::string _text = getStrLine(text, i);
                 int _startPos = (i == firstLine) ? firstPos : 0;
@@ -313,9 +318,9 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
                     _endPos++;
                 }
 
-                int _startX = textRect.x + iui_measureText(_text.substr(0, _startPos)) - iui_textboxShowOff;
-                int _endX = textRect.x + iui_measureText(_text.substr(0, _endPos)) - iui_textboxShowOff;
-                int _startY = textRect.y + textHei*(i - iui_textboxShowLine);
+                int _startX = textRect.x + iui_measureText(_text.substr(0, _startPos)) - currentShowOff;
+                int _endX = textRect.x + iui_measureText(_text.substr(0, _endPos)) - currentShowOff;
+                int _startY = textRect.y + textHei*(i - currentShowLine);
 
                 Rectangle _selectRect = {(float)_startX, (float)_startY, (float)(_endX - _startX), (float)textHei};
                 for(int i = 0; i < numOfLines + 2; i++) {
@@ -333,7 +338,7 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
 
     {   ScopedAlignmentSetter _(IUI_LABEL_ALIGN_LEFT, IUI_LABEL_ALIGN_MIDDLE);
         int _lineNum = getStrLineNum(text);
-        for(int i = iui_textboxShowLine; i < std::min(iui_textboxShowLine + numOfLines, _lineNum); i++) {
+        for(int i = currentShowLine; i < std::min(currentShowLine + numOfLines, _lineNum); i++) {
             std::string _text = getStrLine(text, i);
 
             // line number
@@ -342,7 +347,7 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
             }
 
             // text trimming
-            int lenToCut = iui_textboxShowOff;
+            int lenToCut = currentShowOff;
             std::string trimText = _text;
             int spacing = std::max(style.labelFontsize/10, 1);
 
@@ -355,7 +360,7 @@ void iui_multi_textbox(int x, int y, int w, int h, std::string &text, const std:
             }
             
             // actual text
-            if((i == iui_textboxShowLine && i > 0) || (i == iui_textboxShowLine + numOfLines - 1 && i < _lineNum - 1))
+            if((i == currentShowLine && i > 0) || (i == currentShowLine + numOfLines - 1 && i < _lineNum - 1))
                 draw::iui_label(_textX - lenToCut, _textY + sin(iui_animTimer * 0.1f)*4, trimText, Fade(style.colTextBoxText, 0.50f));
             else {
                 draw::iui_label(_textX - lenToCut, _textY, trimText, style.colTextBoxText);

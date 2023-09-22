@@ -5,6 +5,7 @@
 
 namespace imnotgui {
 namespace element {
+bool iui_checkbox(Rectangle rect, bool checked, const std::string ID) {return iui_checkbox(rect.x, rect.y, rect.width, rect.height, checked, ID);}
 bool iui_checkbox(int x, int y, int w, int h, bool checked, const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;
 

@@ -6,7 +6,10 @@
 namespace imnotgui {
 
 namespace element {
-bool iui_button(int x, int y, int w, int h, std::string text) {
+bool iui_button(Rectangle rect, const std::string &text) {return iui_button(rect.x, rect.y, rect.width, rect.height, text);}
+bool iui_button_nodraw(Rectangle rect, const std::string &text) {return iui_button_nodraw(rect.x, rect.y, rect.width, rect.height, text);}
+
+bool iui_button(int x, int y, int w, int h, const std::string &text) {
     IuiStyle &style = iuiGlobalStyle;
 
     /// Get label and ID.
@@ -54,7 +57,7 @@ bool iui_button(int x, int y, int w, int h, std::string text) {
     
     return isClicky;
 }
-bool iui_button_nodraw(int x, int y, int w, int h, std::string text) {
+bool iui_button_nodraw(int x, int y, int w, int h, const std::string &text) {
     /// Get label and ID.
     int ID;
     std::string LABEL;

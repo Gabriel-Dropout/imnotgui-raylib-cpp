@@ -8,7 +8,7 @@
 namespace imnotgui {
 namespace element {
 template <typename T>
-void iui_slider_h_base(int x, int y, T &value, int width, T min, T max, const std::string ID) {
+void iui_slider_h_base(int x, int y, int width, T &value, T min, T max, const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;
 
     int sliderX = x + std::clamp((int)(width*(value-min)/(max-min)), 0, width);
@@ -66,15 +66,15 @@ void iui_slider_h_base(int x, int y, T &value, int width, T min, T max, const st
     draw::iui_rect(sliderX - btnW/2, y - btnH/2, btnW, btnH, btnColor);
 }
 
-void iui_slider_h(int x, int y, int &value, int width, int min, int max, const std::string ID) {
-    iui_slider_h_base<int>(x, y, value, width, min, max, ID);
+void iui_slider_h(int x, int y, int width, int &value, int min, int max, const std::string ID) {
+    iui_slider_h_base<int>(x, y, width, value, min, max, ID);
 }
-void iui_slider_h(int x, int y, float &value, int width, float min, float max, const std::string ID) {
-    iui_slider_h_base<float>(x, y, value, width, min, max, ID);
+void iui_slider_h(int x, int y, int width, float &value, float min, float max, const std::string ID) {
+    iui_slider_h_base<float>(x, y, width, value, min, max, ID);
 }
 
 template<typename T>
-void iui_slider_v_base(int x, int y, T &value, int height, T min, T max, const std::string ID) {
+void iui_slider_v_base(int x, int y, int height, T &value, T min, T max, const std::string ID) {
     IuiStyle &style = iuiGlobalStyle;
 
     int sliderY = y + std::clamp((int)(height*(value-min)/(max-min)), 0, height);
@@ -132,12 +132,12 @@ void iui_slider_v_base(int x, int y, T &value, int height, T min, T max, const s
     draw::iui_rect(x - btnW/2, sliderY - btnH/2, btnW, btnH, btnColor);
 }
 
-void iui_slider_v(int x, int y, int &value, int height, int min, int max, const std::string ID) {
-    iui_slider_v_base<int>(x, y, value, height, min, max, ID);
+void iui_slider_v(int x, int y, int height, int &value, int min, int max, const std::string ID) {
+    iui_slider_v_base<int>(x, y, height, value, min, max, ID);
 }
 
-void iui_slider_v(int x, int y, float &value, int height, float min, float max, const std::string ID) {
-    iui_slider_v_base<float>(x, y, value, height, min, max, ID);
+void iui_slider_v(int x, int y, int height, float &value, float min, float max, const std::string ID) {
+    iui_slider_v_base<float>(x, y, height, value, min, max, ID);
 }
 
 } // namespace element
