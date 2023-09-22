@@ -7,6 +7,9 @@
 
 namespace imnotgui {
 namespace draw {
+void iui_rect(Rectangle rect, Color color) {
+    DrawRectangleRec(rect, color);
+}
 void iui_rect(int x, int y, int w, int h, Color color) {
     DrawRectangle(x, y, w, h, color);
 }

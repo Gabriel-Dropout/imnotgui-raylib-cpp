@@ -43,6 +43,7 @@ extern int iui_animTimer;
 extern int iui_cursorTimer;
 
 namespace draw {
+    void iui_rect(Rectangle rect, Color color);
     void iui_rect(int x, int y, int w, int h, Color color);
     void iui_rect_pos(int x1, int y1, int x2, int y2, Color color);
     void iui_rect_rot(int x, int y, int w, int h, Color color, float angle);
