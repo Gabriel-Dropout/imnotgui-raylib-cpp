@@ -38,12 +38,6 @@ void iui_label(int x, int y, const std::string &text, Color color) {
     Font curFont = style.font == nullptr ? GetFontDefault() : *style.font;
     DrawTextEx(curFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/curFont.baseSize, 1), color);
 }
-void iui_label_transform(int x, int y, const std::string &text, int fontsize, float angle, Color color) {
-    // TODO: make angle to work
-    {   ScopedFontSizeSetter _(fontsize);
-        iui_label(x, y, text, color);
-    }
-}
 void iui_label_shadow(int x, int y, const std::string &text, Color color, int sx, int sy, Color scolor) {
     iui_label(x + sx, y + sy, text, scolor);
     iui_label(x, y, text, color);
@@ -61,21 +55,35 @@ void iui_label_underline(int x, int y, const std::string &text, Color color, flo
 }
 void iui_label_box(Rectangle rect, const std::string &text, Color color) {
     IuiStyle &style = iuiGlobalStyle;
-    int x = rect.x + ((int)rect.width * style.labelHalign)/2;
-    int y = rect.y + ((int)rect.height * style.labelValign)/2;
+    int x = rect.x + (rect.width * style.labelHalign)/2;
+    int y = rect.y + (rect.height * style.labelValign)/2;
     iui_label(x, y, text, color);
 }
 void iui_label_box_shadow(Rectangle rect, const std::string &text, Color color, int sx, int sy, Color scolor) {
     IuiStyle &style = iuiGlobalStyle;
-    int x = rect.x + ((int)rect.width * style.labelHalign)/2;
-    int y = rect.y + ((int)rect.height * style.labelValign)/2;
+    int x = rect.x + (rect.width * style.labelHalign)/2;
+    int y = rect.y + (rect.height * style.labelValign)/2;
     iui_label_shadow(x, y, text, color, sx, sy, scolor);
 }
 void iui_label_box_underline(Rectangle rect, const std::string &text, Color color, float thick, int offsetY) {
     IuiStyle &style = iuiGlobalStyle;
-    int x = rect.x + ((int)rect.width * style.labelHalign)/2;
-    int y = rect.y + ((int)rect.height * style.labelValign)/2;
+    int x = rect.x + (rect.width * style.labelHalign)/2;
+    int y = rect.y + (rect.height * style.labelValign)/2;
     iui_label_underline(x, y, text, color, thick, offsetY);
+}
+
+// Draw clipped text
+static void DrawTextRegion(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint, Rectangle mask, float padding);
+
+void iui_label_region(int x, int y, const std::string &text, Rectangle mask, float padding, Color color) {
+    IuiStyle &style = iuiGlobalStyle;
+
+    Vector2 tSize = iui_measureTextEx(text);
+    int offX = ((int)tSize.x * style.labelHalign)/2;
+    int offY = ((int)tSize.y * style.labelValign)/2;
+    
+    Font curFont = style.font == nullptr ? GetFontDefault() : *style.font;
+    DrawTextRegion(curFont, text.c_str(), Vector2{(float)x - offX, (float)y - offY}, style.labelFontsize, std::max(style.labelFontsize/curFont.baseSize, 1), color, mask, padding);
 }
 
 void draw_textbubble_top(int x, int y, int w, int h, std::string text, Color color, Color textColor, int arrowPos, int arrowSize) {
@@ -156,5 +164,66 @@ void iui_groupbox(int x, int y, int w, int h, std::string text) {
     iui_setAlignment(hprev, vprev);
 }
 
+// Draw clipped text
+static void DrawTextRegion(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint, Rectangle mask, float padding)
+{
+    // very small epsilon to avoid clipping when padding is 0
+    padding = std::max(0.0001f, padding);
+
+    if (font.texture.id == 0) font = GetFontDefault();  // Security check in case of not valid font
+
+    int size = TextLength(text);    // Total size in bytes of the text, scanned by codepoints in loop
+
+    int textOffsetY = 0;            // Offset between lines (on linebreak '\n')
+    float textOffsetX = 0.0f;       // Offset X to next character to draw
+
+    float scaleFactor = fontSize/font.baseSize;         // Character quad scaling factor
+
+    for (int i = 0; i < size;)
+    {
+        // Get next codepoint from byte string and glyph index in font
+        int codepointByteCount = 0;
+        int codepoint = GetCodepointNext(&text[i], &codepointByteCount);
+        int index = GetGlyphIndex(font, codepoint);
+
+        // NOTE: Normally we exit the decoding sequence as soon as a bad byte is found (and return 0x3f)
+        // but we need to draw all the bad bytes using the '?' symbol moving one byte
+        if (codepoint == 0x3f) codepointByteCount = 1;
+
+        if (codepoint == '\n')
+        {
+            // NOTE: Fixed line spacing of 1.5 line-height
+            // TODO: Support custom line spacing defined by user
+            textOffsetY += (int)((font.baseSize + font.baseSize/2.0f)*scaleFactor);
+            textOffsetX = 0.0f;
+        }
+        else
+        {
+            if ((codepoint != ' ') && (codepoint != '\t'))
+            {
+                float _codeWid = (float)(font.glyphs[index].advanceX == 0 ? font.recs[index].width : font.glyphs[index].advanceX)*scaleFactor;
+                float _codeHei = font.baseSize*scaleFactor;
+                Rectangle _codeRec = Rectangle{ position.x + textOffsetX, position.y + textOffsetY, _codeWid, _codeHei };
+                float _invalue = std::numeric_limits<float>::max();
+                _invalue = std::min(_invalue, _codeRec.x - mask.x);
+                _invalue = std::min(_invalue, _codeRec.y - mask.y);
+                _invalue = std::min(_invalue, (mask.x + mask.width) - (_codeRec.x + _codeRec.width));
+                _invalue = std::min(_invalue, (mask.y + mask.height) - (_codeRec.y + _codeRec.height));
+                // very small epsilon to avoid clipping when padding is 0
+                _invalue += 0.0002f;
+                
+                if(_invalue > 0) {
+                    float _alpha = std::min(1.0f, _invalue / padding);
+                    DrawTextCodepoint(font, codepoint, (Vector2){ position.x + textOffsetX, position.y + textOffsetY }, fontSize, Fade(tint, _alpha));
+                }
+            }
+
+            if (font.glyphs[index].advanceX == 0) textOffsetX += ((float)font.recs[index].width*scaleFactor + spacing);
+            else textOffsetX += ((float)font.glyphs[index].advanceX*scaleFactor + spacing);
+        }
+
+        i += codepointByteCount;   // Move text bytes counter to next codepoint
+    }
+}
 } // namespace draw
 } // namespace imnotgui

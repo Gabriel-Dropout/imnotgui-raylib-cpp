@@ -53,10 +53,10 @@ namespace draw {
     void iui_label(int x, int y, const std::string &text, Color color);
     void iui_label_shadow(int x, int y, const std::string &text, Color color, int sx, int sy, Color scolor);
     void iui_label_underline(int x, int y, const std::string &text, Color color, float thick, int offsetY);
-    void iui_label_transform(int x, int y, const std::string &text, float fontsize, float angle, Color color);
     void iui_label_box(Rectangle rect, const std::string &text, Color color);
     void iui_label_box_shadow(Rectangle rect, const std::string &text, Color color, int sx, int sy, Color scolor);
     void iui_label_box_underline(Rectangle rect, const std::string &text, Color color, float thick, int offsetY);
+    void iui_label_region(int x, int y, const std::string &text, Rectangle mask, float padding, Color color);
 }
 
 namespace layout {
